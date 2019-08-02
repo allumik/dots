@@ -5,15 +5,15 @@ The realm of bad scripts
 **This is** my config files repo for current manjaro workflow implementation on
 my Lenovo T440p.
 
-* WM: Manjaro Community Edition BSPWM
+* WM: Manjaro Community Edition **BSPWM**
 
-* EDITOR: Neovim / Doom Emacs
+* EDITOR: **Neovim / Doom Emacs**
 
-* TERM: Kitty with Kitty Themes
+* TERM: **Kitty** with Kitty Themes
 
-* File Manager: Ranger (rather basic setup works well enough, nothing to share)
+* File Manager: **Ranger** (rather basic setup works well enough, nothing to share)
  
-* Program browse: Rofi
+* Program browse: **Rofi**
 
 [![sample screenshot](https://github.com/allumik/dots/blob/master/screen.png)](https://github.com/allumik/dots/blob/master/screen.png)
 
