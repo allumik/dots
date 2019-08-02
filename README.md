@@ -15,6 +15,6 @@ my Lenovo T440p.
  
 * Program browse: Rofi
 
-[![sample screenshot](https://github.com/allumik/dots/screen.png)](https://github.com/allumik/dots/screen.png)
+[![sample screenshot](https://github.com/allumik/dots/blob/master/screen.png)](https://github.com/allumik/dots/blob/master/screen.png)
 
 allumik
