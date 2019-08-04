@@ -1,0 +1,20 @@
+#!/bin/bash
+
+nmcli radio wifi on
+nmcli device status
+nmcli dev wifi
+
+echo "Vali vork"
+read INPUT
+
+echo "Sisesta salasona (kui vaja)"
+read -s PASS
+
+if [[ -z  $PASS  ]]
+then
+	nmcli dev wifi con $INPUT
+else 
+	nmcli dev wifi con $INPUT password $PASS
+fi
+
+echo "loppematu hulk kassivideoid on nyyd sinu!"

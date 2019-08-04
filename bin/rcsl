@@ -1,0 +1,15 @@
+#!/bin/sh
+
+base_dir="${HOME}/usr/src/c"
+sltools="dwm dmenu st tabbed"
+
+compile() {
+    for i; do
+        cd ${base_dir}/${i}
+        echo "compiling ${i}"
+        make clean install && make clean
+    done
+}
+
+[ ${#} -eq 0 ] && compile ${sltools} ||
+    compile ${@}

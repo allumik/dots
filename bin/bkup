@@ -1,0 +1,13 @@
+#!/bin/sh
+# backup home dir
+
+# create lock
+lock="${HOME}/tmp/bkup.lock"
+[ -f "${lock}" ] && { echo "another bkup is running!"; exit 1; }
+
+touch "${lock}"
+
+GZIP=-9 pk "${HOME}" "${HOME}/bkup-$(date +'%Y%m%d').tar"
+
+notify-send "bkup" "backed up!"
+rm "${lock}"

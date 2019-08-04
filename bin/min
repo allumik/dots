@@ -1,0 +1,11 @@
+#!/usr/bin/python3
+# return minimum number from a file
+import sys
+
+if len(sys.argv) < 2:
+	text = sys.stdin.read().strip().split('\n')
+else:
+	with open(sys.argv[1]) as f:
+		text = f.read().strip().split('\n')
+text = [float(i) for i in text]
+print(min(text))

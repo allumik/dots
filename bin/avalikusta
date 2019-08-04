@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Sisesta salasõna"
+read -s pass
+gpg --batch --passphrase $pass $1

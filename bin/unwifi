@@ -1,0 +1,10 @@
+#!/bin/bash
+
+nmcli connection show --active
+
+echo "DEVICE? "
+read INPUT
+
+nmcli dev disconnect $INPUT
+
+echo "loodan et password on veel meeles..."
