@@ -1,16 +1,19 @@
 {
 	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2021-11-24T22:49:42.954-00:00",
+	"CreationDate" : "2022-04-30T14:32:27.626-00:00",
 	"Sources" : 
 	[
 		{
 			"Packages" : 
 			[
 				{
+					"PackageIdentifier" : "7zip.7zip"
+				},
+				{
 					"PackageIdentifier" : "Canonical.Ubuntu"
 				},
 				{
-					"PackageIdentifier" : "Discord.Discord"
+					"PackageIdentifier" : "Docker.DockerDesktop"
 				},
 				{
 					"PackageIdentifier" : "GIMP.GIMP"
@@ -20,12 +23,6 @@
 				},
 				{
 					"PackageIdentifier" : "Git.Git"
-				},
-				{
-					"PackageIdentifier" : "Google.Chrome"
-				},
-				{
-					"PackageIdentifier" : "LLVM.LLVM"
 				},
 				{
 					"PackageIdentifier" : "Logitech.Options"
@@ -43,13 +40,16 @@
 					"PackageIdentifier" : "Microsoft.Office"
 				},
 				{
+					"PackageIdentifier" : "JanDeDobbeleer.OhMyPosh"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.OneDrive"
 				},
 				{
-					"PackageIdentifier" : "RProject.R"
+					"PackageIdentifier" : "PostgreSQL.PostgreSQL"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.Skype"
+					"PackageIdentifier" : "RProject.R"
 				},
 				{
 					"PackageIdentifier" : "Valve.Steam"
@@ -67,55 +67,67 @@
 					"PackageIdentifier" : "VideoLAN.VLC"
 				},
 				{
-					"PackageIdentifier" : "SlackTechnologies.Slack"
+					"PackageIdentifier" : "Zotero.Zotero"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.VC++2013Redist-x64"
+					"PackageIdentifier" : "Obsidian.Obsidian"
 				},
 				{
-					"PackageIdentifier" : "Python.Python.3"
+					"PackageIdentifier" : "PostgreSQL.pgAdmin"
 				},
 				{
-					"PackageIdentifier" : "VMware.WorkstationPlayer"
-				},
-				{
-					"PackageIdentifier" : "OpenJS.NodeJS"
+					"PackageIdentifier" : "WinSCP.WinSCP"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.PowerToys"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.VC++2013Redist-x64"
+				},
+				{
 					"PackageIdentifier" : "Zoom.Zoom"
 				},
 				{
-					"PackageIdentifier" : "Yarn.Yarn"
+					"PackageIdentifier" : "Python.Python.3"
 				},
 				{
-					"PackageIdentifier" : "Microsoft.dotnetRuntime.3-x64"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VC++2015-2022Redist-x86"
+					"PackageIdentifier" : "Oracle.VirtualBox"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2015-2022Redist-x64"
 				},
 				{
-					"PackageIdentifier" : "Google.Drive"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VC++2005Redist-x86"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VC++2008Redist-x86"
-				},
-				{
-					"PackageIdentifier" : "JohnMacFarlane.Pandoc"
+					"PackageIdentifier" : "Microsoft.VC++2015-2022Redist-x86"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.PowerShell"
 				},
 				{
+					"PackageIdentifier" : "Google.Drive"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.Teams"
+				},
+				{
 					"PackageIdentifier" : "Microsoft.VisualStudioCode"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.dotnetRuntime.6-x64"
+				},
+				{
+					"PackageIdentifier" : "Transmission.Transmission"
+				},
+				{
+					"PackageIdentifier" : "Nvidia.GeForceExperience"
+				},
+				{
+					"PackageIdentifier" : "Nvidia.PhysX"
+				},
+				{
+					"PackageIdentifier" : "JohnMacFarlane.Pandoc"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.dotnetRuntime.3-x64"
 				},
 				{
 					"PackageIdentifier" : "Microsoft.VC++2013Redist-x86"
@@ -128,7 +140,22 @@
 				"Name" : "winget",
 				"Type" : "Microsoft.PreIndexed.Package"
 			}
+		},
+		{
+			"Packages" : 
+			[
+				{
+					"PackageIdentifier" : "XPDC2RH70K22MN"
+				}
+			],
+			"SourceDetails" : 
+			{
+				"Argument" : "https://storeedgefd.dsx.mp.microsoft.com/v9.0",
+				"Identifier" : "StoreEdgeFD",
+				"Name" : "msstore",
+				"Type" : "Microsoft.Rest"
+			}
 		}
 	],
-	"WinGetVersion" : "1.1.12663"
+	"WinGetVersion" : "1.2.10941"
 }

@@ -8,8 +8,9 @@ It's not pretty...
 ... most of the time.
 </p>
 
-mostly nixos configuration
 
-some extras included for reference, will be removed soon: `windows/`, `wsl/`, `editorconfs/`
+`nix/` - nix configuration, most up to date stuff
+
+`windows/` - outdated collection of windows confs and some helpful programs from few years ago
 
 allumik
