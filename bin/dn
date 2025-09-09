@@ -1,2 +1,0 @@
-#!/bin/sh
-has curl && dn='curl -O' || has wget && dn='wget'; ${dn} ${1:-`cat /dev/stdin`}

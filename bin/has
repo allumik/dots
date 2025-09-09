@@ -1,7 +1,0 @@
-#!/bin/sh
-
-IFS=':'
-for i in ${PATH}; do
-    [ -x ${i}/${1} ] && exit 0
-done
-exit 1

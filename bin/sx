@@ -1,5 +1,0 @@
-#!/bin/sh
-# startx using xinit
-
-export XAUTHORITY="${XDG_CACHE_HOME}/Xauthority"
-xinit "${HOME}/etc/xorg.d/xinitrc" -- /usr/bin/X :1
