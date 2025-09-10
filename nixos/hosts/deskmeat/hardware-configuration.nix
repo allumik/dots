@@ -13,7 +13,7 @@
 
   # Kernel modules and initrd
   boot.kernelPackages = pkgs.linuxPackages_cachyos-gcc.cachyOverride { mArch = "ZEN4"; }; #https://github.com/chaotic-cx/nyx/issues/1178#issuecomment-3263837109
-  boot.kernelModules = [ "kvm-amd" "dm-cache" "dm-cache-smq" "dm-persistent-data" "dm-bio-prison" "dm-clone" "dm-crypt" "dm-writecache" "dm-mirror" "dm-snapshot" ];
+  boot.kernelModules = [ "amdgpu" "kvm-amd" "dm-cache" "dm-cache-smq" "dm-persistent-data" "dm-bio-prison" "dm-clone" "dm-crypt" "dm-writecache" "dm-mirror" "dm-snapshot" ];
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-cache" "dm-cache-smq" "dm-cache-mq" "dm-cache-cleaner" ];
   boot.blacklistedKernelModules = [ "usci_ccg" ];
@@ -39,22 +39,14 @@
     graphics = {
       enable = true;
       extraPackages = with pkgs; [
+        amdvlk
         vaapiVdpau
         libvdpau-va-gl
         mesa
       ];
     };
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    nvidia-container-toolkit.enable = true;
     keyboard.qmk.enable = true;
-
-    nvidia = {
-      modesetting.enable = true;
-      powerManagement.enable = true;
-      open = false;
-      nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
-    };
   };
 }
 
