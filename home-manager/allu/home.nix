@@ -1,0 +1,110 @@
+{ config, pkgs, ... }:
+
+let
+  packs = import ./packages/default.nix pkgs;
+  nnn_fzcd = import ./scripts/nnn_fzcd.nix pkgs;
+  nnn_helper = import ./scripts/nnn_helper.nix pkgs;
+in {
+  # Import other configuration files
+  imports = [
+    ./confs/shell.nix
+    ./confs/tmux.nix
+    # vs-code magic sauce
+    # "${fetchTarball "https://github.com/msteen/nixos-vscode-server/tarball/master"}/modules/vscode-server/home.nix"
+  ];
+  xdg = {
+    enable = true;
+    mime.enable = true;
+    configFile = {
+      # NNN plugins
+      "nnn/plugins/fzcd".source = "${nnn_fzcd}/bin/fzcd";
+      "nnn/plugins/.nnn-plugin-helper".source = "${nnn_helper}/bin/nnn_helper";
+    };
+  };
+
+
+  # Programs & Services
+  nix = {
+    package = pkgs.nix;
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
+  nixpkgs.config.allowUnfree = true;
+  programs = {
+    # Let Home Manager install and manage itself.
+    home-manager.enable = true;
+    alacritty = { 
+      enable = true;
+      settings = {
+        font = {
+          size = 11.0;
+          bold = { family = "Iosevka"; style = "Bold"; };
+          bold_italic = { family = "Iosevka"; style = "Bold Italic"; };
+          italic = { family = "Iosevka"; style = "Italic"; };
+          normal = { family = "Iosevka"; style = "Regular"; };
+        };
+      };
+    };
+    brave = {
+      enable = true;
+      commandLineArgs = [
+        "--enable-features=VaapiVideoDecodeLinuxGL"
+        "--use-gl=angle"
+        "--use-angle=gl"
+        "--ozone-platform=wayland"
+      ];
+    };
+    vscode.enable = true;
+  };
+  services = {
+    # vscode-server.enable = true;
+    syncthing = {
+      enable = true;
+      tray.enable = true;
+    };
+  };
+  targets.genericLinux.enable = true;
+
+
+  # Other configuration settings
+  fonts.fontconfig.enable = true;
+	dconf = {
+    enable = true;
+    settings = {
+  	  "org/virt-manager/virt-manager/connections" = {
+      	autoconnect = ["qemu:///system"];
+      	uris = ["qemu:///system"];
+  	  };
+    };
+	};
+
+
+  # General home-manager settings
+  home = {
+    # Home Manager needs a bit of information about you and the
+    # paths it should manage.
+    username = "allu";
+    homeDirectory = "/home/allu";
+
+    # Userspace applications
+    packages = packs.programs ++ packs.fonts;
+
+    # * The PATH for me *
+    sessionPath = [ 
+      "$HOME/.config/home-manager/scripts"
+      "$HOME/.nix-profile/bin"
+    ];
+
+    # define some user based variables
+    sessionVariables = {
+      VISUAL = "code";
+      EDITOR = "vis";
+      TERMINAL = "alacritty";
+      NIXOS_OZONE_WL = "1";
+    };
+
+    # You should not change this value, even if you update Home Manager.
+    stateVersion = "25.05";
+  };
+  # Notifications about home-manager news
+  news.display = "silent";
+}

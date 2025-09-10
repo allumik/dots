@@ -10,6 +10,8 @@ It's not pretty...
 
 ----
 
-`nix/` - nix configuration, most up to date stuff
+`nixos/` - nixos configuration, most up to date stuff
+
+`home-manager/` - nix home-manager configuration, works on nixos and non-nixos
 
 `windows/` - outdated collection of windows confs and some helpful programs from few years ago
