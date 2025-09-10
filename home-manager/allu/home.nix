@@ -90,7 +90,6 @@ in {
 
     # * The PATH for me *
     sessionPath = [ 
-      "$HOME/.config/home-manager/scripts"
       "$HOME/.nix-profile/bin"
     ];
 

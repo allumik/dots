@@ -24,10 +24,17 @@ in
     LC_TIME = extraLocale;
   };
 
-  environment.systemPackages = with pkgs; [
-    # Core Tools
-    vis fzf nnn ripgrep wget zip unzip p7zip
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      # Core Tools
+      vis fzf nnn ripgrep wget zip unzip p7zip
+    ];
+    variables = {
+      EDITOR = "vis";
+      VISUAL = "vis";
+      PAGER = "less";
+    };
+  };
 
   programs.gnupg.agent = {
     enable = true;
