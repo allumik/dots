@@ -31,17 +31,16 @@ let
   ];
 
   # add custom packages
-  python_plus = python313.override {
+  python_plus = python312.override {
     self = python_plus;
     packageOverrides = callPackage ./py {}; # extra packages override
   };
   
   py-env = python_plus.withPackages(ps: with ps; [
     pip setuptools
-    numpy pandas scipy scikit-learn torchWithCuda jaxlib
-    matplotlib seaborn altair
-    notebook jupyter-cache
-    python-dotenv
+    numpy numba pandas scipy scikit-learn torchWithRocm jaxlib
+    matplotlib seaborn altair notebook jupyter-cache
+    python-dotenv tqdm anndata
     ## extra packages from ./py override
     gamma-launcher
   ]);

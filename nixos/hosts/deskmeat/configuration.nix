@@ -8,6 +8,9 @@
     ./hardware-configuration.nix
     # Common configuration for all hosts
     ../common.nix # this loads base.nix by itself
+
+    # Extras, mostly backported from unstable
+    ./lactd.nix
   ];
 
 
@@ -31,14 +34,14 @@
       # Other Tools
       tesseract openconnect poppler poppler_utils lcdf-typetools wl-clipboard conda qmk dfu-programmer microscheme via
       # AMD ROCm thingies
-      rocmPackages.clr rocmPackages.mpi rocmPackages.rocm-core rocmPackages.rocm-device-libs python313Packages.torchWithRocm
+      rocmPackages.clr rocmPackages.mpi rocmPackages.rocm-core rocmPackages.rocm-device-libs
       # GUI Apps
       alacritty syncthing veracrypt polychromatic gparted kdePackages.kamera obs-studio vlc lact
       kdePackages.kcmutils kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
       # Gaming
-      lutris wine-wayland winetricks wineWowPackages.waylandFull wineWowPackages.fonts proton-cachyos_x86_64_v4	
+      lutris protonup-qt wine-wayland winetricks wineWowPackages.waylandFull wineWowPackages.fonts furmark
       # Containers
-      fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer omnissa-horizon-client
+      fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer vmware-horizon-client # omnissa-horizon-client from 25.11
       # LLM runner
       ollama-rocm
     ];
@@ -65,7 +68,7 @@
     spice-vdagentd.enable = true;
     udev.packages = [ pkgs.via ];
     fstrim.enable = true;
-    lact.enable = true; # AMD GPU tuning daemon
+    lact.enable = true;
   };
   virtualisation = {
     containers.enable = true;
@@ -88,19 +91,16 @@
 
 
   ## Extras
-  # LACT - AMD GPU settings dashboard
-  systemd = {
-    packages = with pkgs; [ lact ];
-    services.lact.enable = true;
-    services.lact.wantedBy = [ "multi-user.target" ];
-  };
-  # Spin down HDDs after 10 minutes
-  systemd.services.hd-idle = {
-    description = "External HD spin down daemon";
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.hd-idle}/bin/hd-idle -i 600";
+  systemd.packages = with pkgs; [ lact ];
+  systemd.services = {
+    # Spin down HDDs after 10 minutes
+    hd-idle = {
+      description = "External HD spin down daemon";
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.hd-idle}/bin/hd-idle -i 600";
+      };
     };
   };
 }

@@ -9,8 +9,6 @@ in {
   imports = [
     ./confs/shell.nix
     ./confs/tmux.nix
-    # vs-code magic sauce
-    # "${fetchTarball "https://github.com/msteen/nixos-vscode-server/tarball/master"}/modules/vscode-server/home.nix"
   ];
   xdg = {
     enable = true;
@@ -56,7 +54,6 @@ in {
     vscode.enable = true;
   };
   services = {
-    # vscode-server.enable = true;
     syncthing = {
       enable = true;
       tray.enable = true;
@@ -97,7 +94,7 @@ in {
     sessionVariables = {
       VISUAL = "${pkgs.vis}/bin/vis";
       EDITOR = "${pkgs.vis}/bin/vis";
-      TERMINAL = "alacritty";
+      TERMINAL = "${pkgs.alacritty}/bin/alacritty";
     };
 
     # You should not change this value, even if you update Home Manager.
