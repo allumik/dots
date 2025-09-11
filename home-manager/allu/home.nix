@@ -95,10 +95,9 @@ in {
 
     # define some user based variables
     sessionVariables = {
-      VISUAL = "code";
-      EDITOR = "vis";
+      VISUAL = "${pkgs.vis}/bin/vis";
+      EDITOR = "${pkgs.vis}/bin/vis";
       TERMINAL = "alacritty";
-      NIXOS_OZONE_WL = "1";
     };
 
     # You should not change this value, even if you update Home Manager.

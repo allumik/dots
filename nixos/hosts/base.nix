@@ -30,8 +30,8 @@ in
       vis fzf nnn ripgrep wget zip unzip p7zip
     ];
     variables = {
-      EDITOR = "vis";
-      VISUAL = "vis";
+      EDITOR = "${pkgs.vis}/bin/vis";
+      VISUAL = "${pkgs.vis}/bin/vis";
       PAGER = "less";
     };
   };

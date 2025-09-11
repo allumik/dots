@@ -6,7 +6,7 @@
   imports = [ ./base.nix ];
 
   ## Nixpkgs configuration for all hosts
-  nixpkgs.config = { cudaSupport = true; allowUnfree = true; };
+  nixpkgs.config = { rocmSupport = true; allowUnfree = true; };
 
 
   ## Core packages and services

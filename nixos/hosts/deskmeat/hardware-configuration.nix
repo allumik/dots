@@ -12,11 +12,11 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Kernel modules and initrd
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelPackages = pkgs.linuxPackages_cachyos-gcc.cachyOverride { mArch = "ZEN4"; }; #https://github.com/chaotic-cx/nyx/issues/1178#issuecomment-3263837109
-  boot.kernelModules = [ "amdgpu" "kvm-amd" "dm-cache" "dm-cache-smq" "dm-persistent-data" "dm-bio-prison" "dm-clone" "dm-crypt" "dm-writecache" "dm-mirror" "dm-snapshot" ];
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
-  boot.initrd.kernelModules = [ "dm-cache" "dm-cache-smq" "dm-cache-mq" "dm-cache-cleaner" ];
-  boot.blacklistedKernelModules = [ "usci_ccg" ];
+  services.scx.enable = true; # by default uses scx_rustland scheduler
+  boot.kernelModules = [ "amdgpu" "kvm-amd" ];
+  # boot.blacklistedKernelModules = [ "usci_ccg" ];
 
   # Filesystems and Swap
   fileSystems."/" = { device = "/dev/disk/by-uuid/fae35e59-edc7-41b1-9d8c-8cc5bead8d11"; fsType = "ext4"; };
@@ -31,21 +31,13 @@
 
   # Hardware Support
   hardware = {
+    graphics.enable = true;
+    amdgpu.overdrive.enable = true;
     enableAllFirmware = true;
     bluetooth = {
       enable = true;
       powerOnBoot = true;
     };
-    graphics = {
-      enable = true;
-      extraPackages = with pkgs; [
-        amdvlk
-        vaapiVdpau
-        libvdpau-va-gl
-        mesa
-      ];
-    };
-    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     keyboard.qmk.enable = true;
   };
 }

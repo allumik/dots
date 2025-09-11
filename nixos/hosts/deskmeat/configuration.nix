@@ -30,17 +30,18 @@
     systemPackages = with pkgs; [
       # Other Tools
       tesseract openconnect poppler poppler_utils lcdf-typetools wl-clipboard conda qmk dfu-programmer microscheme via
+      # AMD ROCm thingies
+      rocmPackages.clr rocmPackages.mpi rocmPackages.rocm-core rocmPackages.rocm-device-libs python313Packages.torchWithRocm
       # GUI Apps
       alacritty syncthing veracrypt polychromatic gparted kdePackages.kamera obs-studio vlc lact
       kdePackages.kcmutils kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
       # Gaming
-      lutris wine-wayland winetricks wineWowPackages.waylandFull wineWowPackages.fonts
+      lutris wine-wayland winetricks wineWowPackages.waylandFull wineWowPackages.fonts proton-cachyos_x86_64_v4	
       # Containers
       fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer omnissa-horizon-client
+      # LLM runner
+      ollama-rocm
     ];
-    sessionVariables = {
-      EXTRA_CCFLAGS = "-I/usr/include";
-    };
   };
 
 
