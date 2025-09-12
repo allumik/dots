@@ -6,8 +6,7 @@ with pkgs;
 let
   prog_list = [
     ## Tools & Shells
-    gh jq fd gdrive3 nextflow
-    # nodejs nodePackages.npm nodePackages.yarn
+    gh jq fd gdrive3 nextflow conda uv
     pandoc texlive.combined.scheme-small quarto
     # some spell~swords~checker functionality
     nixfmt-rfc-style html-tidy shellcheck-minimal isort ispell 
@@ -25,9 +24,9 @@ let
     # "office" stuff
     libreoffice-qt zotero thunderbird teams-for-linux calibre
     # social
-    discord
-    ## use flatpak instead for those
-    # spotify slack zoom-us
+    discord # spotify slack zoom-us # use flatpak instead for those
+    # other
+    polychromatic obs-studio
   ];
 
   # add custom packages

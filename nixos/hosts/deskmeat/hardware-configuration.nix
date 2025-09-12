@@ -2,9 +2,6 @@
 # It is intended to be edited by hand.
 { config, lib, pkgs, modulesPath, ... }:
 
-let 
-  kernel_pkg = pkgs.linuxPackages_cachyos-gcc.cachyOverride { mArch = "ZEN4"; };
-in
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
@@ -16,11 +13,8 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Kernel modules and initrd
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
   # https://github.com/chaotic-cx/nyx/issues/1178#issuecomment-3263837109
-  boot.kernelPackages = kernel_pkg; 
-  # workaround in stable releases https://github.com/chaotic-cx/nyx/issues/1158#issuecomment-3216945109
-  system.modulesTree = with lib; [ (getOutput "modules" kernel_pkg.kernel) ];
+  boot.kernelPackages = pkgs.linuxPackages_cachyos-gcc.cachyOverride { mArch = "ZEN4"; }; 
   boot.kernelModules = [ 
     # AMD GPU and CPU related
     "amdgpu" "kvm-amd"  
@@ -45,10 +39,11 @@ in
 
 
   # Hardware Support
+  # chaotic.mesa-git.enable = true;
   hardware = {
     graphics.enable = true;
     # Try out Vulcan instead of the default Mesa, if bad, use mesa_git from chaotic
-    graphics.extraPackages = with pkgs; [ amdvlk ];    
+    graphics.extraPackages = with pkgs; [ amdvlk ];   
     amdgpu.overdrive.enable = true;
     enableAllFirmware = true;
     bluetooth = {

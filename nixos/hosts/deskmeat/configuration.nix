@@ -8,9 +8,6 @@
     ./hardware-configuration.nix
     # Common configuration for all hosts
     ../common.nix # this loads base.nix by itself
-
-    # Extras, mostly backported from unstable
-    ./lactd.nix
   ];
 
 
@@ -32,16 +29,16 @@
   environment = {
     systemPackages = with pkgs; [
       # Other Tools
-      tesseract openconnect poppler poppler_utils lcdf-typetools wl-clipboard conda qmk dfu-programmer microscheme via
-      # AMD ROCm thingies
-      rocmPackages.clr rocmPackages.mpi rocmPackages.rocm-core rocmPackages.rocm-device-libs
+      tesseract openconnect poppler poppler_utils lcdf-typetools wl-clipboard qmk dfu-programmer microscheme via
       # GUI Apps
-      alacritty syncthing veracrypt polychromatic gparted kdePackages.kamera obs-studio vlc lact
+      alacritty syncthing veracrypt keepassxc gparted kdePackages.kamera vlc lact
       kdePackages.kcmutils kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
       # Gaming
       lutris protonup-qt wine-wayland winetricks wineWowPackages.waylandFull wineWowPackages.fonts furmark
       # Containers
-      fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer vmware-horizon-client # omnissa-horizon-client from 25.11
+      fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer omnissa-horizon-client # omnissa-horizon-client from 25.11
+      # AMD ROCm thingies
+      rocmPackages.clr rocmPackages.mpi rocmPackages.rocm-core rocmPackages.rocm-device-libs
       # LLM runner
       ollama-rocm
     ];
@@ -91,7 +88,6 @@
 
 
   ## Extras
-  systemd.packages = with pkgs; [ lact ];
   systemd.services = {
     # Spin down HDDs after 10 minutes
     hd-idle = {
