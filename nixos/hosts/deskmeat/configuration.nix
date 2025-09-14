@@ -10,13 +10,6 @@
     ../common.nix # this loads base.nix by itself
   ];
 
-
-  ## Networking
-  networking.hostName = "deskmeat";
-  networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.powersave = false;
-
-
   ## User accounts
   users.users.allu = {
     isNormalUser = true;
@@ -25,21 +18,40 @@
   };
 
 
+  ## Networking
+  networking.hostName = "deskmeat";
+  networking.networkmanager = {
+    enable = true;
+    # set it to false just to be sure that we are not disconnecting unnecessarily
+    wifi.powersave = false;
+    plugins = with pkgs; [
+      networkmanager-openvpn
+      networkmanager-openconnect
+    ];
+  };
+
+
   ## System-wide packages and variables for this host
+  # Add ROCm support for nixpkgs
+  nixpkgs.config.rocmSupport = true;
   environment = {
     systemPackages = with pkgs; [
       # Other Tools
-      tesseract openconnect poppler poppler_utils lcdf-typetools wl-clipboard qmk dfu-programmer microscheme via
+      tesseract openconnect openvpn poppler poppler_utils wl-clipboard 
+      qmk dfu-programmer microscheme via
       # GUI Apps
-      alacritty syncthing veracrypt keepassxc gparted kdePackages.kamera vlc lact
-      kdePackages.kcmutils kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
+      alacritty syncthing veracrypt keepassxc gparted vlc lact
+      kdePackages.kcmutils kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc 
+      kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kamera kdePackages.kio-extras
       # Gaming
-      lutris protonup-qt wine-wayland winetricks wineWowPackages.waylandFull wineWowPackages.fonts furmark
+      lutris protonup-qt wine-wayland winetricks wineWowPackages.waylandFull wineWowPackages.fonts
       # Containers
-      fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer omnissa-horizon-client # omnissa-horizon-client from 25.11
+      fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer 
+      omnissa-horizon-client
       # AMD ROCm thingies
-      rocmPackages.clr rocmPackages.mpi rocmPackages.rocm-core rocmPackages.rocm-device-libs
-      # LLM runner
+      rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr rocmPackages.mpi 
+      rocmPackages.rocm-device-libs rocmPackages.hipblaslt rocmPackages.tensile
+      # LLM runner, built for ROCm
       ollama-rocm
     ];
   };
@@ -84,20 +96,6 @@
   hardware.openrazer = {
     enable = true;
     users = [ "allu" ];
-  };
-
-
-  ## Extras
-  systemd.services = {
-    # Spin down HDDs after 10 minutes
-    hd-idle = {
-      description = "External HD spin down daemon";
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.hd-idle}/bin/hd-idle -i 600";
-      };
-    };
   };
 }
 

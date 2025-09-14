@@ -5,8 +5,8 @@
 {
   imports = [ ./base.nix ];
 
-  ## Nixpkgs configuration for all hosts
-  nixpkgs.config = { rocmSupport = true; allowUnfree = true; };
+  ## Nixpkgs coniguration for all hosts
+  nixpkgs.config.allowUnfree = true;
 
 
   ## Core packages and services
@@ -15,12 +15,14 @@
     coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd hd-idle cachix
     # Development & Build
     gnumake cmake gcc cargo rustc tlp auto-cpufreq
+    # Default terminal
+    alacritty 
     # CLI Tools
     lnav parallel retry pigz unrar plocate nix-search-cli gitFull
     # Monitoring
     s-tui stress htop
     # Media & Files
-    ffmpeg fdupes bluez-experimental pulseaudioFull
+    vlc ffmpeg fdupes bluez-experimental pulseaudioFull
   ];
   fonts.packages = with pkgs; [
     # Font packs
@@ -56,6 +58,19 @@
             "bluez.auto-connect" = [ "a2dp_sink" ];
             "bluez.roles" = [ "a2dp_sink" "a2dp_source" "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
         };
+      };
+    };
+  };
+
+  ## Extras
+  systemd.services = {
+    # Spin down HDDs after 10 minutes
+    hd-idle = {
+      description = "External HD spin down daemon";
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.hd-idle}/bin/hd-idle -i 600";
       };
     };
   };

@@ -14,7 +14,10 @@
 
   # Kernel modules and initrd
   # https://github.com/chaotic-cx/nyx/issues/1178#issuecomment-3263837109
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-gcc.cachyOverride { mArch = "ZEN4"; }; 
+  boot.kernelPackages = pkgs.linuxPackages_cachyos-gcc; 
+  services.scx.enable = true; # default scx_rustland, build issue on 250914
+  services.scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
+  services.scx.package = pkgs.scx.rustscheds; # so you don't use the full version for LAVD
   boot.kernelModules = [ 
     # AMD GPU and CPU related
     "amdgpu" "kvm-amd"  
