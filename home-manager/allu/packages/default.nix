@@ -26,7 +26,7 @@ let
     # social
     discord # spotify slack zoom-us # use flatpak instead for those
     # other
-    polychromatic obs-studio
+    polychromatic obs-studio vial
   ];
 
   # add custom packages

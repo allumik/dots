@@ -4,10 +4,8 @@
 {
   ## Imports
   imports = [
-    # Hardware-specific configuration
-    ./hardware-configuration.nix
-    # Common configuration for all hosts
-    ../common.nix # this loads base.nix by itself
+    ./hardware-configuration.nix # Hardware-specific configuration
+    ../common.nix # Common configuration for all hosts
   ];
 
   ## User accounts
@@ -22,8 +20,7 @@
   networking.hostName = "deskmeat";
   networking.networkmanager = {
     enable = true;
-    # set it to false just to be sure that we are not disconnecting unnecessarily
-    wifi.powersave = false;
+    wifi.powersave = false; # set it to false just to be sure
     plugins = with pkgs; [
       networkmanager-openvpn
       networkmanager-openconnect
@@ -38,9 +35,9 @@
     systemPackages = with pkgs; [
       # Other Tools
       tesseract openconnect openvpn poppler poppler_utils wl-clipboard 
-      qmk dfu-programmer microscheme via
+      qmk dfu-programmer microscheme
       # GUI Apps
-      alacritty syncthing veracrypt keepassxc gparted vlc lact
+      alacritty syncthing veracrypt keepassxc gparted vlc digikam
       kdePackages.kcmutils kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc 
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kamera kdePackages.kio-extras
       # Gaming
@@ -60,24 +57,22 @@
   ## Program Settings and Services
   security.rtkit.enable = true;
   programs = {
-    nix-ld.enable = true;
+    nix-ld.enable = true; # might make your life easier with linked library adapter
     mtr.enable = true;
-    steam.enable = true;
-    java.enable = true;
-    singularity.enable = true;
+    java.enable = true; # why not
     virt-manager.enable = true;
+    singularity.enable = true; # turn off before ChatGPT 6 is released
+    steam.enable = true;
   };
   services = {
-    # Xorg video drivers for this host
-    xserver.videoDrivers = [ "amdgpu" "vmware"];
-    printing.enable = true;
+    xserver.videoDrivers = [ "amdgpu" "vmware"]; # Xorg video drivers for this host
+    fstrim.enable = true; # To trim SSD blocks
     flatpak.enable = true;
     lvm.boot.thin.enable = true;
-    qemuGuest.enable = true;
-    spice-vdagentd.enable = true;
-    udev.packages = [ pkgs.via ];
-    fstrim.enable = true;
-    lact.enable = true;
+    qemuGuest.enable = true; # Enable QEMU
+    spice-vdagentd.enable = true; # Necessary for the QEMU spice
+    udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
+    lact.enable = true; # Manage your GPU
   };
   virtualisation = {
     containers.enable = true;
@@ -89,7 +84,7 @@
       defaultNetwork.settings.dns_enabled = true;
     };
     libvirtd.enable = true;
-    spiceUSBRedirection.enable = true;
+    spiceUSBRedirection.enable = true; # Enable USB devices connecting to QEMU spice
     vmware.guest.enable = true;
   };
   # Specific hardware-related software
