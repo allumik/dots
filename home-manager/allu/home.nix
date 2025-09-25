@@ -30,18 +30,6 @@ in {
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
-    alacritty = { 
-      enable = true;
-      settings = {
-        font = {
-          size = 11.0;
-          bold = { family = "Iosevka"; style = "Bold"; };
-          bold_italic = { family = "Iosevka"; style = "Bold Italic"; };
-          italic = { family = "Iosevka"; style = "Italic"; };
-          normal = { family = "Iosevka"; style = "Regular"; };
-        };
-      };
-    };
     brave = {
       enable = true;
       commandLineArgs = [
@@ -64,15 +52,15 @@ in {
 
   # Other configuration settings
   fonts.fontconfig.enable = true;
-	dconf = {
-    enable = true;
-    settings = {
-  	  "org/virt-manager/virt-manager/connections" = {
-      	autoconnect = ["qemu:///system"];
-      	uris = ["qemu:///system"];
-  	  };
+    dconf = {
+      enable = true;
+      settings = {
+        "org/virt-manager/virt-manager/connections" = {
+        autoconnect = ["qemu:///system"];
+        uris = ["qemu:///system"];
+      };
     };
-	};
+  };
 
 
   # General home-manager settings
@@ -94,7 +82,7 @@ in {
     sessionVariables = {
       VISUAL = "${pkgs.vis}/bin/vis";
       EDITOR = "${pkgs.vis}/bin/vis";
-      TERMINAL = "${pkgs.alacritty}/bin/alacritty";
+      TERMINAL = "${pkgs.foot}/bin/foot";
     };
 
     # You should not change this value, even if you update Home Manager.

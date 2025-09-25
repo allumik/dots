@@ -35,10 +35,11 @@
     systemPackages = with pkgs; [
       # Other Tools
       tesseract openconnect openvpn poppler poppler_utils wl-clipboard 
-      qmk dfu-programmer microscheme
+      qmk dfu-programmer microscheme gdrive3
       # GUI Apps
-      alacritty syncthing veracrypt keepassxc gparted vlc digikam
-      kdePackages.kcmutils kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc 
+      foot syncthing veracrypt keepassxc gparted vlc digikam scarlett2 alsa-scarlett-gui
+      kdePackages.kcmutils kdePackages.kaccounts-providers kdePackages.kaccounts-integration
+      kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc 
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kamera kdePackages.kio-extras
       # Gaming
       lutris protonup-qt wine-wayland winetricks wineWowPackages.waylandFull wineWowPackages.fonts

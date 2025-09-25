@@ -25,12 +25,12 @@ let
     libreoffice-qt zotero thunderbird teams-for-linux calibre
     # social
     discord # spotify slack zoom-us # use flatpak instead for those
-    # other
+    # other 
     polychromatic obs-studio vial
   ];
 
   # add custom packages
-  python_plus = python312.override {
+  python_plus = python313.override {
     self = python_plus;
     packageOverrides = callPackage ./py {}; # extra packages override
   };
@@ -38,7 +38,7 @@ let
   py-env = python_plus.withPackages(ps: with ps; [
     pip setuptools
     numpy numba pandas scipy scikit-learn torchWithRocm jaxlib
-    matplotlib seaborn altair notebook jupyter-cache
+    matplotlib seaborn altair ipykernel notebook jupyter-cache
     python-dotenv tqdm anndata
     ## extra packages from ./py override
     gamma-launcher
@@ -50,7 +50,7 @@ let
     # support for common files and libs
     languageserver tinytex pandoc rmdformats quarto feather readxl dotenv
     # basic dev env
-    tidyverse tidymodels recipes patchwork foreach doParallel iterators BiocParallel
+    tidyverse tidymodels recipes patchwork foreach doParallel iterators BiocParallel Seurat
     # other stuff... use containers, or conda
   ]; };
 

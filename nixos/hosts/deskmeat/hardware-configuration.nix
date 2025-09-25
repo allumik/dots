@@ -42,11 +42,11 @@
 
 
   # Hardware Support
-  # chaotic.mesa-git.enable = true;
+  chaotic.mesa-git.enable = true;
   hardware = {
     graphics.enable = true;
     # Try out Vulcan instead of the default Mesa, if bad, use mesa_git from chaotic
-    graphics.extraPackages = with pkgs; [ amdvlk ];   
+    # graphics.extraPackages = with pkgs; [ amdvlk ];   
     amdgpu.overdrive.enable = true;
     enableAllFirmware = true;
     bluetooth = {

@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # for the *very* bleeding edge stuff, usually broken with stable releases...
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    nixpkgs-master.url = "github:nixos/nixpkgs/staging";
 
     # Add home-manager input
     home-manager = {
@@ -13,7 +14,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, chaotic, ... }@inputs: {
+  outputs = { self, nixpkgs, nixpkgs-master, home-manager, chaotic, ... }@inputs: {
     nixosConfigurations = {
       # the main home workstation
       deskmeat = nixpkgs.lib.nixosSystem {
@@ -38,6 +39,6 @@
     };
 
     # The overlay containing custom packages
-    overlays.default = import ./overlays/default.nix;
+    overlays.default = import ./overlays/default.nix { inherit nixpkgs-master; };
   };
 }

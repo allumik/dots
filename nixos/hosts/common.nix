@@ -30,7 +30,7 @@
     # Pretty symbol packs, often used as fallback symbols
     font-awesome material-icons powerline-symbols
     # Some fonts I really like
-    iosevka ibm-plex vt323
+    iosevka ibm-plex vt323 fixedsys-excelsior
   ];
 
 

@@ -1,5 +1,15 @@
 # overlays/default.nix
-self: super: {
+
+{ nixpkgs-master }: self: super: 
+
+let 
+  masterPkgs = import nixpkgs-master {
+    system = super.stdenv.hostPlatform.system;
+    # If you need unfree packages from master, you must also allow them here.
+    config.allowUnfree = true;
+  };
+in 
+{
   # Custom build for the aretext text editor
   # TODO: Submit a PR to nixpkgs and remove this overlay
   aretext = super.buildGoModule rec {
@@ -32,4 +42,7 @@ self: super: {
   conda = super.conda.override {
     extraPkgs = [ super.which ];
   };
+
+  # override some packages from the overlay, hope that it does not cause a full system rebuild
+  # rocmPackages = masterPkgs.rocmPackages;
 }
