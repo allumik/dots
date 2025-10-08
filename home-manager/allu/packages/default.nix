@@ -6,7 +6,7 @@ with pkgs;
 let
   prog_list = [
     ## Tools & Shells
-    gh jq fd gdrive3 nextflow conda uv
+    gh jq nextflow conda uv
     pandoc texlive.combined.scheme-small quarto
     # some spell~swords~checker functionality
     nixfmt-rfc-style html-tidy shellcheck-minimal isort ispell 
@@ -20,7 +20,7 @@ let
 
     ## GUI
     # tools
-    transmission_4-qt keepassxc syncthing beets puddletag gimp3-with-plugins audacity eduvpn-client qgis
+    transmission_4-qt keepassxc syncthing beets puddletag gimp3-with-plugins audacity eduvpn-client qgis celeste
     # "office" stuff
     libreoffice-qt zotero thunderbird teams-for-linux calibre
     # social
@@ -30,7 +30,7 @@ let
   ];
 
   # add custom packages
-  python_plus = python313.override {
+  python_plus = python312.override {
     self = python_plus;
     packageOverrides = callPackage ./py {}; # extra packages override
   };
@@ -38,8 +38,8 @@ let
   py-env = python_plus.withPackages(ps: with ps; [
     pip setuptools
     numpy numba pandas scipy scikit-learn torchWithRocm jaxlib
-    matplotlib seaborn altair ipykernel notebook jupyter-cache
-    python-dotenv tqdm anndata
+    matplotlib seaborn altair ipykernel notebook jupyter-cache euporie
+    python-dotenv tqdm
     ## extra packages from ./py override
     gamma-launcher
   ]);

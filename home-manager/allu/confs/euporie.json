@@ -1,0 +1,22 @@
+{
+  "app": "console",
+  "syntax_theme": "native",
+  "graphics": "sixel",
+  "edit_mode": "vi",
+  "clipboard": "external",
+  "show_shadows": false,
+  "show_cell_borders": false,
+  "mouse_support": true,
+  "external_editor": "tmux display-popup -x {left} -y {bottom} -w {width} -h {height} -B -E vis",
+  "notebook": {
+    "color_scheme": "default",
+    "expand": false,
+    "always_show_tab_bar": true,
+  },
+  "console": {
+    "color_scheme": "default",
+  },
+  "preview": {
+    "show_cell_borders": true
+  }
+}

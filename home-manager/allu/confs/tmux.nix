@@ -12,20 +12,31 @@
     sensibleOnTop = true;
     aggressiveResize = true;
 
-    plugins = with pkgs; [
-      tmuxPlugins.yank
-      tmuxPlugins.open
-      tmuxPlugins.resurrect
-      tmuxPlugins.sensible
-      tmuxPlugins.continuum
-      tmuxPlugins.prefix-highlight
-      tmuxPlugins.vim-tmux-navigator
+    plugins = with pkgs.tmuxPlugins; [
+      yank
+      open
+      sensible
+      prefix-highlight
+      {
+        plugin = resurrect;
+        extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+      }
+      {
+        plugin = continuum;
+        extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '1' # minutes
+        '';
+      }
     ];
 
     extraConfig = ''
       unbind C-BSpace
       unbind C-Left
       unbind C-Right
+
+      # enable vermin
+      set -g mouse on
 
       # loud or quiet?
       set -g visual-activity on
@@ -64,9 +75,6 @@
 
       # break pane into a new window
       bind ^ break-pane -d
-
-      # enable continuum automatic restore
-      set -g @continuum-restore 'on'
     '';
   };
 }

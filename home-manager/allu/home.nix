@@ -14,6 +14,9 @@ in {
     enable = true;
     mime.enable = true;
     configFile = {
+      "foot/foot.ini".source = ./confs/foot.ini;
+      "vis/visrc.lua".source = ./confs/visrc.lua;
+      "euporie/config.json".source = ./confs/euporie.json;
       # NNN plugins
       "nnn/plugins/fzcd".source = "${nnn_fzcd}/bin/fzcd";
       "nnn/plugins/.nnn-plugin-helper".source = "${nnn_helper}/bin/nnn_helper";
@@ -32,12 +35,7 @@ in {
     home-manager.enable = true;
     brave = {
       enable = true;
-      commandLineArgs = [
-        "--enable-features=VaapiVideoDecodeLinuxGL"
-        "--use-gl=angle"
-        "--use-angle=gl"
-        "--ozone-platform=wayland"
-      ];
+      commandLineArgs = [ "--ozone-platform=wayland" ];
     };
     vscode.enable = true;
   };
@@ -76,6 +74,7 @@ in {
     # * The PATH for me *
     sessionPath = [ 
       "$HOME/.nix-profile/bin"
+      "$HOME/.local/bin" 
     ];
 
     # define some user based variables
@@ -86,7 +85,7 @@ in {
     };
 
     # You should not change this value, even if you update Home Manager.
-    stateVersion = "25.05";
+    stateVersion = "25.11";
   };
   # Notifications about home-manager news
   news.display = "silent";

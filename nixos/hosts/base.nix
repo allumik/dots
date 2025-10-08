@@ -27,7 +27,7 @@ in
   environment = {
     systemPackages = with pkgs; [
       # Core Tools
-      vis fzf nnn ripgrep wget zip unzip p7zip
+      vis tre fzf fd nnn ripgrep wget zip unzip p7zip
     ];
     variables = {
       EDITOR = "${pkgs.vis}/bin/vis";

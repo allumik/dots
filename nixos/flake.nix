@@ -3,9 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # for the *very* bleeding edge stuff, usually broken with stable releases...
+    # for the *kinda* bleeding edge stuff
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/staging";
+    # for the *very* bleeding edge stuff
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/staging";
 
     # Add home-manager input
     home-manager = {
@@ -14,17 +15,16 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-master, home-manager, chaotic, ... }@inputs: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, chaotic, ... }@inputs: {
     nixosConfigurations = {
+
       # the main home workstation
       deskmeat = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
           # Apply the custom overlay
-          ({ config, pkgs, ... }: {
-            nixpkgs.overlays = [ self.overlays.default ];
-          })
+          ({ config, pkgs, ... }: { nixpkgs.overlays = [ self.overlays.default ]; })
 
           # Host-specific configurations
           ./hosts/deskmeat/configuration.nix
@@ -34,11 +34,11 @@
         ];
       };
 
-      # Add other hosts here as needed
+      # Add other hosts here
       # anotherhost = nixpkgs.lib.nixosSystem { ... };
     };
 
     # The overlay containing custom packages
-    overlays.default = import ./overlays/default.nix { inherit nixpkgs-master; };
+    overlays.default = import ./overlays/default.nix { pkgs-unstable = nixpkgs-unstable; };
   };
 }

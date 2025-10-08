@@ -5,8 +5,10 @@
   ## Imports
   imports = [
     ./hardware-configuration.nix # Hardware-specific configuration
-    ../common.nix # Common configuration for all hosts
+    ../base.nix # Minimal conf
+    ../common.nix # Common configuration options for all hosts
   ];
+
 
   ## User accounts
   users.users.allu = {
@@ -20,11 +22,8 @@
   networking.hostName = "deskmeat";
   networking.networkmanager = {
     enable = true;
-    wifi.powersave = false; # set it to false just to be sure
-    plugins = with pkgs; [
-      networkmanager-openvpn
-      networkmanager-openconnect
-    ];
+    wifi.powersave = false; # set it to false just to be sure that it works
+    plugins = with pkgs; [ networkmanager-openvpn networkmanager-openconnect ];
   };
 
 
@@ -34,23 +33,21 @@
   environment = {
     systemPackages = with pkgs; [
       # Other Tools
-      tesseract openconnect openvpn poppler poppler_utils wl-clipboard 
-      qmk dfu-programmer microscheme gdrive3
+      tesseract openconnect openvpn poppler poppler_utils wl-clipboard gdrive3 
       # GUI Apps
-      foot syncthing veracrypt keepassxc gparted vlc digikam scarlett2 alsa-scarlett-gui
+      syncthing veracrypt keepassxc gparted vlc scarlett2 alsa-scarlett-gui # digikam 
       kdePackages.kcmutils kdePackages.kaccounts-providers kdePackages.kaccounts-integration
-      kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc 
-      kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kamera kdePackages.kio-extras
+      kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
+      kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
       # Gaming
       lutris protonup-qt wine-wayland winetricks wineWowPackages.waylandFull wineWowPackages.fonts
       # Containers
       fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer 
       omnissa-horizon-client
-      # AMD ROCm thingies
-      rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr rocmPackages.mpi 
-      rocmPackages.rocm-device-libs rocmPackages.hipblaslt rocmPackages.tensile
+      # AMD ROCm thingies - use docker for more up to date support
+      rocmPackages.amdsmi rocmPackages.rocm-core
       # LLM runner, built for ROCm
-      ollama-rocm
+      # ollama-rocm
     ];
   };
 
@@ -73,7 +70,7 @@
     qemuGuest.enable = true; # Enable QEMU
     spice-vdagentd.enable = true; # Necessary for the QEMU spice
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
-    lact.enable = true; # Manage your GPU
+    lact.enable = true; # Manage your GPU from 25.11 onward
   };
   virtualisation = {
     containers.enable = true;
@@ -88,7 +85,8 @@
     spiceUSBRedirection.enable = true; # Enable USB devices connecting to QEMU spice
     vmware.guest.enable = true;
   };
-  # Specific hardware-related software
+
+  # More misc hardware-related software
   hardware.openrazer = {
     enable = true;
     users = [ "allu" ];

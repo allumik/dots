@@ -1,10 +1,9 @@
 # hosts/common.nix
 # Common settings with all the bells and tools for all hosts
+# addition to hosts/base.nix
 { config, pkgs, ... }:
 
 {
-  imports = [ ./base.nix ];
-
   ## Nixpkgs coniguration for all hosts
   nixpkgs.config.allowUnfree = true;
 
@@ -16,7 +15,7 @@
     # Development & Build
     gnumake cmake gcc cargo rustc tlp auto-cpufreq
     # Default terminal
-    alacritty 
+    foot 
     # CLI Tools
     lnav parallel retry pigz unrar plocate nix-search-cli gitFull
     # Monitoring
