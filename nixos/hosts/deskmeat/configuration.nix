@@ -40,12 +40,12 @@
       kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
       # Gaming
-      lutris protonup-qt wine-wayland winetricks wineWowPackages.waylandFull wineWowPackages.fonts
+      lutris protonup-qt winetricks wineWowPackages.stable wineWowPackages.waylandFull wineWowPackages.fonts
       # Containers
       fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer 
       omnissa-horizon-client
       # AMD ROCm thingies - use docker for more up to date support
-      rocmPackages.amdsmi rocmPackages.rocm-core
+      rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr nvtopPackages.amd
       # LLM runner, built for ROCm
       # ollama-rocm
     ];

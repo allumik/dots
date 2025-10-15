@@ -17,6 +17,6 @@
     "color_scheme": "default",
   },
   "preview": {
-    "show_cell_borders": true
-  }
+    "show_cell_borders": true,
+  },
 }

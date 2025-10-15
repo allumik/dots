@@ -50,20 +50,18 @@ in
 
 
   # Hardware Support
-  chaotic.mesa-git.enable = true;
   hardware = {
-    graphics.enable = true;
-    # Try out Vulcan instead of the default Mesa, if bad, use mesa_git from chaotic
-    # wait for the new Vulcan driver to come out, should have perf increase from there
-    # graphics.package = pkgs.mesa;  
-    # graphics.extraPackages = [ pkgs.amdvlk ];
+    graphics = { 
+      enable = true;
+      package = pkgs.mesa;  
+    };
     amdgpu.overdrive.enable = true;
     enableAllFirmware = true;
+    keyboard.qmk.enable = true;
     bluetooth = {
       enable = true;
       powerOnBoot = true;
     };
-    keyboard.qmk.enable = true;
   };
 }
 
