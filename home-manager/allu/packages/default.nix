@@ -37,7 +37,7 @@ let
   
   py-env = python_plus.withPackages(ps: with ps; [
     pip setuptools
-    numpy numba pandas scipy scikit-learn torchWithRocm jaxlib
+    numpy numba pandas scipy scikit-learn jaxlib torch # use containers for gpu torch
     matplotlib seaborn altair ipykernel notebook jupyter-cache euporie
     python-dotenv tqdm
     ## extra packages from ./py override

@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # for the *kinda* bleeding edge stuff
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/staging";
+    # nixpkgs-unstable.url = "github:nixos/nixpkgs/staging";
     # for the *very* bleeding edge stuff
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
@@ -15,7 +15,14 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, chaotic, ... }@inputs: {
+  outputs = { 
+    self, 
+    nixpkgs, 
+    home-manager, 
+    # nixpkgs-unstable,
+    chaotic, 
+    ... 
+  }@inputs: {
     nixosConfigurations = {
 
       # the main home workstation
@@ -31,6 +38,20 @@
 
           # to add CachyOS kernels - https://www.nyx.chaotic.cx/
           chaotic.nixosModules.default
+        ];
+      };
+
+
+      # the main home workstation
+      oldlenno = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          # Apply the custom overlay
+          ({ config, pkgs, ... }: { nixpkgs.overlays = [ self.overlays.default ]; })
+
+          # Host-specific configurations
+          ./hosts/deskmeat/configuration.nix
         ];
       };
 
