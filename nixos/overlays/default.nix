@@ -1,13 +1,14 @@
 # overlays/default.nix
 
-{ pkgs-unstable }: self: super: 
+# { pkgs-unstable }: 
+self: super: 
 
 let 
-  unstablePkgs = import pkgs-unstable {
-    system = super.stdenv.hostPlatform.system;
-    # If you need unfree packages from unstable, you must also allow them here.
-    config.allowUnfree = true;
-  };
+  # unstablePkgs = import pkgs-unstable {
+  #   system = super.stdenv.hostPlatform.system;
+  #   # If you need unfree packages from unstable, you must also allow them here.
+  #   config.allowUnfree = true;
+  # };
 in 
 {
   # Override for conda to include `which`

@@ -1,4 +1,4 @@
-# This file contains hardware-specific settings for the 'deskmeat' host.
+# This file contains hardware-specific settings for the 'oldlenno' host.
 # It is intended to be edited by hand.
 { config, lib, pkgs, modulesPath, ... }:
 

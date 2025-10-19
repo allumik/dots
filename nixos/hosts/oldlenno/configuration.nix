@@ -1,4 +1,4 @@
-# hosts/deskmeat/configuration.nix
+# hosts/oldlenno/configuration.nix
 { config, lib, pkgs, ... }:
 
 {

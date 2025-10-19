@@ -4,9 +4,9 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # for the *kinda* bleeding edge stuff
-    # nixpkgs-unstable.url = "github:nixos/nixpkgs/staging";
-    # for the *very* bleeding edge stuff
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    # for the *very* bleeding edge stuff
+    # nixpkgs-unstable.url = "github:nixos/nixpkgs/staging";
 
     # Add home-manager input
     home-manager = {
@@ -15,11 +15,11 @@
     };
   };
 
+  # nixpkgs-unstable,
   outputs = { 
     self, 
     nixpkgs, 
     home-manager, 
-    # nixpkgs-unstable,
     chaotic, 
     ... 
   }@inputs: {
@@ -42,7 +42,7 @@
       };
 
 
-      # the main home workstation
+      # the old laptop workhorse who is still kicking
       oldlenno = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
@@ -51,7 +51,7 @@
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ self.overlays.default ]; })
 
           # Host-specific configurations
-          ./hosts/deskmeat/configuration.nix
+          ./hosts/oldlenno/configuration.nix
         ];
       };
 
@@ -60,6 +60,6 @@
     };
 
     # The overlay containing custom packages
-    overlays.default = import ./overlays/default.nix { pkgs-unstable = nixpkgs-unstable; };
+    overlays.default = import ./overlays/default.nix; # { pkgs-unstable = nixpkgs-unstable; };
   };
 }
