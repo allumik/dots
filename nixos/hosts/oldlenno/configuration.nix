@@ -33,7 +33,7 @@
       # Other Tools
       tesseract openconnect openvpn poppler poppler_utils wl-clipboard gdrive3 
       # GUI Apps
-      syncthing veracrypt keepassxc gparted vlc scarlett2 alsa-scarlett-gui # digikam 
+      syncthing veracrypt keepassxc gparted vlc 
       kdePackages.kcmutils kdePackages.kaccounts-providers kdePackages.kaccounts-integration
       kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras

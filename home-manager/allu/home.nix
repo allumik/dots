@@ -9,6 +9,7 @@ in {
   imports = [
     ./confs/shell.nix
     ./confs/tmux.nix
+    ./confs/plasma.nix
   ];
   xdg = {
     enable = true;
@@ -36,6 +37,7 @@ in {
     brave = {
       enable = true;
       commandLineArgs = [ "--ozone-platform=wayland" ];
+      nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
     };
     vscode.enable = true;
   };

@@ -60,13 +60,13 @@
     java.enable = true; # why not
     virt-manager.enable = true;
     singularity.enable = true; # turn off before ChatGPT 6 is released
-    steam.enable = true;
   };
   services = {
     xserver.videoDrivers = [ "amdgpu" "vmware"]; # Xorg video drivers for this host
     fstrim.enable = true; # To trim SSD blocks
     flatpak.enable = true;
     lvm.boot.thin.enable = true;
+    udisks2.enable = true; # might help with calibre usb connection
     qemuGuest.enable = true; # Enable QEMU
     spice-vdagentd.enable = true; # Necessary for the QEMU spice
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
