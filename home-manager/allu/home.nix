@@ -11,6 +11,7 @@ in {
     ./confs/tmux.nix
     ./confs/plasma.nix
   ];
+
   xdg = {
     enable = true;
     mime.enable = true;
