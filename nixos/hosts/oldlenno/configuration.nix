@@ -23,6 +23,7 @@
   networking.networkmanager = {
     enable = true;
     wifi.powersave = false; # set it to false just to be sure that it works
+    ethernet.macAddress = "stable";
     plugins = with pkgs; [ networkmanager-openvpn networkmanager-openconnect ];
   };
 
