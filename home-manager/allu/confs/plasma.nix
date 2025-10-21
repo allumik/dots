@@ -11,6 +11,13 @@
       repeatRate = 40;
     };
 
+    shortcuts = {
+      kwin = {
+        "Maximize Window" = "Meta+M";
+        "Overview" = "Meta+Tab";
+      };
+    };
+
     powerdevil.general.pausePlayerOnSuspend = false;
     powerdevil.AC = {
       autoSuspend.action = "sleep";

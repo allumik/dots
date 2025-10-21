@@ -32,19 +32,19 @@
   fileSystems."/" = { 
     device = "/dev/disk/by-uuid/ae45eedd-75bd-4795-b2ea-21fbbb84b89a"; 
     fsType = "ext4"; 
-    };
+  };
   fileSystems."/boot" = { 
     device = "/dev/disk/by-uuid/EEEC-31D4"; 
     fsType = "vfat"; 
     options = [ "fmask=0077" "dmask=0077" ]; 
-    };
+  };
   swapDevices = [ { device = "/dev/disk/by-uuid/2d83e3ce-fbfb-4be6-a504-6192f9b892e2"; } ];
 
-  # # The additional WDC disk
-  # fileSystems."/mnt/data_main" =
-  #   { device = "/dev/disk/by-uuid/0d138368-93b0-46da-877d-19917dd74047";
-  #     fsType = "ext4";
-  #   };
+  # The additional WDC disk
+  fileSystems."/mnt/data_main" = { 
+    device = "/dev/disk/by-uuid/b383c23f-a19e-4199-9eee-d899e6c979b7";
+    fsType = "ext4";
+  };
 
 
   # Hardware Support
