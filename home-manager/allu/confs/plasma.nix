@@ -5,6 +5,26 @@
 
   programs.plasma = {
     enable = true; # enable and configure plasma settings
+
+    workspace = {
+      theme = "commonality";
+      lookAndFeel = "org.magpie.comm.desktop";
+      iconTheme = "Memphis98";
+      cursor = {
+        size = 24;
+        theme = "Bibata-Modern-Ice";
+      };
+      clickItemTo = "select";
+    };
+
+    fonts = {
+      general = { family = "Windows"; pointSize = 11; };
+      fixedWidth = { family = "Fixedsys Excelsior 3.01"; pointSize = 10; };
+      small = { family = "Windows"; pointSize = 9; };
+      toolbar = { family = "Windows"; pointSize = 11; };
+      menu = { family = "Windows"; pointSize = 11; };
+      windowTitle = { family = "Windows"; pointSize = 12; };
+    };
     
     input.keyboard = {
       repeatDelay = 280;
@@ -14,23 +34,14 @@
     shortcuts = {
       kwin = {
         "Maximize Window" = "Meta+M";
-        "Overview" = "Meta+Tab";
+        "Toggle Grid View" = "Meta+Tab";
+        "Close Window" = "Meta+Q";
+        "Kill Window" = "Meta+Shift+Q";
       };
     };
 
-    powerdevil.general.pausePlayerOnSuspend = false;
-    powerdevil.AC = {
-      autoSuspend.action = "sleep";
-      autoSuspend.idleTimeout = 10800; # 3h until sleeps
-      dimDisplay.enable = true;
-      dimDisplay.idleTimeout = 720;
-      turnOffDisplay.idleTimeout = 900;
-      powerButtonAction = "sleep";
-      powerProfile = "performance";
-    };
-
     kwin = {
-      virtualDesktop.names = [ "Main" "Additional" ];
+      virtualDesktops.names = [ "Main" "Extra" ];
       nightLight = {
         enable = true;
         mode = "times";
@@ -50,26 +61,58 @@
       titlebarButtons.right = [ "help" "minimize" "maximize" "close" ];
     };
 
-    fonts = {
-      general = { family = "Noto Sans"; pointSize = 10; };
-      fixedWidth = { family = "Iosevka Term SS08"; pointSize = 10; };
-      small = { family = "Noto Sans"; pointSize = 8; };
-      toolbar = { family = "Noto Sans"; pointSize = 10; };
-      menu = { family = "Noto Sans"; pointSize = 10; };
-      windowTitle = { family = "Fixedsys Excelsior 3.01"; pointSize = 11; };
+    powerdevil.general.pausePlayersOnSuspend = false;
+    powerdevil.AC = {
+      autoSuspend.action = "sleep";
+      autoSuspend.idleTimeout = 10800; # 3h until sleeps
+      dimDisplay.enable = true;
+      dimDisplay.idleTimeout = 720;
+      turnOffDisplay.idleTimeout = 900;
+      powerButtonAction = "sleep";
+      powerProfile = "performance";
     };
 
-    workspace = {
-      theme = "commonality";
-      lookAndFeel = "org.magpie.comm.desktop";
-      iconTheme = "Memphis98";
-      cursor = {
-        size = 24;
-        theme = "Bibata-Modern-Ice";
-      };
-      clickItemTo = "select";
-    };
+    # check out examples in https://github.com/nix-community/plasma-manager/blob/trunk/examples/home.nix
+    # Here I have a simple vertical Windows style panel with a app launcher, manager, systray and a clock
+    panels = [
+      { 
+        location = "left";
+        alignment = "center";
+        floating = false;
+        # height = 36; # different screens, different resolutions...
+        hiding = "normalpanel";
+        lengthMode = "fill";
+        opacity = "opaque";
+        widgets = [
+          {
+            kicker = {
+              behavior.sortAlphabetically = false;
+              behavior.flattenCategories = false;
+              behavior.showIconsOnRootLevel = false;
+              categories.show.recentApplications = true;
+              categories.show.recentFiles = true;
+              categories.order = "recentFirst";
+              search.alignResultsToBottom = true;
+              search.expandSearchResults = true;
+            }; 
+          }
+          "org.kde.plasma.marginsseparator"
+          {
+            iconTasks = {
+              appearance.fill = true;
+              appearance.showTooltips = false;
+              appearance.rows.multirowView = "never";
+              behavior.grouping.method = "byProgramName";
+            };
+          }
+          "org.kde.plasma.marginsseparator"
+          "org.kde.plasma.systemtray"
+          "org.kde.plasma.marginsseparator"
+          "org.kde.plasma.analogclock"
+        ];
+      }
+    ];
 
-    # TODO: panels 
+    # TODO: tiling presets with polonium
   };
-};
+}

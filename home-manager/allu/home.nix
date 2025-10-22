@@ -5,7 +5,7 @@ let
   nnn_fzcd = import ./scripts/nnn_fzcd.nix pkgs;
   nnn_helper = import ./scripts/nnn_helper.nix pkgs;
 in {
-  # Import other configuration files
+  # Import and source other configuration files
   imports = [
     ./confs/shell.nix
     ./confs/tmux.nix

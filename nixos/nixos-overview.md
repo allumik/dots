@@ -26,6 +26,8 @@ The general structure for `nixos/` is as follows:
 
 And for the home-manager configurations, just separate users into their own directories, for example `./home-manager/allu/home.nix` and `./home-manager/allu-wsl/home.nix` etc.
 
+**`TODO:`** replace `base.nix` and `common.nix` with a more modular system imported in `flake.nix`. Still, keep them monolithic, for **personal** management I prefer larger documents.
+
 ## Component Explanation
 
   * **`flake.nix`**: The entry point for the NixOS configurations. Its primary role is to define the `nixpkgs` input and build the `nixosConfigurations` output for each host.
@@ -38,4 +40,47 @@ And for the home-manager configurations, just separate users into their own dire
 
 ## Setting Up a New Machine
 
-TODO: Write this section
+0. Install NixOS.
+
+1. Copy the configuration files.
+
+```
+# NB! clone repo and navigate to it
+sudo mv /etc/nixos/ /etc/nixos_bp/ # backup the initial configuration
+sudo cp -R ./nixos/ /etc/ # copy the nixos conf files
+cp -R ./home-manager $XDG_CONFIG_HOME # copy home manager config to ~/.config/ (usually)
+```
+
+2. [Install standalone home-manager](https://home-manager.dev/manual/25.05/index.xhtml#sec-install-standalone) and plasma manager with channels in you userspace.
+
+```
+nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+nix-channel --add https://github.com/nix-community/plasma-manager/archive/trunk.tar.gz plasma-manager
+nix-channel --update
+```
+
+3. Installation
+
+Check & compare the initial configuration and the new one. If this is a new host, create a new configuration in `./hosts/`, otherwise just start the installation:
+
+```
+cd /etc/nixos/
+sudo nix flake update
+sudo nixos-rebuild switch --flake /etc/nixos/.#deskmeat # replace with your hostname
+```
+
+And for the `home-manager` configuration:
+
+```
+home-manager switch
+```
+
+## Setting Up My User Preferences
+
+Some steps need to be performed with a new blank plasma user:
+
+* Go to Plasma settings and download the "Commonality" global theme, "Bibata-Modern-Ice.gz" cursor theme, "Memphis98" icon theme and set the application style to MS Windows 9x. In Application Style, also configure the GTK style to "Irixium".
+
+	* `TODO:` Look into automating some steps of this process: https://github.com/nix-community/plasma-manager/issues/212
+
+* Set up mail accounts in Thunderbird.
