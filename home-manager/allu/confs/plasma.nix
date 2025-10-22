@@ -79,7 +79,7 @@
         location = "left";
         alignment = "center";
         floating = false;
-        # height = 36; # different screens, different resolutions...
+        height = 36; # different screens, different resolutions...
         hiding = "normalpanel";
         lengthMode = "fill";
         opacity = "opaque";
@@ -99,10 +99,13 @@
           "org.kde.plasma.marginsseparator"
           {
             iconTasks = {
+              iconsOnly = truel;
               appearance.fill = true;
               appearance.showTooltips = false;
+              appearance.iconSpacing = "small";
               appearance.rows.multirowView = "never";
               behavior.grouping.method = "byProgramName";
+              behavior.grouping.clickAction = "showTextualList";
             };
           }
           "org.kde.plasma.marginsseparator"

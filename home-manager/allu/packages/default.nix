@@ -6,27 +6,28 @@ with pkgs;
 let
   prog_list = [
     ## Tools & Shells
-    gh jq nextflow conda uv
+    gh jq nextflow conda uv beets 
     pandoc texlive.combined.scheme-small quarto
     # some spell~swords~checker functionality
     nixfmt-rfc-style html-tidy shellcheck-minimal isort ispell 
     # some minuscle stuff for environments
     libssh libxml2 libpng libxslt libtiff cairo  # R needs this
-    # terminal blingness
+    # terminal bling
     zsh zsh-nix-shell zsh-fast-syntax-highlighting zsh-fzf-tab
-
-    ## DEV ENV, defined below - use conda environments for more stuff
-    py-env r-env
 
     ## GUI
     # tools
-    transmission_4-qt keepassxc syncthing beets puddletag gimp3-with-plugins audacity eduvpn-client qgis celeste
+    transmission_4-qt vlc keepassxc puddletag gimp3-with-plugins 
+    audacity eduvpn-client qgis celeste
     # "office" stuff
-    libreoffice-qt zotero thunderbird teams-for-linux calibre
+    libreoffice-qt zotero thunderbird teams-for-linux calibre digikam
     # social
     discord # spotify slack zoom-us # use flatpak instead for those
     # other 
     polychromatic obs-studio vial
+
+    ## DEV ENV, defined below - use conda environments for more stuff
+    py-env r-env
   ];
 
   # add custom packages

@@ -32,19 +32,20 @@
   nixpkgs.config.rocmSupport = true;
   environment = {
     systemPackages = with pkgs; [
-      # Other Tools
-      tesseract openconnect openvpn poppler poppler_utils wl-clipboard gdrive3 
       # GUI Apps
-      syncthing veracrypt keepassxc gparted vlc scarlett2 alsa-scarlett-gui # digikam 
+      veracrypt gparted scarlett2 alsa-scarlett-gui # digikam 
       kdePackages.kcmutils kdePackages.kaccounts-providers kdePackages.kaccounts-integration
       kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
       # Gaming
       lutris protonup-qt winetricks wineWowPackages.stable wineWowPackages.waylandFull wineWowPackages.fonts
       # Containers
-      fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer 
+      fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer
+      # Other Tools
+      tesseract openconnect openvpn poppler poppler_utils wl-clipboard gdrive3 
       omnissa-horizon-client
-      # AMD ROCm thingies - use docker for more up to date support
+
+      # AMD ROCm thingies - use docker containers for more up to date support
       rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr nvtopPackages.amd
       # LLM runner, built for ROCm
       # ollama-rocm
