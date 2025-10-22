@@ -15,6 +15,9 @@
         theme = "Bibata-Modern-Ice";
       };
       clickItemTo = "select";
+      wallpaper = ./59028ca.png;
+      wallpaperFillMode = "pad";
+      wallpaperBackground.color = "44,81,80"; # R,G,B
     };
 
     fonts = {
@@ -99,13 +102,22 @@
           "org.kde.plasma.marginsseparator"
           {
             iconTasks = {
-              iconsOnly = truel;
+              iconsOnly = true;
               appearance.fill = true;
               appearance.showTooltips = false;
               appearance.iconSpacing = "small";
               appearance.rows.multirowView = "never";
+              behavior.sortingMethod = "manually";
               behavior.grouping.method = "byProgramName";
               behavior.grouping.clickAction = "showTextualList";
+              launchers = [
+                # "preferred://browser" # does not behave well
+                "applications:brave-browser.desktop"
+                "applications:org.kde.dolphin.desktop"
+                "applications:foot.desktop"
+                "applications:thunderbird.desktop"
+                "applications:org.keepassxc.KeePassXC.desktop"
+              ];
             };
           }
           "org.kde.plasma.marginsseparator"
@@ -115,6 +127,12 @@
         ];
       }
     ];
+
+    # https://github.com/nix-community/plasma-manager/issues/430
+    configFile.kdeglobals.General = {
+      TerminalApplication = "foot";
+      TerminalService = "foot.desktop";
+    };
 
     # TODO: tiling presets with polonium
   };

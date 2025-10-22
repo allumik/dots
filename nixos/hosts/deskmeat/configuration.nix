@@ -61,6 +61,7 @@
     java.enable = true; # why not
     virt-manager.enable = true;
     singularity.enable = true; # turn off before ChatGPT 6 is released
+    steam.enable = true;
   };
   services = {
     xserver.videoDrivers = [ "amdgpu" "vmware"]; # Xorg video drivers for this host

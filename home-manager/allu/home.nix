@@ -10,7 +10,15 @@ in {
     ./confs/shell.nix
     ./confs/tmux.nix
     ./confs/plasma.nix
+    ./packages/default.nix
   ];
+
+  targets.genericLinux.enable = true;
+  nixpkgs.config.allowUnfree = true;
+  nix = {
+    package = pkgs.nix;
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
 
   xdg = {
     enable = true;
@@ -24,32 +32,6 @@ in {
       "nnn/plugins/.nnn-plugin-helper".source = "${nnn_helper}/bin/nnn_helper";
     };
   };
-
-
-  # Programs & Services
-  nix = {
-    package = pkgs.nix;
-    settings.experimental-features = [ "nix-command" "flakes" ];
-  };
-  nixpkgs.config.allowUnfree = true;
-  programs = {
-    # Let Home Manager install and manage itself.
-    home-manager.enable = true;
-    brave = {
-      enable = true;
-      commandLineArgs = [ "--ozone-platform=wayland" ];
-      nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
-    };
-    vscode.enable = true;
-  };
-  services = {
-    syncthing = {
-      enable = true;
-      tray.enable = true;
-    };
-  };
-  targets.genericLinux.enable = true;
-
 
   # Other configuration settings
   fonts.fontconfig.enable = true;
@@ -70,9 +52,6 @@ in {
     # paths it should manage.
     username = "allu";
     homeDirectory = "/home/allu";
-
-    # Userspace applications
-    packages = packs.programs ++ packs.fonts;
 
     # * The PATH for me *
     sessionPath = [ 

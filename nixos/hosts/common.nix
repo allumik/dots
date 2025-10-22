@@ -15,7 +15,7 @@
     # Development & Build
     gnumake cmake gcc cargo rustc tlp auto-cpufreq
     # Default terminal
-    foot 
+    foot
     # CLI Tools
     lnav parallel retry pigz unrar plocate nix-search-cli gitFull
     # Monitoring

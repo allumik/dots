@@ -17,7 +17,7 @@ let
 
     ## GUI
     # tools
-    transmission_4-qt vlc keepassxc puddletag gimp3-with-plugins 
+    transmission_4-qt keepassxc puddletag gimp3-with-plugins 
     audacity eduvpn-client qgis celeste
     # "office" stuff
     libreoffice-qt zotero thunderbird teams-for-linux calibre digikam
@@ -55,7 +55,7 @@ let
     # other stuff... use containers, or conda
   ]; };
 
-  fonts_list = [
+  font_list = [
     # Nerd fonts, all-in-one package with pretty symbols
     nerd-fonts.iosevka-term nerd-fonts.agave
     # Other fonts
@@ -65,8 +65,25 @@ let
   ];
 in 
 {
-  ## List of packages from above
-  programs = with pkgs; prog_list;
-  ## FONTS
-  fonts = with pkgs; fonts_list;
+  # Programs & Services
+  nixpkgs.config.allowUnfree = true;
+  programs = {
+    # Let Home Manager install and manage itself.
+    home-manager.enable = true;
+    brave = {
+      enable = true;
+      commandLineArgs = [ "--ozone-platform=wayland" ];
+      nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
+    };
+    vscode.enable = true;
+  };
+  services = {
+    syncthing = {
+      enable = true;
+      tray.enable = true;
+    };
+  };
+
+  ## Install the list of packages from above
+  home.packages = with pkgs; prog_list ++ font_list;
 }
