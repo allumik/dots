@@ -9,14 +9,9 @@
   "mouse_support": true,
   "external_editor": "tmux display-popup -x {left} -y {bottom} -w {width} -h {height} -B -E vis",
   "notebook": {
-    "color_scheme": "default",
-    "expand": false,
-    "always_show_tab_bar": true,
-  },
-  "console": {
-    "color_scheme": "default",
+    "expand": false
   },
   "preview": {
-    "show_cell_borders": true,
-  },
+    "show_cell_borders": true
+  }
 }
