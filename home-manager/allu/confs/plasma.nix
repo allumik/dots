@@ -21,12 +21,12 @@
     };
 
     fonts = {
-      general = { family = "Windows"; pointSize = 11; };
+      general = { family = "Noto Sans"; pointSize = 10; };
       fixedWidth = { family = "Fixedsys Excelsior 3.01"; pointSize = 10; };
-      small = { family = "Windows"; pointSize = 9; };
-      toolbar = { family = "Windows"; pointSize = 11; };
-      menu = { family = "Windows"; pointSize = 11; };
-      windowTitle = { family = "Windows"; pointSize = 12; };
+      small = { family = "Noto Sans"; pointSize = 8; };
+      toolbar = { family = "Fixedsys Excelsior 3.01"; pointSize = 10; };
+      menu = { family = "Noto Sans"; pointSize = 10; };
+      windowTitle = { family = "Fixedsys Excelsior 3.01"; pointSize = 11; };
     };
     
     input.keyboard = {
