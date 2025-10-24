@@ -21,11 +21,11 @@
     };
 
     fonts = {
-      general = { family = "Noto Sans"; pointSize = 10; };
+      general = { family = "Lucida Sans"; pointSize = 10; };
       fixedWidth = { family = "Fixedsys Excelsior 3.01"; pointSize = 10; };
-      small = { family = "Noto Sans"; pointSize = 8; };
+      small = { family = "Lucida Sans"; pointSize = 8; };
       toolbar = { family = "Fixedsys Excelsior 3.01"; pointSize = 10; };
-      menu = { family = "Noto Sans"; pointSize = 10; };
+      menu = { family = "Lucida Sans"; pointSize = 10; };
       windowTitle = { family = "Fixedsys Excelsior 3.01"; pointSize = 11; };
     };
     
