@@ -8,10 +8,6 @@
   "show_cell_borders": false,
   "mouse_support": true,
   "external_editor": "tmux display-popup -x {left} -y {bottom} -w {width} -h {height} -B -E vis",
-  "notebook": {
-    "expand": false
-  },
-  "preview": {
-    "show_cell_borders": true
-  }
+  "notebook": { "expand": false },
+  "preview": { "show_cell_borders": true }
 }
