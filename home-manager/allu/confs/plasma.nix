@@ -34,14 +34,15 @@
       repeatRate = 40;
     };
 
-    shortcuts = {
-      kwin = {
-        "Maximize Window" = "Meta+M";
-        "Toggle Grid View" = "Meta+Tab";
-        "Close Window" = "Meta+Q";
-        "Kill Window" = "Meta+Shift+Q";
-      };
-    };
+    ## Not working right now https://github.com/nix-community/plasma-manager/issues/109
+    # shortcuts = {
+      # kwin = {
+        # "Maximize Window" = "Meta+M";
+        # "Toggle Grid View" = "Meta+Tab";
+        # "Close Window" = "Meta+Q";
+        # "Kill Window" = "Meta+Shift+Q";
+      # };
+    # };
 
     kwin = {
       virtualDesktops.names = [ "Main" "Extra" ];
