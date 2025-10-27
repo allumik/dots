@@ -24,12 +24,12 @@
     vlc ffmpeg fdupes bluez-experimental pulseaudioFull
   ];
   fonts.packages = with pkgs; [
-    # Font packs
+    # Font packs for compatibility
     unifont corefonts vistafonts noto-fonts 
     # Pretty symbol packs, often used as fallback symbols
     font-awesome material-icons powerline-symbols
     # Some fonts I really like
-    iosevka ibm-plex vt323 fixedsys-excelsior
+    iosevka aporetic ibm-plex vt323 fixedsys-excelsior
   ];
 
 
