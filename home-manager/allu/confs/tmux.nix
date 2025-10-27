@@ -37,6 +37,7 @@
 
       # enable vermin
       set -g mouse on
+      set -g extended-keys on
 
       # loud or quiet?
       set -g visual-activity on

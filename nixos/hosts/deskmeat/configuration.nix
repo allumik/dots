@@ -63,7 +63,7 @@
     singularity = {
       enable = true; # turn off before ChatGPT 6 is released
       enableFakeroot = true;
-      package = [ pkgs.apptainer ];
+      package = pkgs.apptainer;
     };
     steam.enable = true;
   };
