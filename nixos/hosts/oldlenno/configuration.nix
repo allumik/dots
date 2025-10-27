@@ -41,7 +41,7 @@
       # Wine & Gaming
       winetricks wineWowPackages.stable wineWowPackages.waylandFull wineWowPackages.fonts
       # Containers
-      fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose apptainer 
+      fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose
       omnissa-horizon-client
     ];
   };
@@ -54,7 +54,11 @@
     mtr.enable = true;
     java.enable = true; # why not
     virt-manager.enable = true;
-    singularity.enable = true; # turn off before ChatGPT 6 is released
+    singularity = {
+      enable = true; # turn off before ChatGPT 6 is released
+      enableFakeroot = true;
+      package = pkgs.apptainer;
+    };
   };
   services = {
     xserver.videoDrivers = [ "vmware"]; # Xorg video drivers for this host

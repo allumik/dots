@@ -6,7 +6,7 @@ with pkgs;
 let
   prog_list = [
     ## Tools & Shells
-    gh jq nextflow conda uv beets 
+    gh jq nextflow conda uv beets dos2unix
     pandoc texlive.combined.scheme-small quarto
     # some spell~swords~checker functionality
     nixfmt-rfc-style html-tidy shellcheck-minimal isort ispell 
