@@ -25,19 +25,7 @@ function M.prep_text_bracketed(win)
   return '> tmux load-buffer - ; tmux paste-buffer -d -p -t ' .. target
 end
 
-vis:command_register("repl-set", function(argv, _, win)
-  local pane = argv[1]
-  if pane then
-    win.repl_target_pane = pane
-    vis:info("REPL target set to: " .. pane)
-  else
-    win.repl_target_pane = nil
-    vis:info("REPL target unset. Will default to the next pane.")
-  end
-end)
-
--- Sends the selected text by simulating keystrokes.
-vis:command_register("repl-send", function(argv, _, win)
+function M.prep_text_send(win)
   local target = M.get_target_pane(win)
   if not vis.win.selection then
     vis:info("ERROR: repl-send requires a visual selection.")
@@ -53,7 +41,30 @@ vis:command_register("repl-send", function(argv, _, win)
     '> sed \'s/;$/\\\\\\;/g; s/\\(.*\\)/\\1\\\\nEnter/\' ' ..
     '  | tr "\\\\n" "\\0" ' ..
     '  | xargs -0 tmux send-keys -t ' .. target
-  vis:command(cmd)
+end)
+
+
+vis:command_register("repl-set", function(argv, _, win)
+  local pane = argv[1]
+  if pane then
+    win.repl_target_pane = pane
+    vis:info("REPL target set to: " .. pane)
+  else
+    win.repl_target_pane = nil
+    vis:info("REPL target unset. Will default to the next pane.")
+  end
+end)
+
+-- Sends the selected text by simulating keystrokes.
+vis:command_register("repl-send",
+  function(argv, _, win) vis:command(M.prep_text_send(win)) 
+end)
+
+-- Sends the selected text and send an Enter to run the command
+vis:command_register("repl-send-run", function(argv, _, win)
+  local target = M.get_target_pane(win)
+  vis:command(
+    M.prep_text_send(win) .. '; tmux send-keys -t ' .. target .. ' Enter')
 end)
 
 -- Sends the selected text using tmux buffers and bracketed paste mode.
@@ -65,8 +76,7 @@ end)
 vis:command_register("repl-block-run", function(argv, _, win)
   local target = M.get_target_pane(win)
   vis:command(
-    M.prep_text_bracketed(win) .. '; tmux send-keys -t ' .. target .. ' Enter'
-    )
+    M.prep_text_bracketed(win) .. '; tmux send-keys -t ' .. target .. ' Enter')
 end)
 
 -- Sends the given text to the REPL target pane.

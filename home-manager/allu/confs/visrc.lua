@@ -50,6 +50,18 @@ vis.events.subscribe(vis.events.WIN_OPEN, function(win) -- luacheck: no unused a
     -- Use system clipboard
     vis:map(vis.modes.NORMAL, 'gp', '"+p')
     vis:map(vis.modes.VISUAL, 'gp', '"+p')
-    -- TODO: this doesn't work with multiple cursors, just gets last selection
-    vis:map(vis.modes.VISUAL, 'gy', function() vis:feedkeys(':>vis-clipboard --copy 2>/dev/null || wl-copy 2>/dev/null -n<Enter>') end, "Copy to vis-clipboard, with fallback to wl-copy")
+    -- NB: this doesn't work with multiple cursors, just gets last selection
+    vis:map(vis.modes.VISUAL, 'gy', function() 
+      vis:feedkeys(':>vis-clipboard --copy 2>/dev/null || wl-copy 2>/dev/null -n<Enter>') 
+    end, "Copy to vis-clipboard, with fallback to wl-copy")
+
+    -- Use the REPL commands
+    vis:map(vis.modes.VISUAL, 'gts', vis:command('repl-send'))
+    vis:map(vis.modes.VISUAL, 'gtb', vis:command('repl-block'))
+    vis:map(vis.modes.VISUAL, 'gtV', function()
+      vis:feedkeys('Vi`') -- select the inside lines of a code block
+      vis:command('repl-block-run') -- and send it
+    end)
+    vis:map(vis.modes.VISUAL, 'gtB', vis:command('repl-block-run'))
+    vis:map(vis.modes.NORMAL, 'gtc', vis:command('repl-cmd'))
 end)
