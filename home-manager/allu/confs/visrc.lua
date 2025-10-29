@@ -1,17 +1,16 @@
 -- load standard vis module, providing parts of the Lua API
 require('vis')
-
-
+-- and add any other local files and functions
+require('vis-repl')
 
 -- PLUGINS
-
--- load plugins
+-- load plugin manager
 local plug = (function() if not pcall(require, 'plugins/vis-plug') then
  	os.execute('git clone --quiet https://github.com/erf/vis-plug ' ..
 	 	(os.getenv('XDG_CONFIG_HOME') or os.getenv('HOME') .. '/.config')
 	 	.. '/vis/plugins/vis-plug')
 end return require('plugins/vis-plug') end)()
-
+-- declare your plugins here
 local plugins = {
     { 'erf/vis-cursors' },
     { 'peaceant/vis-fzf-mru', file = 'fzf-mru' },
@@ -34,61 +33,10 @@ plug.init(plugins, true)
 
 
 -- FUNCTIONS
-
-vis:command_register("repl-set", function(argv, _, win)
-    local pane = argv[1]
-    if not pane then
-        local f = io.popen(
-            "tmux lsp -a -F \"#D #{pane_marked}\" \\;" ..
-            "     select-pane -M " ..
-            "| awk '$2 == 1 { print $1; }'")
-        for line in f:lines() do
-            pane = line
-        end
-        f:close()
-    end
-    if pane then
-        win.repl_target_pane = pane
-    else
-        vis:message("repl-set: No pane ID given and no marked pane!")
-    end
-end)
-
--- Sends the given line of text to the REPL target pane.
--- Can be used to call a command in the other pane, for example to recompile
--- your project, you can open a shell in the target pane and use:
---   :repl-send make
-vis:command_register("repl-sendln", function(argv, _, win)
-    if win.repl_target_pane then
-        vis:command('! tmux send-keys -t '.. win.repl_target_pane ..
-                    ' ' .. argv[1] .. ' Enter')
-    end
-end)
-
--- Sends the selected text to the REPL target pane. (use in visual mode)
-vis:command_register("repl-send", function(argv, _, win)
-    if win.repl_target_pane then
-        vis:command('> sed \'s/;$/\\\\\\;/g; s/\\(.*\\)/\\1\\\\nEnter/\' ' ..
-                    '  | tr "\\\\n" "\\0" ' ..
-                    '  | xargs -0 tmux send-keys -t ' .. win.repl_target_pane)
-    end
-end)
-
--- Sends the given line of text to the REPL target pane.
--- Can be used to call a command in the other pane, for example to recompile
--- your project, you can open a shell in the target pane and use:
---   :repl-send make
-vis:command_register("repl-sendln", function(argv, _, win)
-    if win.repl_target_pane then
-        vis:command('! tmux send-keys -t '.. win.repl_target_pane ..
-                    ' ' .. argv[1] .. ' Enter')
-    end
-end)
-
+-- Add some small custom functions here if needed
 
 
 -- CONFIGURATION
-
 vis.events.subscribe(vis.events.INIT, function()
     -- Your global configuration options
 end)

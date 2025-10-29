@@ -26,6 +26,7 @@ in {
     configFile = {
       "foot/foot.ini".source = ./confs/foot.ini;
       "vis/visrc.lua".source = ./confs/visrc.lua;
+      "vis/vis-repl.lua".source = ./confs/vis-repl.lua;
       "euporie/config.json".source = ./confs/euporie.json;
       # NNN plugins
       "nnn/plugins/fzcd".source = "${nnn_fzcd}/bin/fzcd";
