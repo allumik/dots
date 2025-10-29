@@ -34,7 +34,7 @@ vis:command_register("repl-send", function(argv, _, win)
   -- 3. `tr "\\n" "\\0"`: Replaces newlines with null characters for safe handling.
   -- 4. `xargs -0 ...`: Executes `tmux send-keys` with the null-separated input.
   -- !NB this sends multiline line-by-line, use `repl-block` for bracketed paste
-  local cmd = ..
+  local cmd = '' ..
     '> sed \'s/;$/\\\\\\;/g; s/\\(.*\\)/\\1\\\\nEnter/\' ' ..
     '  | tr "\\\\n" "\\0" ' ..
     '  | xargs -0 tmux send-keys -t ' .. target
