@@ -56,12 +56,13 @@ vis.events.subscribe(vis.events.WIN_OPEN, function(win) -- luacheck: no unused a
     end, "Copy to vis-clipboard, with fallback to wl-copy")
 
     -- Use the REPL commands
-    vis:map(vis.modes.VISUAL, 'gts', vis:command('repl-send'))
-    vis:map(vis.modes.VISUAL, 'gtb', vis:command('repl-block'))
-    vis:map(vis.modes.VISUAL, 'gtV', function()
-      vis:feedkeys('Vi`') -- select the inside lines of a code block
+    vis:map(vis.modes.VISUAL, 'gts', ':repl-send <Enter>')
+    vis:map(vis.modes.VISUAL, 'gtb', ':repl-block <Enter>')
+    vis:map(vis.modes.NORMAL, 'gtV', function()
+      vis:feedkeys('Vi`') -- select the inside lines of a code block (delimiter "`")
       vis:command('repl-block-run') -- and send it
+      vis:feedkeys('<Esc>') -- go back to NORMAL
     end)
-    vis:map(vis.modes.VISUAL, 'gtB', vis:command('repl-block-run'))
-    vis:map(vis.modes.NORMAL, 'gtc', vis:command('repl-cmd'))
+    vis:map(vis.modes.VISUAL, 'gtB', ':repl-block-run <Enter>')
+    vis:map(vis.modes.NORMAL, 'gtc', ':repl-cmd <Enter>')
 end)
