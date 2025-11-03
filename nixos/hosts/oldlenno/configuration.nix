@@ -32,17 +32,15 @@
   environment = {
     systemPackages = with pkgs; [
       # Other Tools
-      tesseract openconnect openvpn poppler poppler_utils wl-clipboard gdrive3 
+      openconnect openvpn wl-clipboard gdrive3 
       # GUI Apps
-      veracrypt gparted 
+      veracrypt gparted qdigidoc
       kdePackages.kcmutils kdePackages.kaccounts-providers kdePackages.kaccounts-integration
       kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
-      # Wine & Gaming
-      winetricks wineWowPackages.stable wineWowPackages.waylandFull wineWowPackages.fonts
       # Containers
       fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose
-      omnissa-horizon-client
+      omnissa-horizon-client 
     ];
   };
 
@@ -68,6 +66,10 @@
     qemuGuest.enable = true; # Enable QEMU
     spice-vdagentd.enable = true; # Necessary for the QEMU spice
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
+    pcscd = { 
+      enable = true; # smard card reader support
+      plugins = [ pkgs.ccid ];
+    };
   };
   virtualisation = {
     containers.enable = true;
