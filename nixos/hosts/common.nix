@@ -25,7 +25,7 @@
   ];
   fonts.packages = with pkgs; [
     # Font packs for compatibility
-    unifont corefonts vistafonts noto-fonts 
+    unifont corefonts vista-fonts noto-fonts 
     # Pretty symbol packs, often used as fallback symbols
     font-awesome material-icons powerline-symbols
     # Some fonts I really like

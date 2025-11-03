@@ -6,8 +6,8 @@ with pkgs;
 let
   prog_list = [
     ## Tools & Shells
-    gh jq nextflow conda uv beets dos2unix
-    pandoc texlive.combined.scheme-small quarto
+    gh jq nextflow conda uv dos2unix
+    pandoc texlive.combined.scheme-small quarto beets 
     # some spell~swords~checker functionality
     nixfmt-rfc-style html-tidy shellcheck-minimal isort ispell 
     # some minuscle stuff for environments
@@ -18,13 +18,13 @@ let
     ## GUI
     # tools
     transmission_4-qt keepassxc puddletag gimp3-with-plugins 
-    audacity eduvpn-client qgis celeste
+    audacity eduvpn-client celeste
     # "office" stuff
     libreoffice-qt zotero thunderbird teams-for-linux calibre digikam
     # social
     discord # spotify slack zoom-us # use flatpak instead for those
     # other 
-    polychromatic obs-studio vial
+    polychromatic vial
 
     ## DEV ENV, defined below - use conda environments for more stuff
     py-env r-env
@@ -51,13 +51,13 @@ let
     # support for common files and libs
     languageserver tinytex pandoc rmdformats quarto feather readxl dotenv
     # basic dev env
-    tidyverse tidymodels recipes patchwork foreach doParallel iterators BiocParallel Seurat
+    tidyverse patchwork foreach doParallel iterators BiocParallel
     # other stuff... use containers, or conda
   ]; };
 
   font_list = [
     # Nerd fonts, all-in-one package with pretty symbols
-    nerd-fonts.iosevka-term nerd-fonts.agave
+    nerd-fonts.iosevka-term
     # Other fonts
     source-code-pro hack-font liberation_ttf
     quattrocento quattrocento-sans
