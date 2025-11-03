@@ -42,7 +42,7 @@
       # Containers
       fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose
       # Other Tools
-      tesseract openconnect openvpn poppler poppler_utils wl-clipboard gdrive3 
+      tesseract openconnect openvpn poppler poppler-utils wl-clipboard gdrive3 
       omnissa-horizon-client
 
       # AMD ROCm thingies - use docker containers for more up to date support
