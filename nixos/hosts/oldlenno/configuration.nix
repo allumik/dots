@@ -34,7 +34,7 @@
       # Other Tools
       tesseract openconnect openvpn poppler poppler_utils wl-clipboard gdrive3 
       # GUI Apps
-      veracrypt gparted 
+      veracrypt gparted qdigidoc
       kdePackages.kcmutils kdePackages.kaccounts-providers kdePackages.kaccounts-integration
       kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
@@ -68,6 +68,10 @@
     qemuGuest.enable = true; # Enable QEMU
     spice-vdagentd.enable = true; # Necessary for the QEMU spice
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
+    pcscd = { 
+      enable = true; # smard card reader support
+      plugins = [ pkgs.ccid ];
+    };
   };
   virtualisation = {
     containers.enable = true;
