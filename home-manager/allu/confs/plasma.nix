@@ -5,18 +5,19 @@
 
   programs.plasma = {
     enable = true; # enable and configure plasma settings
+    overrideConfig = true; # default all else
 
     workspace = {
-      theme = "commonality";
-      lookAndFeel = "org.magpie.comm.desktop";
+      theme = "commonalitysol";
+      lookAndFeel = "org.magpie.commsol.desktop"; # not used with windowDecor
       iconTheme = "Memphis98";
       cursor = {
         size = 24;
         theme = "Bibata-Modern-Ice";
       };
       clickItemTo = "select";
-      wallpaper = ./59028ca.png;
-      wallpaperFillMode = "pad";
+      wallpaper = ./wall331.png;
+      wallpaperFillMode = "preserveAspectCrop"; # pad
       wallpaperBackground.color = "44,81,80"; # R,G,B
     };
 
@@ -35,14 +36,14 @@
     };
 
     ## Not working right now https://github.com/nix-community/plasma-manager/issues/109
-    # shortcuts = {
-      # kwin = {
-        # "Maximize Window" = "Meta+M";
-        # "Toggle Grid View" = "Meta+Tab";
-        # "Close Window" = "Meta+Q";
-        # "Kill Window" = "Meta+Shift+Q";
-      # };
-    # };
+    shortcuts = {
+      kwin = {
+        "Make Window Fullscreen" = "Meta+M";
+        "Toggle Grid View" = "Meta+Tab";
+        "Close Window" = "Meta+Q";
+        "Kill Window" = "Meta+Shift+Q";
+      };
+    };
 
     kwin = {
       virtualDesktops.names = [ "Main" "Extra" ];
@@ -130,9 +131,12 @@
     ];
 
     # https://github.com/nix-community/plasma-manager/issues/430
-    configFile.kdeglobals.General = {
-      TerminalApplication = "foot";
-      TerminalService = "foot.desktop";
+    configFile."kdeglobals" = {
+      KDE.widgetStyle = "Windows";
+      General = {
+        TerminalApplication = "foot";
+        TerminalService = "foot.desktop";
+      };
     };
 
     # TODO: tiling presets with polonium
