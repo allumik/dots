@@ -30,19 +30,19 @@
       windowTitle = { family = "Fixedsys Excelsior 3.01"; pointSize = 11; };
     };
     
+    shortcuts = {
+      kwin = {
+        "Grid View" = "Meta+Tab";
+        "Window Fullscreen" = "Meta+Shift+M";
+        "Window Maximise" = "Meta+M";
+        "Window Close" = "Meta+Q";
+        "Window Kill" = "Meta+Shift+Q";
+      };
+    };
+
     input.keyboard = {
       repeatDelay = 280;
       repeatRate = 40;
-    };
-
-    ## Not working right now https://github.com/nix-community/plasma-manager/issues/109
-    shortcuts = {
-      kwin = {
-        "Make Window Fullscreen" = "Meta+M";
-        "Toggle Grid View" = "Meta+Tab";
-        "Close Window" = "Meta+Q";
-        "Kill Window" = "Meta+Shift+Q";
-      };
     };
 
     kwin = {
@@ -66,6 +66,21 @@
       titlebarButtons.right = [ "help" "minimize" "maximize" "close" ];
     };
 
+    configFile = {
+      "dolphinrc" = {
+        DetailsMode.PreviewSize = 16;
+        General.EditableUrl = true;
+        General.ShowFullPath = true;
+      };
+      "kdeglobals" = {
+        KDE.widgetStyle = "Windows";
+        General = {
+          TerminalApplication = "foot";
+          TerminalService = "foot.desktop";
+        };
+      };
+    };
+
     powerdevil.general.pausePlayersOnSuspend = false;
     powerdevil.AC = {
       autoSuspend.action = "sleep";
@@ -76,6 +91,7 @@
       powerButtonAction = "sleep";
       powerProfile = "performance";
     };
+
 
     # check out examples in https://github.com/nix-community/plasma-manager/blob/trunk/examples/home.nix
     # Here I have a simple vertical Windows style panel with a app launcher, manager, systray and a clock
@@ -129,22 +145,6 @@
         ];
       }
     ];
-
-    # https://github.com/nix-community/plasma-manager/issues/430
-    configFile = {
-      "dolphinrc" = {
-        DetailsMode.PreviewSize = 16;
-        General.EditableUrl = true;
-        General.ShowFullPath = true;
-      };
-      "kdeglobals" = {
-        KDE.widgetStyle = "Windows";
-        General = {
-          TerminalApplication = "foot";
-          TerminalService = "foot.desktop";
-        };
-      };
-    };
 
     # TODO: tiling presets with polonium
   };
