@@ -34,7 +34,7 @@
       kwin = {
         "Grid View" = "Meta+Tab";
         "Window Fullscreen" = "Meta+Shift+M";
-        "Window Maximise" = "Meta+M";
+        "Window Maximize" = "Meta+M";
         "Window Close" = "Meta+Q";
         "Window Kill" = "Meta+Shift+Q";
       };
