@@ -131,11 +131,18 @@
     ];
 
     # https://github.com/nix-community/plasma-manager/issues/430
-    configFile."kdeglobals" = {
-      KDE.widgetStyle = "Windows";
-      General = {
-        TerminalApplication = "foot";
-        TerminalService = "foot.desktop";
+    configFile = {
+      "dolphinrc" = {
+        DetailsMode.PreviewSize = 16;
+        General.EditableUrl = true;
+        General.ShowFullPath = true;
+      };
+      "kdeglobals" = {
+        KDE.widgetStyle = "Windows";
+        General = {
+          TerminalApplication = "foot";
+          TerminalService = "foot.desktop";
+        };
       };
     };
 
