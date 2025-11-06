@@ -28,7 +28,7 @@ let
     sudonn  = "sudo -E ${pkgs.nnn}/bin/nnn -dH";
     tux     = "${pkgs.tmux}/bin/tmux new-session -A -s main";
     of      = "xdg-open '$(fzf --preview '${pkgs.bat} {}')'";
-    es      = "${pkgs.vis}/bin/vis '$(fzf --preview '${pkgs.bat} {}')'";
+    es      = "$EDITOR '$(fzf --preview '${pkgs.bat} {}')'";
 
     cdwin   = "cd /mnt/c/Users/alvin";
     wv      = "wslview";

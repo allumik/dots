@@ -34,9 +34,10 @@
     systemPackages = with pkgs; [
       # GUI Apps
       veracrypt gparted scarlett2 alsa-scarlett-gui qdigidoc
-      kdePackages.kcmutils kdePackages.kaccounts-providers kdePackages.kaccounts-integration
       kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
-      kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
+      # KDE account management
+      kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras kdePackages.libkgapi 
+      kdePackages.kaccounts-providers kdePackages.kaccounts-integration
       # Gaming
       lutris protonup-qt winetricks wineWowPackages.stable wineWowPackages.waylandFull wineWowPackages.fonts
       # Containers
@@ -65,7 +66,10 @@
       enableFakeroot = true;
       package = pkgs.apptainer;
     };
-    steam.enable = true;
+    steam = {
+      enable = true;
+      package = pkgs.steam-millennium;
+    };
   };
   services = {
     xserver.videoDrivers = [ "amdgpu" "vmware"]; # Xorg video drivers for this host

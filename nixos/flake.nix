@@ -8,6 +8,9 @@
     # for the *very* bleeding edge stuff
     # nixpkgs-unstable.url = "github:nixos/nixpkgs/staging";
 
+    # Nifty steam wrapper
+    millennium.url = "git+https://github.com/SteamClientHomebrew/Millennium";
+
     # Add home-manager input
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -30,8 +33,13 @@
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
-          # Apply the custom overlay
-          ({ config, pkgs, ... }: { nixpkgs.overlays = [ self.overlays.default ]; })
+          # Apply the custom overlay(s)
+          ({ config, pkgs, ... }: { 
+            nixpkgs.overlays = [ 
+              self.overlays.default 
+              inputs.millennium.overlays.default
+            ]; 
+          })
 
           # Host-specific configurations
           ./hosts/deskmeat/configuration.nix

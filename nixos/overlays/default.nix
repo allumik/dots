@@ -1,22 +1,47 @@
 # overlays/default.nix
 
-# { pkgs-unstable }: 
-self: super: 
+self: super:
 
-let 
-  # unstablePkgs = import pkgs-unstable {
-  #   system = super.stdenv.hostPlatform.system;
-  #   # If you need unfree packages from unstable, you must also allow them here.
-  #   config.allowUnfree = true;
-  # };
-in 
 {
   # Override for conda to include `which`
   # !This is a temporary fix, prolly fixed in 25.11, search "nixpkgs conda which" for more info
-  conda = super.conda.override {
-    extraPkgs = [ super.which ];
-  };
+  # conda = super.conda.override {
+    # extraPkgs = [ super.which ];
+  # };
 
-  # override some packages from the overlay, hope that it does not cause a full system rebuild
-  # lact = unstablePkgs.lact;
+  # This adds a new package 'vis-unstable'
+  vis-git =
+    let
+      # Re-define luaEnv based on 'super' (the previous nixpkgs snapshot)
+      luaEnv = super.lua.withPackages (ps: [ ps.lpeg ]);
+    in
+    # Use overrideAttrs to modify the existing 'vis' package from 'super'
+    super.vis.overrideAttrs (oldAttrs: rec {
+      pname = "vis-git";
+      
+      # This version string is just for informational purposes
+      version = "master-git";
+
+      # Override the source to point to the master branch
+      src = super.fetchFromGitHub {
+        owner = "martanne";
+        repo = "vis";
+        rev = "master"; # Fetch the latest master branch
+        hash = "sha256-ceco/CDpLaPeSE6+M/k3itrl3oe19L3BL2EF330IZVU=";
+      };
+
+      # Re-define postInstall to use the correct lua version from 'super'
+      # This is necessary because the luaEnv is built against 'super'
+      postInstall = ''
+        wrapProgram $out/bin/vis \
+          --prefix LUA_CPATH ';' "${luaEnv}/lib/lua/${super.lua.luaversion}/?.so" \
+          --prefix LUA_PATH ';' "${luaEnv}/share/lua/${super.lua.luaversion}/?.lua" \
+          --prefix VIS_PATH : "\$HOME/.config:$out/share/vis"
+      '';
+
+      # Update meta description
+      meta = oldAttrs.meta // {
+        description = "Vim like editor (unstable git version)";
+      };
+    });
 }

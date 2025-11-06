@@ -61,11 +61,11 @@ in {
     ];
 
     # define some user based variables
-    sessionVariables = {
-      VISUAL = "${pkgs.vis}/bin/vis";
-      EDITOR = "${pkgs.vis}/bin/vis";
-      TERMINAL = "${pkgs.foot}/bin/foot";
-    };
+    # sessionVariables = {
+      # VISUAL = "${pkgs.vis-git}/bin/vis";
+      # EDITOR = "${pkgs.vis-git}/bin/vis";
+      # TERMINAL = "${pkgs.foot}/bin/foot";
+    # };
 
     # You should not change this value, even if you update Home Manager.
     stateVersion = "25.11";

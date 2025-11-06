@@ -81,6 +81,6 @@ Some steps need to be performed with a new blank plasma user:
 
 * Go to Plasma settings and download the "Commonality" global theme, "Bibata-Modern-Ice.gz" cursor theme, "Memphis98" icon theme and set the application style to MS Windows 9x. In Application Style, also configure the GTK style to "Irixium".
 
-	* `TODO:` Look into automating some steps of this process: https://github.com/nix-community/plasma-manager/issues/212
-
 * Set up mail accounts in Thunderbird.
+
+**TODO**: revise the home-manager standalone setup vs flake modules situation
