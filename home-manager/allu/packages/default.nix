@@ -18,7 +18,7 @@ let
     ## GUI
     # tools
     transmission_4-qt keepassxc puddletag gimp3-with-plugins 
-    audacity eduvpn-client celeste
+    audacity eduvpn-client celeste zed-editor
     # "office" stuff
     libreoffice-qt zotero thunderbird teams-for-linux calibre digikam
     # social
@@ -75,7 +75,6 @@ in
       commandLineArgs = [ "--ozone-platform=wayland" ];
       nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
     };
-    vscode.enable = true;
   };
   services = {
     syncthing = {
