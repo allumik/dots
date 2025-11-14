@@ -49,15 +49,13 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
-      wireplumber.extraConfig.bluetoothEnhancements = {
-        "monitor.bluez.properties" = {
-            "bluez.enable-sbc-xq" = true;
-            "bluez.enable-msbc" = true;
-            "bluez.enable-hw-volume" = true;
-            "bluez.auto-connect" = [ "a2dp_sink" ];
-            "bluez.roles" = [ "a2dp_sink" "a2dp_source" "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
-        };
-      };
+      # wireplumber.extraConfig.bluetoothEnhancements = {
+        # "monitor.bluez.properties" = {
+            # "bluez.enable-hw-volume" = true;
+            # "bluez.auto-connect" = [ "a2dp_sink" ];
+            # "bluez.roles" = [ "a2dp_sink" "a2dp_source" "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
+        # };
+      # };
     };
   };
 
