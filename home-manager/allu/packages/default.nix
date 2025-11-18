@@ -18,7 +18,7 @@ let
     ## GUI
     # tools
     transmission_4-qt keepassxc puddletag gimp3-with-plugins 
-    audacity eduvpn-client celeste zed-editor
+    audacity eduvpn-client zed-editor
     # "office" stuff
     libreoffice-qt zotero thunderbird teams-for-linux calibre digikam
     # social

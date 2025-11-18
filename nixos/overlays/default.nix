@@ -26,8 +26,8 @@ self: super:
       src = super.fetchFromGitHub {
         owner = "martanne";
         repo = "vis";
-        rev = "master"; # Fetch the latest master branch
-        hash = "sha256-ceco/CDpLaPeSE6+M/k3itrl3oe19L3BL2EF330IZVU=";
+        rev = "a730d3433ff0afc517eae8ddf4cd80997a9cd2a1"; # or "master"
+        hash = "sha256-U4r4Vr32mYOXAaT1sYPOHeKlToq9t3c5OYq/ssRTqQc=";
       };
 
       # Re-define postInstall to use the correct lua version from 'super'

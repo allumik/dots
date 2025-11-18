@@ -60,6 +60,9 @@
 
           # Host-specific configurations
           ./hosts/oldlenno/configuration.nix
+
+          # to add CachyOS kernels - https://www.nyx.chaotic.cx/
+          chaotic.nixosModules.default
         ];
       };
 
