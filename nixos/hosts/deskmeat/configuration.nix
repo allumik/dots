@@ -35,6 +35,7 @@
       # GUI Apps
       veracrypt gparted scarlett2 alsa-scarlett-gui qdigidoc
       kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
+      antigravity # googles agentic job replacer
       # KDE account management
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras kdePackages.libkgapi 
       kdePackages.kaccounts-providers kdePackages.kaccounts-integration
