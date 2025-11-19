@@ -47,10 +47,10 @@ self: super:
 
   antigravity = super.stdenv.mkDerivation rec {
     pname = "antigravity";
-    version = "1.11.2";
+    version = "1.11.3";
 
     src = super.fetchurl {
-      url = "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/1.11.2-6251250307170304/linux-x64/Antigravity.tar.gz";
+      url = "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/1.11.3-6583016683339776/linux-x64/Antigravity.tar.gz";
       # Replace with actual sha256 after first run
       hash = "sha256-0bERWudsJ1w3bqZg4eTS3CDrPnLWogawllBblEpfZLc=";
     };
