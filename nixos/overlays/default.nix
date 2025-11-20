@@ -52,7 +52,7 @@ self: super:
     src = super.fetchurl {
       url = "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/1.11.3-6583016683339776/linux-x64/Antigravity.tar.gz";
       # Replace with actual sha256 after first run
-      hash = "sha256-0bERWudsJ1w3bqZg4eTS3CDrPnLWogawllBblEpfZLc=";
+      hash = "sha256-Al2lEvl5mnFU4sx1vAkIIBOCwazy6DePnaI1y4SlYVs=";
     };
 
     nativeBuildInputs = with super; [
