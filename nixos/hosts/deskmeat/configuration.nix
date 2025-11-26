@@ -62,6 +62,7 @@
     mtr.enable = true;
     java.enable = true; # why not
     virt-manager.enable = true;
+    kdeconnect.enable = true;
     singularity = {
       enable = true; # turn off before ChatGPT 6 is released
       enableFakeroot = true;

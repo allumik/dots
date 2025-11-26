@@ -14,6 +14,7 @@ in
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.useOSProber = true;
 
   # Kernel modules and initrd
   # specify the kernel package - 5950x is v3

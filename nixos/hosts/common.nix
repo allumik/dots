@@ -11,7 +11,7 @@
   ## Core packages and services
   environment.systemPackages = with pkgs; [
     # Utilities
-    coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd hd-idle cachix
+    coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd hd-idle cachix libsixel
     # Development & Build
     gnumake cmake gcc cargo rustc tlp auto-cpufreq
     # Default terminal
