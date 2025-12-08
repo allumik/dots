@@ -34,8 +34,9 @@
     systemPackages = with pkgs; [
       # GUI Apps
       veracrypt gparted scarlett2 alsa-scarlett-gui qdigidoc
-      kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
+      calibre digikam audacity polychromatic
       antigravity # googles agentic job replacer
+      kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
       # KDE account management
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras kdePackages.libkgapi 
       kdePackages.kaccounts-providers kdePackages.kaccounts-integration
@@ -44,13 +45,12 @@
       # Containers
       fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose
       # Other Tools
-      tesseract openconnect openvpn poppler poppler-utils wl-clipboard gdrive3
-      omnissa-horizon-client
+      tesseract openconnect openvpn poppler poppler-utils wl-clipboard gdrive3 omnissa-horizon-client
 
       # AMD ROCm thingies - use docker containers for more up to date support
       rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr nvtopPackages.amd
       # LLM runner, built for ROCm
-      # ollama-rocm
+      ollama-rocm
     ];
   };
 

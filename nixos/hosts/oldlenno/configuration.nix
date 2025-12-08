@@ -84,11 +84,4 @@
     spiceUSBRedirection.enable = true; # Enable USB devices connecting to QEMU spice
     vmware.guest.enable = true;
   };
-
-  # More misc hardware-related software
-  hardware.openrazer = {
-    enable = true;
-    users = [ "allu" ];
-  };
 }
-
