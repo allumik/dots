@@ -21,7 +21,7 @@
     # Monitoring
     s-tui stress htop
     # Media & Files
-    vlc ffmpeg fdupes bluez-experimental pulseaudioFull
+    vlc ffmpeg fdupes bluez-experimental pulseaudioFull exfatprogs
   ];
   fonts.packages = with pkgs; [
     # Font packs for compatibility
@@ -29,7 +29,7 @@
     # Pretty symbol packs, often used as fallback symbols
     font-awesome material-icons powerline-symbols
     # Some fonts I really like
-    iosevka aporetic ibm-plex vt323 fixedsys-excelsior
+    aporetic ibm-plex vt323 fixedsys-excelsior
   ];
 
 
@@ -49,13 +49,6 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
-      # wireplumber.extraConfig.bluetoothEnhancements = {
-        # "monitor.bluez.properties" = {
-            # "bluez.enable-hw-volume" = true;
-            # "bluez.auto-connect" = [ "a2dp_sink" ];
-            # "bluez.roles" = [ "a2dp_sink" "a2dp_source" "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
-        # };
-      # };
     };
   };
 

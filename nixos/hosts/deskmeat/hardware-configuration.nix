@@ -48,7 +48,12 @@ in
 
   swapDevices = [ { device = "/dev/nvme0n1p3"; } ];
   boot.resumeDevice = "/dev/nvme0n1p3";
-
+  boot.kernel.sysctl = { "vm.swappiness" = 10; }; # lower it from 60 as we have loads of RAM
+  # Enable zram in RAM compression for large memory loads, defaults are: 50% RAM; zstd
+  zramSwap = {
+    enable = true;
+    memoryPercent = 75;
+  };
 
   # Hardware Support
   hardware = {
