@@ -34,7 +34,7 @@
       # Other Tools
       openconnect openvpn wl-clipboard gdrive3 
       # GUI Apps
-      veracrypt gparted qdigidoc antigravity
+      veracrypt gparted qdigidoc # antigravity
       kdePackages.kcmutils kdePackages.kaccounts-providers kdePackages.kaccounts-integration
       kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
