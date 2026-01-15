@@ -34,21 +34,30 @@
     systemPackages = with pkgs; [
       # GUI Apps
       veracrypt gparted scarlett2 alsa-scarlett-gui qdigidoc
-      calibre digikam audacity polychromatic
-      antigravity # googles agentic job replacer
+      calibre digikam audacity polychromatic omnissa-horizon-client
+      gemini-cli antigravity # googles agentic job replacer
+
+      # KDE account management & other stuff
       kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
-      # KDE account management
+      kdePackages.kcolorpicker
+
       kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras kdePackages.libkgapi 
       kdePackages.kaccounts-providers kdePackages.kaccounts-integration
+
       # Gaming
-      lutris protonup-qt winetricks wineWowPackages.stable wineWowPackages.waylandFull wineWowPackages.fonts
+      winetricks wineWowPackages.stable wineWowPackages.waylandFull wineWowPackages.fonts
+      lutris protonup-qt 
+
       # Containers
       fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose
+
       # Other Tools
-      tesseract openconnect openvpn poppler poppler-utils wl-clipboard gdrive3 omnissa-horizon-client
+      tesseract openconnect openvpn poppler poppler-utils wl-clipboard gdrive3 
+      typst typstyle # latex reborn
 
       # AMD ROCm thingies - use docker containers for more up to date support
       rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr nvtopPackages.amd
+
       # LLM runner, built for ROCm
       ollama-rocm
     ];

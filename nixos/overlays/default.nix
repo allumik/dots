@@ -44,6 +44,7 @@ self: super:
         description = "Vim like editor (unstable git version)";
       };
     });
+<<<<<<< HEAD
 
   antigravity = super.stdenv.mkDerivation rec {
     pname = "antigravity";
@@ -106,4 +107,6 @@ self: super:
       license = licenses.unfree;
     };
   };
+=======
+>>>>>>> refs/remotes/origin/master
 }
