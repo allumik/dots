@@ -44,14 +44,13 @@ self: super:
         description = "Vim like editor (unstable git version)";
       };
     });
-<<<<<<< HEAD
 
   antigravity = super.stdenv.mkDerivation rec {
     pname = "antigravity";
-    version = "1.11.14";
+    version = "1.14.2";
 
     src = super.fetchurl {
-      url = "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/1.11.14-5763785964257280linux-x64/Antigravity.tar.gz";
+      url = "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/1.14.2-6046590149459968/linux-x64/Antigravity.tar.gz";
       # Replace with actual sha256 after first run
       hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
     };
@@ -107,6 +106,4 @@ self: super:
       license = licenses.unfree;
     };
   };
-=======
->>>>>>> refs/remotes/origin/master
 }
