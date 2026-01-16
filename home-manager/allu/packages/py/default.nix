@@ -4,13 +4,13 @@
 self: super: {
   "gamma-launcher" = super.buildPythonPackage rec {
     pname = "gamma-launcher";
-    version = "v2.5";
+    version = "v2.6";
     format = "pyproject";
     src = pkgs.fetchFromGitHub {
       owner = "Mord3rca";
       repo = pname;
       rev = version; # "v${version}"
-      sha256 = "qzjfgDFimEL6vtsJBubY6fHsokilDB248WwHJt3F7fI="; # "WRuqmoR2LM8niuLzCTXSS6DEGANBje/yVuEKMLYcwDc=";
+      sha256 = "QegptRWMUKpkzsHBdT6KlyyWpmrIuvcyCRvWT9Te3DQ="; # "WRuqmoR2LM8niuLzCTXSS6DEGANBje/yVuEKMLYcwDc=";
     };
     doCheck = false;
     buildInputs = [];

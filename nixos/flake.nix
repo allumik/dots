@@ -2,13 +2,10 @@
   description = "NixOS configuration";
 
   inputs = {
-    # for the *kinda* bleeding edge stuff
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    # for the bleeding edge stuff
     # nixpkgs-unstable.url = "github:nixos/nixpkgs/staging";
-
-    # Nifty steam wrapper
-    millennium.url = "git+https://github.com/SteamClientHomebrew/Millennium";
 
     # Add home-manager input
     home-manager = {
@@ -36,7 +33,6 @@
           ({ config, pkgs, ... }: { 
             nixpkgs.overlays = [ 
               self.overlays.default 
-              inputs.millennium.overlays.default
             ]; 
           })
 

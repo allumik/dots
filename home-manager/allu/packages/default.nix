@@ -6,19 +6,21 @@ with pkgs;
 let
   prog_list = [
     ## Tools & Shells
-    gh jq nextflow conda uv dos2unix
-    pandoc texlive.combined.scheme-small quarto beets 
+    gh jq nextflow pixi uv dos2unix # replace conda with pixi
+    pandoc texlive.combined.scheme-small typst quarto beets
     # some spell~swords~checker functionality
     nixfmt-rfc-style html-tidy shellcheck-minimal isort ispell 
-    # some minuscle stuff for environments
+    # some minuscle stuff for python/R environments
     libssh libxml2 libpng libxslt libtiff cairo  # R needs this
     # terminal bling
     zsh zsh-nix-shell zsh-fast-syntax-highlighting zsh-fzf-tab
+    # googles agentic job replacer
+    gemini-cli antigravity-fhs
 
     ## GUI
     # tools
     transmission_4-qt keepassxc puddletag gimp3-with-plugins 
-    eduvpn-client zed-editor
+    eduvpn-client code
     # "office" stuff
     libreoffice-qt zotero thunderbird teams-for-linux
     # social
@@ -38,9 +40,8 @@ let
   
   py-env = python_plus.withPackages(ps: with ps; [
     pip setuptools
-    numpy numba pandas scipy scikit-learn jaxlib torch # use containers for gpu torch
+    numpy numba pandas scipy scikit-learn # use containers for gpu torch
     matplotlib seaborn altair ipykernel notebook jupyter-cache euporie
-    python-dotenv tqdm
     ## extra packages from ./py override
     gamma-launcher
   ]);
@@ -74,6 +75,10 @@ in
       enable = true;
       commandLineArgs = [ "--ozone-platform=wayland" ];
       nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
+    };
+    vscode = {
+      enable = true;
+      package = pkgs.vscode.fhs;
     };
   };
   services = {

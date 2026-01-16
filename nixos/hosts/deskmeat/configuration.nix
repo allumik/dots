@@ -35,7 +35,6 @@
       # GUI Apps
       veracrypt gparted scarlett2 alsa-scarlett-gui qdigidoc
       calibre digikam audacity polychromatic omnissa-horizon-client
-      gemini-cli antigravity # googles agentic job replacer
 
       # KDE account management & other stuff
       kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
@@ -72,14 +71,11 @@
     java.enable = true; # why not
     virt-manager.enable = true;
     kdeconnect.enable = true;
+    steam.enable = true;
     singularity = {
       enable = true; # turn off before ChatGPT 6 is released
       enableFakeroot = true;
       package = pkgs.apptainer;
-    };
-    steam = {
-      enable = true;
-      package = pkgs.steam-millennium;
     };
   };
   services = {
