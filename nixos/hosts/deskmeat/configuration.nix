@@ -53,6 +53,7 @@
       # Other Tools
       tesseract openconnect openvpn poppler poppler-utils wl-clipboard gdrive3 
       typst typstyle # latex reborn
+      noisetorch # noise reduction for mic
 
       # AMD ROCm thingies - use docker containers for more up to date support
       rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr nvtopPackages.amd
