@@ -14,10 +14,9 @@
 
   # Kernel modules and initrd
   # specify the kernel package - use the default for the old intel cpu
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-lts;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   services.scx.enable = true; # default scx_rustland, build issue on 250914
   services.scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
-  services.scx.package = pkgs.scx.rustscheds; # so you don't use the full version for LAVD
 
   # Intel GPU and CPU related
   boot.kernelModules = [ "kvm-intel"  ];

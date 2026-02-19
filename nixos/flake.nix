@@ -2,8 +2,7 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # for the bleeding edge stuff
     # nixpkgs-unstable.url = "github:nixos/nixpkgs/staging";
 
@@ -19,7 +18,6 @@
     self, 
     nixpkgs, 
     home-manager, 
-    chaotic, 
     ... 
   }@inputs: {
     nixosConfigurations = {
@@ -38,9 +36,6 @@
 
           # Host-specific configurations
           ./hosts/deskmeat/configuration.nix
-
-          # to add CachyOS kernels - https://www.nyx.chaotic.cx/
-          chaotic.nixosModules.default
         ];
       };
 
@@ -55,9 +50,6 @@
 
           # Host-specific configurations
           ./hosts/oldlenno/configuration.nix
-
-          # to add CachyOS kernels - https://www.nyx.chaotic.cx/
-          chaotic.nixosModules.default
         ];
       };
 

@@ -68,5 +68,5 @@ in
   system.autoUpgrade.allowReboot = true; # reboot when new kernel
 
   # Set the state version
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }

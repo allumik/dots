@@ -2,9 +2,6 @@
 # It is intended to be edited by hand.
 { config, lib, pkgs, modulesPath, ... }:
 
-let
-  kernel_pkg = pkgs.linuxPackages_cachyos-gcc.cachyOverride { mArch = "GENERIC_V3"; };
-in 
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
@@ -17,15 +14,9 @@ in
   boot.loader.grub.useOSProber = true;
 
   # Kernel modules and initrd
-  # specify the kernel package - 5950x is v3
-  boot.kernelPackages = kernel_pkg;
-  # for chaotic nyx override on stable 
-  # see: https://github.com/chaotic-cx/nyx/issues/1178#issuecomment-3263837109
-  # system.modulesTree = [ (lib.getOutput "modules" kernel_pkg.kernel) ];
-
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   services.scx.enable = true; # default scx_rustland, build issue on 250914
   services.scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
-  services.scx.package = pkgs.scx.rustscheds; # so you don't use the full version for LAVD
 
   boot.kernelModules = [ 
     # AMD GPU and CPU related
