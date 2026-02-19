@@ -44,7 +44,7 @@
       kdePackages.kaccounts-providers kdePackages.kaccounts-integration
 
       # Gaming
-      winetricks wineWowPackages.stable wineWowPackages.waylandFull wineWowPackages.fonts
+      winetricks wineWow64Packages.stable wineWow64Packages.waylandFull wineWow64Packages.fonts
       lutris protonup-qt 
 
       # Containers
@@ -56,10 +56,7 @@
       noisetorch # noise reduction for mic
 
       # AMD ROCm thingies - use docker containers for more up to date support
-      rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr nvtopPackages.amd
-
-      # LLM runner, built for ROCm
-      ollama-rocm
+      rocmPackages.amdsmi rocmPackages.rocm-core nvtopPackages.amd
     ];
   };
 
