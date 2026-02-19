@@ -15,7 +15,7 @@ let
     # terminal bling
     zsh zsh-nix-shell zsh-fast-syntax-highlighting zsh-fzf-tab
     # googles agentic job replacer
-    gemini-cli antigravity-fhs
+    gemini-cli
 
     ## GUI
     # tools

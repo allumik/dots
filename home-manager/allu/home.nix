@@ -68,7 +68,7 @@ in {
     # };
 
     # You should not change this value, even if you update Home Manager.
-    stateVersion = "25.11";
+    stateVersion = "26.05";
   };
   # Notifications about home-manager news
   news.display = "silent";
