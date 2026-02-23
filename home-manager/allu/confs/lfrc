@@ -1,0 +1,12 @@
+set preview false
+set ratios 1
+set info perm:user:group:size:time
+
+# Define a bulkrename command using vidir
+cmd bulkrename ${{
+    # $fx contains selected files, or the current file if no selection exists
+    vidir $fx
+}}
+
+# Map it to a key
+map R bulkrename

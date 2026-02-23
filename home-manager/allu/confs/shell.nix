@@ -2,14 +2,6 @@
 
 let
   sessvars = {
-    ## NNN settings
-    # use Windows opener (for nixos-wsl)
-    # NNN_OPENER = "wslview";
-    # automatically cd into directory
-    NNN_TMPFILE = "\${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd";
-    NNN_FIFO = "\${XDG_CONFIG_HOME:-$HOME/.config}/nnn/nnn.fifo";
-    # plugin selector
-    NNN_PLUG = "t:fzcd;d:diffs;x:preview-tui;v:imgview;e:suedit";
     # put dotfiles first!
     # LC_COLLATE = "C";
   };
@@ -25,7 +17,6 @@ let
     la      = "ls -A";
     ll      = "${pkgs.eza}/bin/eza -alF";
 
-    sudonn  = "sudo -E ${pkgs.nnn}/bin/nnn -dH";
     tux     = "${pkgs.tmux}/bin/tmux new-session -A -s main";
     of      = "xdg-open '$(fzf --preview '${pkgs.bat} {}')'";
     es      = "$EDITOR '$(fzf --preview '${pkgs.bat} {}')'";
@@ -33,29 +24,6 @@ let
     cdwin   = "cd /mnt/c/Users/alvin";
     wv      = "wslview";
   };
-
-  ## Define functions for universal use
-  funky = ''
-    # add an depth indicator
-    [ -n "$NNNLVL" ] && PS1="!~$NNNLVL $PS1"
-    
-    nn () {
-        # Block nesting of nnn in subshells
-        if [ -n $NNNLVL ] && [ "''${NNNLVL:-0}" -ge 1 ]; then
-            echo "nnn is already running"
-            return
-        fi
-    
-        export NNN_TMPFILE="''${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-    
-        nnn "$@"
-    
-        if [ -f "$NNN_TMPFILE" ]; then
-                . "$NNN_TMPFILE"
-                rm -f "$NNN_TMPFILE" > /dev/null
-        fi
-    }
-  '';
 
   xdgDataDirs = "export XDG_DATA_DIRS=$HOME/.nix-profile/share:$HOME/.nix-profile/share/applications:$XDG_DATA_DIRS";
 in
@@ -66,7 +34,7 @@ in
       enable = true;
 
       profileExtra = xdgDataDirs;
-      bashrcExtra = funky + ''
+      bashrcExtra = ''
         # set a fancy prompt (non-color, unless we know we "want" color)
         case "$TERM" in
             xterm-color|*-256color) color_prompt=yes;;
@@ -104,7 +72,6 @@ in
       history.extended = true;
 
       profileExtra = xdgDataDirs;
-      initContent = lib.mkBefore funky;
       sessionVariables = sessvars;
       shellAliases = aliases;
       plugins = [

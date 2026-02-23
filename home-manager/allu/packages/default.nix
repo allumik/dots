@@ -9,7 +9,7 @@ let
     gh jq nextflow pixi uv dos2unix # replace conda with pixi
     pandoc texlive.combined.scheme-small typst quarto beets
     # some spell~swords~checker functionality
-    nixfmt-rfc-style html-tidy shellcheck-minimal isort ispell 
+    nixfmt html-tidy shellcheck-minimal isort ispell 
     # some minuscle stuff for python/R environments
     libssh libxml2 libpng libxslt libtiff cairo  # R needs this
     # terminal bling

@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
-let
-  packs = import ./packages/default.nix pkgs;
-  nnn_fzcd = import ./scripts/nnn_fzcd.nix pkgs;
-  nnn_helper = import ./scripts/nnn_helper.nix pkgs;
-in {
+{
   # Import and source other configuration files
   imports = [
     ./confs/shell.nix
@@ -25,12 +21,9 @@ in {
     mime.enable = true;
     configFile = {
       "foot/foot.ini".source = ./confs/foot.ini;
-      "vis/visrc.lua".source = ./confs/visrc.lua;
-      "vis/vis-repl.lua".source = ./confs/vis-repl.lua;
+      "nvim/init.lua".source = ./confs/nvim.lua;
       "euporie/config.json".source = ./confs/euporie.json;
-      # NNN plugins
-      "nnn/plugins/fzcd".source = "${nnn_fzcd}/bin/fzcd";
-      "nnn/plugins/.nnn-plugin-helper".source = "${nnn_helper}/bin/nnn_helper";
+      "lf/lfrc".source = ./confs/lfrc;
     };
   };
 
@@ -59,13 +52,6 @@ in {
       "$HOME/.nix-profile/bin"
       "$HOME/.local/bin" 
     ];
-
-    # define some user based variables
-    # sessionVariables = {
-      # VISUAL = "${pkgs.vis-git}/bin/vis";
-      # EDITOR = "${pkgs.vis-git}/bin/vis";
-      # TERMINAL = "${pkgs.foot}/bin/foot";
-    # };
 
     # You should not change this value, even if you update Home Manager.
     stateVersion = "26.05";

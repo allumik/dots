@@ -27,11 +27,11 @@ in
   environment = {
     systemPackages = with pkgs; [
       # Core Tools
-      vis-git tre fzf fd nnn ripgrep wget zip unzip p7zip
+      neovim tre fzf fd lf ripgrep wget zip unzip p7zip moreutils
     ];
     variables = {
-      EDITOR = "${pkgs.vis-git}/bin/vis";
-      VISUAL = "${pkgs.vis-git}/bin/vis";
+      EDITOR = "nvim";
+      VISUAL = "nvim";
       PAGER = "less";
     };
   };
