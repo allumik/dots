@@ -8,5 +8,6 @@ cmd bulkrename ${{
     vidir $fx
 }}
 
-# Map it to a key
+# Map keys
 map R bulkrename
+map X $rm -ri $fx
