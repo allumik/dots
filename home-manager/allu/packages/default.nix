@@ -7,7 +7,7 @@ let
   prog_list = [
     ## Tools & Shells
     gh jq nextflow pixi uv dos2unix # replace conda with pixi
-    pandoc texlive.combined.scheme-small typst quarto beets
+    pandoc quarto typst texlive.combined.scheme-small
     # some spell~swords~checker functionality
     nixfmt html-tidy shellcheck-minimal isort ispell 
     # some minuscle stuff for python/R environments
@@ -25,8 +25,8 @@ let
     libreoffice-qt zotero thunderbird teams-for-linux
     # social
     discord # spotify slack zoom-us # use flatpak instead for those
-    # other 
-    vial
+    # other
+    vial gamma-launcher
 
     ## DEV ENV, defined below - use conda environments for more stuff
     py-env r-env
@@ -41,9 +41,11 @@ let
   py-env = python_plus.withPackages(ps: with ps; [
     pip setuptools
     numpy numba pandas scipy scikit-learn # use containers for gpu torch
-    matplotlib seaborn altair ipykernel notebook jupyter-cache euporie
+    matplotlib seaborn altair # ipykernel euporie # https://github.com/NixOS/nixpkgs/issues/493614
     ## extra packages from ./py override
-    gamma-launcher
+
+    ## some extra tools
+    # beets # broken in unstable
   ]);
 
   r-env = rWrapper.override{ packages = with rPackages; [
