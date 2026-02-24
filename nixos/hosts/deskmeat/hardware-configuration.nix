@@ -60,6 +60,11 @@
       powerOnBoot = true;
       settings = { General = { Enable = "Source, Sink, Media, Socket"; Experimental = true; }; Policy = { AutoEnable = true; }; };
     };
+    # More misc hardware-related software
+    openrazer = {
+      enable = true;
+      users = [ "allu" ];
+    };
   };
 }
 

@@ -7,11 +7,11 @@
   ## Nixpkgs coniguration for all hosts
   nixpkgs.config.allowUnfree = true;
 
-
   ## Core packages and services
   environment.systemPackages = with pkgs; [
     # Utilities
     coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd hd-idle cachix libsixel
+    gh jq pixi uv dos2unix
     # Development & Build
     gnumake cmake gcc cargo rustc tlp auto-cpufreq
     # Default terminal
@@ -22,14 +22,19 @@
     s-tui stress htop
     # Media & Files
     vlc ffmpeg fdupes bluez-experimental pulseaudioFull exfatprogs
+    # Other GUI
+    transmission_4-qt keepassxc gimp3-with-plugins
+    eduvpn-client openvpn libreoffice-qt zotero thunderbird 
   ];
   fonts.packages = with pkgs; [
     # Font packs for compatibility
-    unifont corefonts vista-fonts noto-fonts 
+    unifont corefonts vista-fonts noto-fonts liberation_ttf 
     # Pretty symbol packs, often used as fallback symbols
     font-awesome material-icons powerline-symbols
-    # Some fonts I really like
+    # Some fonts
     aporetic ibm-plex vt323 fixedsys-excelsior
+    hack-font source-code-pro nerd-fonts.iosevka-term
+    merriweather merriweather-sans
   ];
 
 
@@ -51,6 +56,15 @@
       jack.enable = true;
     };
   };
+
+  programs = {
+    nix-ld.enable = true; # might make your life easier with linked library adapter
+    vscode = {
+      enable = true;
+      package = pkgs.vscode.fhs;
+    };
+  };
+ 
 
   ## Extras
   systemd.services = {
