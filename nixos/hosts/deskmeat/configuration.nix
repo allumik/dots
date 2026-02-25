@@ -2,17 +2,10 @@
 { config, lib, pkgs, ... }:
 
 let 
-  # add custom packages
-  python_plus = pkgs.python314.override {
-    self = python_plus;
-    # packageOverrides = callPackage ./py {}; # extra packages override
-  };
-  
-  py-env = python_plus.withPackages(ps: with ps; [
+  py-env = pkgs.python314.withPackages(ps: with ps; [
     pip setuptools
     numpy numba pandas scipy scikit-learn # use containers for gpu torch
     matplotlib seaborn altair # ipykernel euporie # https://github.com/NixOS/nixpkgs/issues/493614
-    ## extra packages from ./py override
   ]);
 
   r-env = pkgs.rWrapper.override{ packages = with pkgs.rPackages; [
@@ -28,6 +21,7 @@ in {
   ## Imports
   imports = [
     ./hardware-configuration.nix # Hardware-specific configuration
+    ./users.nix
     ../base.nix # Minimal conf
     ../common.nix # Common configuration options for all hosts
   ];
@@ -126,43 +120,5 @@ in {
     libvirtd.enable = true;
     spiceUSBRedirection.enable = true; # Enable USB devices connecting to QEMU spice
     vmware.guest.enable = true;
-  };
-
-
-  ## User accounts
-  users.users.allu = {
-    isNormalUser = true; # dunno man
-    description = "Alvin Meltsov";
-    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "podman" ];
-  };
-  home-manager.users.allu = {
-    imports = [
-      ../../users/allu/home.nix
-      ../../users/allu/plasma.nix # Plasma
-    ];
-    programs = {
-      brave = {
-        enable = true;
-        commandLineArgs = [ "--ozone-platform=wayland" ];
-        nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
-      };
-      foot = {
-        enable = true;
-	settings = {
-          main = {
-            font = "Aporetic Serif Mono:size=10";
-            font-bold = "Aporetic Serif Mono:size=10";
-            font-italic = "Aporetic Serif Mono:size=10";
-            font-bold-italic = "Aporetic Serif Mono:size=10";
-          };
-	};
-      };
-    };
-    services = {
-      syncthing = {
-        enable = true;
-        tray.enable = true;
-      };
-    };
   };
 }
