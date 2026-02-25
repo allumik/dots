@@ -12,14 +12,6 @@
   ];
 
 
-  ## User accounts
-  users.users.allu = {
-    isNormalUser = true;
-    description = "Alvin Meltsov";
-    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "podman" ];
-  };
-
-
   ## Networking
   networking.hostName = "oldlenno";
   networking.networkmanager = {
