@@ -13,8 +13,8 @@ It's not pretty...
 
 ----
 
-`nixos/` - nixos configuration, most up to date stuff
+`conf_stash/` - a collection of configuration files from the before times.
 
-`home-manager/` - nix home-manager configuration, works on nixos and non-nixos
+`nixos/` - NixOS configuration, including integrated home-manager modules and custom development environments.
 
-`windows/` - outdated collection of windows confs and some helpful programs from few years ago
+`windows/` - Outdated collection of Windows configurations and some helpful programs.
