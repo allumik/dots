@@ -11,13 +11,13 @@
   environment.systemPackages = with pkgs; [
     # Utilities
     coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd hd-idle cachix libsixel
-    gh jq pixi uv dos2unix
+    jq pixi uv dos2unix
     # Development & Build
     gnumake cmake gcc cargo rustc tlp auto-cpufreq
     # Default terminal
     foot
     # CLI Tools
-    lnav parallel retry pigz unrar plocate nix-search-cli gitFull
+    lnav parallel retry pigz unrar plocate nix-search-cli gitFull gh
     # Monitoring
     s-tui stress htop
     # Media & Files
