@@ -100,6 +100,7 @@ for _, func in ipairs(later_setups) do later(func) end
 -- Some configuration after all the setups
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+vim.opt.clipboard = "unnamedplus"
 vim.opt.number = false
 vim.opt.relativenumber = false
 now(function() vim.cmd('colorscheme minischeme') end)
@@ -118,15 +119,15 @@ local map = vim.keymap.set
 
 map('n', '<leader>ff', ':Pick files<cr>', { silent = true })
 map('n', '<leader>fo', ':lua MiniFiles.open()<cr>', { silent = true })
-map('n', '<leader> ', ':Pick commands<cr>', { silent = true })
+map('n', '<leader> ',  ':Pick commands<cr>', { silent = true })
 map('n', '<leader>fr', ':Pick oldfiles<cr>', { silent = true })
-map('n', '<leader>s', ':Pick buf_lines<cr>', { silent = true })
+map('n', '<leader>s',  ':Pick buf_lines<cr>', { silent = true })
 map('n', '<leader>fs', ':Pick grep_live<cr>', { silent = true })
-map('n', '<leader>b', ':Pick buffers<cr>', { silent = true })
-map('n', '<leader>"', ':Pick registers<cr>', { silent = true })
+map('n', '<leader>b',  ':Pick buffers<cr>', { silent = true })
+map('n', '<leader>"',  ':Pick registers<cr>', { silent = true })
 
 map('x', '<leader>ts', ':<c-u>call slime#send_op(visualmode(), 1)<cr>', { silent = true })
 map('n', '<leader>tc', ':<c-u>call slime#send_cell()<cr>', { silent = true })
 
 map('n', '<leader>nn', ':lua require("kiwi").open_wiki_index("notes")<cr>', { silent = true })
-map('n', '<C-k>t', ':lua require("kiwi").todo.toggle()<cr>', { silent = true })
+map('n', '<C-k>t',     ':lua require("kiwi").todo.toggle()<cr>', { silent = true })
