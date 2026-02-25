@@ -4,6 +4,7 @@ This file outlines the general structure of the /etc/nixos/ configuration files.
 
 The general structure for nixos/ is as follows:
 
+```
 .  
 ├── flake.nix  
 ├── flake.lock  
@@ -23,6 +24,7 @@ The general structure for nixos/ is as follows:
     └── allu/  
         ├── home.nix  
         └── plasma.nix
+```
 
 The home-manager configurations are integrated directly into the host configurations via NixOS modules. User-specific settings reside in the users/ directory.
 
