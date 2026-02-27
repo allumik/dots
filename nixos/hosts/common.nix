@@ -25,6 +25,7 @@
     # Other GUI
     transmission_4-qt keepassxc gimp3-with-plugins
     eduvpn-client openvpn libreoffice-qt zotero thunderbird 
+    vscode.fhs
   ];
   fonts.packages = with pkgs; [
     # Font packs for compatibility
@@ -59,10 +60,6 @@
 
   programs = {
     nix-ld.enable = true; # might make your life easier with linked library adapter
-    vscode = {
-      enable = true;
-      package = pkgs.vscode.fhs;
-    };
   };
  
 
