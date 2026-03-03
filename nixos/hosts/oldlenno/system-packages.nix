@@ -2,10 +2,11 @@
 
 with pkgs;
 let 
-  py-env = python314.withPackages(ps: with ps; [
+  # Follow https://github.com/NixOS/nixpkgs/issues/475732 for Python 3.14
+  py-env = python313.withPackages(ps: with ps; [
     pip setuptools
     numpy numba pandas scipy scikit-learn # use containers for gpu torch
-    matplotlib seaborn altair # ipykernel euporie # https://github.com/NixOS/nixpkgs/issues/493614
+    matplotlib seaborn altair ipykernel euporie 
   ]);
   r-env = rWrapper.override{ packages = with rPackages; [
     # some deps for other packages
