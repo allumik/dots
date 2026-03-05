@@ -10,4 +10,4 @@ cmd bulkrename ${{
 
 # Map keys
 map R bulkrename
-map X $rm -ri $fx
+map X $rm -ri "$fx"
