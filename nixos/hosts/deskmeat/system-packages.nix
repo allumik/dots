@@ -7,6 +7,7 @@ let
     pip setuptools
     numpy numba pandas scipy scikit-learn # use containers for gpu torch
     matplotlib seaborn altair ipykernel euporie 
+    torchWithRocm
   ]);
 
   r-env = rWrapper.override{ packages = with rPackages; [
@@ -22,7 +23,7 @@ let
   pkgs_list = [
     # GUI Apps
     veracrypt gparted scarlett2 alsa-scarlett-gui qdigidoc
-    digikam audacity polychromatic omnissa-horizon-client calibre
+    digikam audacity polychromatic omnissa-horizon-client #calibre
     teams-for-linux
 
     # KDE account management & other stuff
@@ -46,12 +47,12 @@ let
     nixfmt html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
     noisetorch # noise reduction for mic
-    beets # music library manager # broken in unstable
+    # beets # music library manager # broken in unstable
     nextflow
     gemini-cli
 
     # AMD ROCm thingies - use docker containers for more up to date support
-    rocmPackages.amdsmi rocmPackages.rocm-core nvtopPackages.amd
+    rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr nvtopPackages.amd
 
     # DEV ENV from above
     py-env r-env
