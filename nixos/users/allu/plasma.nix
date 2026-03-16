@@ -16,9 +16,10 @@
         theme = "Bibata-Modern-Ice";
       };
       clickItemTo = "select";
-      wallpaper = ./confs/wall331.png;
-      wallpaperFillMode = "preserveAspectCrop"; # pad
-      wallpaperBackground.color = "44,81,80"; # R,G,B
+      wallpaperPlainColor = "44,81,80";
+      # wallpaper = "Commonality";
+      # wallpaperFillMode = "preserveAspectCrop"; # pad
+      # wallpaperBackground.color = "44,81,80"; # R,G,B
     };
 
     fonts = {

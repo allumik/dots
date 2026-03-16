@@ -10,8 +10,8 @@
   ## Core packages and services
   environment.systemPackages = with pkgs; [
     # Utilities
-    coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd hd-idle cachix libsixel
-    jq pixi uv dos2unix
+    coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd hd-idle ntfsprogs-plus cachix libsixel
+    jq pixi uv dos2unix 
     # Development & Build
     gnumake cmake gcc cargo rustc tlp auto-cpufreq
     # Default terminal
@@ -65,13 +65,13 @@
 
   ## Extras
   systemd.services = {
-    # Spin down HDDs after 10 minutes
+    # Spin down HDDs after 5 minutes
     hd-idle = {
       description = "External HD spin down daemon";
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${pkgs.hd-idle}/bin/hd-idle -i 600";
+        ExecStart = "${pkgs.hd-idle}/bin/hd-idle -i 300";
       };
     };
   };

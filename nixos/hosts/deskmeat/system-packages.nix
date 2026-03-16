@@ -23,8 +23,8 @@ let
   pkgs_list = [
     # GUI Apps
     veracrypt gparted scarlett2 alsa-scarlett-gui qdigidoc
-    digikam audacity polychromatic omnissa-horizon-client #calibre
-    teams-for-linux
+    digikam audacity polychromatic omnissa-horizon-client calibre
+    # teams-for-linux
 
     # KDE account management & other stuff
     kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
@@ -39,7 +39,7 @@ let
     discord gamma-launcher
 
     # Containers
-    fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose
+    fuse3 fuse-overlayfs qemu quickemu podman-tui podman-compose
 
     # Other Tools
     tesseract openconnect poppler poppler-utils wl-clipboard gdrive3 puddletag vial 
@@ -47,7 +47,7 @@ let
     nixfmt html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
     noisetorch # noise reduction for mic
-    # beets # music library manager # broken in unstable
+    beets # music library manager # broken in unstable
     nextflow
     gemini-cli
 
