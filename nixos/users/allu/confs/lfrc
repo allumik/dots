@@ -1,6 +1,7 @@
 set preview false
 set ratios 1
 set info perm:user:group:size:time
+set drawbox
 
 # Define a bulkrename command using vidir
 cmd bulkrename ${{
@@ -10,4 +11,4 @@ cmd bulkrename ${{
 
 # Map keys
 map R bulkrename
-map X $rm -ri "$fx"
+map X delete
