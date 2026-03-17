@@ -20,14 +20,17 @@ let
 
   pkgs_list = [
     # GUI Apps
-    veracrypt gparted qdigidoc teams-for-linux
+    veracrypt gparted qdigidoc
+
     # KDE stuff
     kdePackages.kcmutils kdePackages.kaccounts-providers kdePackages.kaccounts-integration
     kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
     kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras
+
     # Containers
-    fuse3 fuse-overlayfs qemu quickemu podman-desktop podman-tui podman-compose
+    fuse3 fuse-overlayfs qemu quickemu podman-tui podman-compose
     omnissa-horizon-client 
+
     # Other Tools
     openconnect wl-clipboard gdrive3 pandoc quarto texlive.combined.scheme-small
     nixfmt html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality

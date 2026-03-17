@@ -24,7 +24,6 @@ let
     # GUI Apps
     veracrypt gparted scarlett2 alsa-scarlett-gui qdigidoc
     digikam audacity polychromatic omnissa-horizon-client calibre
-    # teams-for-linux
 
     # KDE account management & other stuff
     kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
