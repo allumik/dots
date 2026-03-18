@@ -39,9 +39,9 @@
   };
   swapDevices = [ { device = "/dev/disk/by-uuid/2d83e3ce-fbfb-4be6-a504-6192f9b892e2"; } ];
 
-  # The additional WDC disk
+  # The additional WD green disk
   fileSystems."/mnt/data_main" = { 
-    device = "/dev/disk/by-uuid/b383c23f-a19e-4199-9eee-d899e6c979b7";
+    device = "/dev/disk/by-uuid/e84099b2-20d2-4b41-9d8b-c3faf311c719";
     fsType = "ext4";
   };
 
