@@ -8,9 +8,10 @@
     overrideConfig = true; # default all else
 
     workspace = {
-      theme = "commonalitysol";
-      lookAndFeel = "org.magpie.commsol.desktop"; # not used with windowDecor
+      theme = "reactplus";
+      lookAndFeel = "org.magpie.reactplus.desktop"; # not used with windowDecor
       iconTheme = "Memphis98";
+      colorScheme = "CommonalitySol";
       cursor = {
         size = 24;
         theme = "Bibata-Modern-Ice";
@@ -20,6 +21,16 @@
       # wallpaper = "Commonality";
       # wallpaperFillMode = "preserveAspectCrop"; # pad
       # wallpaperBackground.color = "44,81,80"; # R,G,B
+    };
+
+    configFile."kwinrc" = {
+      "org.kde.kdecoration2" = {
+      # Use "None" to strip all side/bottom borders
+      "BorderSize" = "Tiny";
+      "BorderSizeAuto" = false;
+      "ButtonsOnLeft" = "MF";
+      "ButtonsOnRight" = "HIAX";
+      };
     };
 
     fonts = {
