@@ -67,6 +67,7 @@ in
 
     zsh = {
       enable = true;
+      enableCompletion = true;
 
       autosuggestion.enable = true;
       history.extended = true;
@@ -74,6 +75,7 @@ in
       profileExtra = xdgDataDirs;
       sessionVariables = sessvars;
       shellAliases = aliases;
+
       plugins = [
         {
           name = "fast-syntax-highlighting";
@@ -97,11 +99,7 @@ in
         theme = "nicoulaj";
         plugins = [
           "fzf"
-          "git"
-          "git-extras"
-          "ssh-agent"
           "extract"
-          "web-search"
         ];
       };
     };
