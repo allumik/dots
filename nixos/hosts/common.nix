@@ -17,7 +17,7 @@
     # Default terminal
     foot
     # CLI Tools
-    lnav parallel retry pigz unrar plocate nix-search-cli gitFull gh
+    lnav parallel retry pigz unrar plocate nix-search-cli gitFull gh miller
     # Monitoring
     s-tui stress htop
     # Media & Files
