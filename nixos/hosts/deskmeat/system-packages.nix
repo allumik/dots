@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 with pkgs;
 let 
@@ -49,6 +49,7 @@ let
     beets # music library manager # broken in unstable
     nextflow
     gemini-cli
+    dzgui
 
     # AMD ROCm thingies - use docker containers for more up to date support
     rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr nvtopPackages.amd
