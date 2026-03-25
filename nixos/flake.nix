@@ -27,7 +27,6 @@
     };
   };
 
-  # nixpkgs-unstable,
   outputs = { 
     self, 
     nixpkgs, 

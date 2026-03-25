@@ -21,7 +21,6 @@
   # Intel GPU and CPU related
   boot.kernelModules = [ "kvm-intel"  ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ]; 
-  boot.initrd.kernelModules = [ ];
 
 
   # Filesystems and Swap
@@ -38,6 +37,13 @@
     options = [ "fmask=0077" "dmask=0077" ]; 
   };
   swapDevices = [ { device = "/dev/disk/by-uuid/2d83e3ce-fbfb-4be6-a504-6192f9b892e2"; } ];
+  # enable zswap cache
+  boot.kernelParams = [
+    "zswap.enabled=1" # enables zswap
+    "zswap.zpool=zsmalloc" # recommended to set
+    "zswap.max_pool_percent=25" # maximum percentage of RAM that zswap is allowed to use
+    "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
+  ];
 
   # The additional WD green disk
   fileSystems."/mnt/data_main" = { 
