@@ -1,6 +1,6 @@
 # overlays/default.nix
 
-self: super:
+{ dzgui-flake }: self: super:
 
 {
   # Override for conda to include `which`
@@ -8,6 +8,7 @@ self: super:
   # conda = super.conda.override {
     # extraPkgs = [ super.which ];
   # };
+  dzgui = dzgui-flake.packages.${super.system}.default;
 
   # This adds a new package 'vis-unstable'
   vis-git =

@@ -31,7 +31,6 @@
   # also used for mounting LVM volumes
   boot.initrd.kernelModules = [ "dm-cache" "dm-cache-smq" "dm-cache-mq" "dm-cache-cleaner" ];
 
-
   # Filesystems and Swap
   fileSystems."/" = { device = "/dev/disk/by-uuid/fae35e59-edc7-41b1-9d8c-8cc5bead8d11"; fsType = "ext4"; };
   fileSystems."/boot" = { device = "/dev/disk/by-uuid/D63B-498A"; fsType = "vfat"; options = [ "fmask=0022" "dmask=0022" ]; };
@@ -40,11 +39,13 @@
   swapDevices = [ { device = "/dev/nvme0n1p3"; } ];
   boot.resumeDevice = "/dev/nvme0n1p3";
   boot.kernel.sysctl = { "vm.swappiness" = 10; }; # lower it from 60 as we have loads of RAM
-  # Enable zram in RAM compression for large memory loads, defaults are: 50% RAM; zstd
-  zramSwap = {
-    enable = true;
-    memoryPercent = 75;
-  };
+  # Enable zramSwap only in RAM compression for large memory loads, defaults are: 50% RAM; zstd
+  boot.kernelParams = [
+    "zswap.enabled=1" # enables zswap
+    "zswap.max_pool_percent=50" # maximum percentage of RAM that zswap is allowed to use
+    "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
+    "zswap.zpool=zsmalloc"
+  ];
 
   # Hardware Support
   hardware = {
