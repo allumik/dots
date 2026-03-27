@@ -100,6 +100,13 @@ in
         plugins = [
           "fzf"
           "extract"
+	  "gitfast"
+	  "gh"
+	  "rsync"
+	  "rclone"
+	  "tmux"
+	  "python"
+	  "uv"
         ];
       };
     };
