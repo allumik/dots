@@ -17,7 +17,7 @@ let
     la      = "ls -A";
     ll      = "${pkgs.eza}/bin/eza -alF";
 
-    tux     = "${pkgs.tmux}/bin/tmux new-session -A -s main";
+    zl     = "${pkgs.zellij}/bin/zellij";
     of      = "xdg-open '$(fzf --preview '${pkgs.bat} {}')'";
     es      = "$EDITOR '$(fzf --preview '${pkgs.bat} {}')'";
 
@@ -104,7 +104,6 @@ in
 	  "gh"
 	  "rsync"
 	  "rclone"
-	  "tmux"
 	  "python"
 	  "uv"
         ];

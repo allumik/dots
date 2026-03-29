@@ -6,7 +6,7 @@
   # Import and source other configuration files
   imports = [
     ./confs/shell.nix
-    ./confs/tmux.nix
+    ./confs/zellij.nix
   ];
 
   xdg = {
