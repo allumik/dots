@@ -30,8 +30,7 @@
     swap_tiled_layout name="vertical" {
       ui max_panes=4 {
         pane split_direction="vertical" {
-          pane
-          pane { children; }
+          children
         }
       }
       ui max_panes=7 {
