@@ -23,25 +23,26 @@ add({ source = 'yousefhadder/markdown-plus.nvim' })
 
 -- Safely execute at startup
 local now_setups = {
+  function() vim.cmd('colorscheme minischeme') end,
   function() require('mini.basics').setup() end, 
   function() require('mini.bracketed').setup() end, 
-  function() require('mini.completion').setup() end,
   
   -- use ascii so that it works with anything
   function() require('mini.icons').setup({ style = 'ascii' }) end,
   function() require('mini.statusline').setup({ use_icons = false }) end,
-  function() require('mini.hipatterns').setup() end, 
-  function() require('mini.cursorword').setup() end, 
-  function() require('mini.indentscope').setup() end, 
   function() require('mini.starter').setup() end,
 }
 
 -- Safely execute lazily
 local later_setups = {
+  function() require('mini.completion').setup() end,
+  function() require('mini.hipatterns').setup() end, 
+  function() require('mini.cursorword').setup() end, 
+  function() require('mini.indentscope').setup() end, 
   function() require('mini.bufremove').setup() end,
   function() require('mini.diff').setup() end,
   function() require('mini.files').setup() end,
-  -- function() require('mini.git').setup() end,
+  function() require('mini.git').setup() end,
   function() require('mini.sessions').setup() end,
   function() require('mini.visits').setup() end,
 
@@ -72,12 +73,15 @@ local later_setups = {
         { mode = 'x', keys = '<C-k>' },
         { mode = 'n', keys = 'g' },
         { mode = 'x', keys = 'g' },
-      }
     })
   end,
   function() require('mini.pick').setup() end,
   function() require('mini.notify').setup() end,
-  function() require('markdown-plus').setup() end,
+  function() 
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = 'markdown',
+      callback = function() require('markdown-plus').setup() end,
+  }) end,
   function() require('kiwi').setup({{ name = "notes", path = "/home/allu/Documents/Notes/notes" }}) end,
 }
 
@@ -92,7 +96,9 @@ vim.g.maplocalleader = "\\"
 vim.opt.clipboard = "unnamedplus"
 vim.opt.number = false
 vim.opt.relativenumber = false
-now(function() vim.cmd('colorscheme minischeme') end)
+vim.g.markdown_fenced_languages = { 
+  "ts=typescript", "python", "bash", "zsh", "lua", "r", "java", "kotlin", "nix"
+}
 
 -- Plugin configurations
 vim.g.slime_target = "zellij"
