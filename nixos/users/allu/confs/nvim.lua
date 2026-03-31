@@ -18,10 +18,8 @@ require('mini.deps').setup({ path = { package = path_package } })
 -- Install plugins
 local add = MiniDeps.add
 add({ source = 'jpalardy/vim-slime' })
-add({
-  source = 'serenevoid/kiwi.nvim',
-  checkout = '40f32ad364b5c432b1b6102bf771051b2cb2ffcc'
-})
+add({ source = 'serenevoid/kiwi.nvim' })
+add({ source = 'yousefhadder/markdown-plus.nvim' })
 
 -- Safely execute at startup
 local now_setups = {
@@ -29,6 +27,7 @@ local now_setups = {
   function() require('mini.bracketed').setup() end, 
   function() require('mini.completion').setup() end,
   
+  -- use ascii so that it works with anything
   function() require('mini.icons').setup({ style = 'ascii' }) end,
   function() require('mini.statusline').setup({ use_icons = false }) end,
   function() require('mini.hipatterns').setup() end, 
@@ -61,24 +60,12 @@ local later_setups = {
       }
     })
   end, 
-  function()
-    require('mini.jump').setup({
-      mappings = {
-        forward_till = '',
-        backward_till = '',
-      }
-    })
-  end, 
-  function()
-    require('mini.pairs').setup({
-      markdown = true,
-      skip_unbalanced = true
-    })
-  end, 
-  function() require('mini.surround').setup() end, 
+  function() require('mini.jump').setup({ mappings = { forward_till = '', backward_till = '', } }) end, 
+  function() require('mini.pairs').setup({ markdown = true, skip_unbalanced = true }) end, 
+  function() require('mini.surround').setup({ respect_selection_type = true, }) end, 
   function()
     require('mini.clue').setup({
-      triggers = {
+      triggers = 
         { mode = 'n', keys = '<leader>' },
         { mode = 'x', keys = '<leader>' },
         { mode = 'n', keys = '<C-k>' },
@@ -90,6 +77,8 @@ local later_setups = {
   end,
   function() require('mini.pick').setup() end,
   function() require('mini.notify').setup() end,
+  function() require('markdown-plus').setup() end,
+  function() require('kiwi').setup({{ name = "notes", path = "/home/allu/Documents/Notes/notes" }}) end,
 }
 
 -- And call them
@@ -111,8 +100,6 @@ vim.g.slime_bracketed_paste = 1
 vim.g.slime_no_mappings = 1
 vim.g.slime_dont_ask_default = 1
 vim.g.slime_default_config = { socket_name = "default", target_pane = "{last}" }
-
-require('kiwi').setup({{ name = "notes", path = "/home/allu/Documents/Notes/notes" }})
 
 -- Keyboard shortcuts
 local map = vim.keymap.set
