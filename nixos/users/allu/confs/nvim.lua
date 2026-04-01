@@ -76,6 +76,7 @@ local later_setups = {
     })
   end,
   function() require('mini.pick').setup() end,
+  function() require('mini.extra').setup() end,
   function() require('mini.notify').setup() end,
   function() 
     vim.api.nvim_create_autocmd('FileType', {
