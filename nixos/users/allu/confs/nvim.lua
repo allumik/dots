@@ -120,8 +120,8 @@ map('n', '<leader>fs', ':Pick grep_live<cr>', { silent = true })
 map('n', '<leader>b',  ':Pick buffers<cr>', { silent = true })
 map('n', '<leader>"',  ':Pick registers<cr>', { silent = true })
 
-map('x', '<leader>ts', ':<c-u>call slime#send_op(visualmode(), 1)<cr>', { silent = true })
-map('n', '<leader>tc', ':<c-u>call slime#send_cell()<cr>', { silent = true })
+map('x', '<leader>ts', '<Plug>SlimeRegionSend', { silent = true })
+map('n', '<leader>ts', '<Plug>SlimeParagraphSend', { silent = true })
 
 map('n', '<leader>nn', ':lua require("kiwi").open_wiki_index("notes")<cr>', { silent = true })
 map('n', '<C-k>t',     ':lua require("kiwi").todo.toggle()<cr>', { silent = true })
