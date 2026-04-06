@@ -32,6 +32,7 @@
     spice-vdagentd.enable = true; # Necessary for the QEMU spice
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
     lact.enable = true; # Manage your GPU from 25.11 onward
+    tailscale.enable = true;
     pcscd = {
       enable = true; # smard card reader support
       plugins = [ pkgs.ccid ];
