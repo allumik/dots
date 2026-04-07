@@ -32,10 +32,17 @@
     qemuGuest.enable = true; # Enable QEMU
     spice-vdagentd.enable = true; # Necessary for the QEMU spice
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
+    openssh.enable = true;
+    tailscale.enable = true;
     pcscd = { 
       enable = true; # smard card reader support
       plugins = [ pkgs.ccid ];
     };
+    # keep running unless shut down manually
+    logind.settings.Login.extraConfig = ''
+      IdleAction=ignore
+      HandleLidSwitch=ignore
+    '';
   };
   virtualisation = {
     containers.enable = true;

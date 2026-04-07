@@ -93,18 +93,6 @@
       };
     };
 
-    powerdevil.general.pausePlayersOnSuspend = false;
-    powerdevil.AC = {
-      autoSuspend.action = "sleep";
-      autoSuspend.idleTimeout = 10800; # 3h until sleeps
-      dimDisplay.enable = true;
-      dimDisplay.idleTimeout = 720;
-      turnOffDisplay.idleTimeout = 900;
-      powerButtonAction = "sleep";
-      powerProfile = "performance";
-    };
-
-
     # check out examples in https://github.com/nix-community/plasma-manager/blob/trunk/examples/home.nix
     # Here I have a simple vertical Windows style panel with a app launcher, manager, systray and a clock
     panels = [

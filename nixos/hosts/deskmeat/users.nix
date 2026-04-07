@@ -39,7 +39,28 @@
           tray.enable = true;
         };
       };
-    };
 
+      # power configuration for user
+      plasma = {
+    	powerdevil.general.pausePlayersOnSuspend = false;
+        powerdevil.AC = {
+          autoSuspend.action = "sleep";
+          autoSuspend.idleTimeout = 10800; # 3h until sleeps
+          dimDisplay.enable = true;
+          dimDisplay.idleTimeout = 720;
+          turnOffDisplay.idleTimeout = 900;
+	  powerProfile = "performance";
+	  powerButtonAction = "sleep";
+        };
+	# no need for battery management, does not have one
+  
+        # Independent configuration for session security
+        kscreenlocker = {
+          autoLock = true;
+          timeout = 5;
+          lockOnResume = true;
+        };
+      };
+    };
   };
 }
