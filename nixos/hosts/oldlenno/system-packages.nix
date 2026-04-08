@@ -32,7 +32,7 @@ let
     omnissa-horizon-client 
 
     # Other Tools
-    openconnect wl-clipboard gdrive3 pandoc quarto texlive.combined.scheme-small
+    openconnect wl-clipboard gdrive3 pandoc quarto texlive.combined.scheme-small tail-tray
     nixfmt html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
     gemini-cli
