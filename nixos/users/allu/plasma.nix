@@ -17,10 +17,10 @@
         theme = "Bibata-Modern-Ice";
       };
       clickItemTo = "select";
-      wallpaperPlainColor = "44,81,80";
-      # wallpaper = "Commonality";
-      # wallpaperFillMode = "preserveAspectCrop"; # pad
-      # wallpaperBackground.color = "44,81,80"; # R,G,B
+      # wallpaperPlainColor = "44,81,80";
+      wallpaper = ./art002e009287.jpg;
+      wallpaperFillMode = "preserveAspectCrop"; # pad
+      wallpaperBackground.color = "0,0,0"; # R,G,B
     };
 
     configFile."kwinrc" = {
