@@ -97,7 +97,7 @@
     # Here I have a simple vertical Windows style panel with a app launcher, manager, systray and a clock
     panels = [
       { 
-        location = "left";
+        location = "bottom";
         alignment = "center";
         floating = false;
         height = 36; # different screens, different resolutions...
@@ -120,7 +120,7 @@
           "org.kde.plasma.marginsseparator"
           {
             iconTasks = {
-              iconsOnly = true;
+              iconsOnly = false;
               appearance.fill = true;
               appearance.showTooltips = false;
               appearance.iconSpacing = "small";
