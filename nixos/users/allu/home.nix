@@ -7,6 +7,7 @@
   imports = [
     ./confs/shell.nix
     ./confs/zellij.nix
+    ./confs/plasma.nix
   ];
 
   xdg = {

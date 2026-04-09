@@ -3,7 +3,7 @@
 let
   sessvars = {
     # put dotfiles first!
-    # LC_COLLATE = "C";
+    LC_COLLATE = "C";
   };
 
   ## for both zsh and bash

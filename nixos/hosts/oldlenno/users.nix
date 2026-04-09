@@ -8,10 +8,7 @@
     extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "podman" ];
   };
   home-manager.users.allu = {
-    imports = [
-      ../../users/allu/home.nix
-      ../../users/allu/plasma.nix # Plasma
-    ];
+    imports = [ ../../users/allu/home.nix ];
     programs = {
       brave = {
         enable = true;

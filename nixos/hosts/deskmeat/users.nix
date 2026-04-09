@@ -11,10 +11,7 @@
     # Add other users here
 
     allu = {
-      imports = [
-        ../../users/allu/home.nix
-        ../../users/allu/plasma.nix # Plasma
-      ];
+      imports = [ ../../users/allu/home.nix ];
       programs = {
         brave = {
           enable = true;
