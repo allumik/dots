@@ -52,6 +52,10 @@
     graphics = { 
       enable = true;
       package = pkgs.mesa;  
+      extraPackages = with pkgs; [
+	rocmPackages.clr
+	rocmPackages.clr.icd
+      ];
     };
     amdgpu.overdrive.enable = true;
     enableAllFirmware = true;

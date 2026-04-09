@@ -11,10 +11,10 @@
       theme = "reactplus";
       lookAndFeel = "org.magpie.reactplus.desktop"; # not used with windowDecor
       iconTheme = "Memphis98";
-      colorScheme = "ReactionaryTravel";
+      colorScheme = "ReactionaryLeaves";
       cursor = {
-        size = 26;
-        theme = "windows-cursors";
+        size = 24;
+        theme = "Hackneyed";
       };
       clickItemTo = "select";
       # wallpaperPlainColor = "44,81,80";

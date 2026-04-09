@@ -52,7 +52,7 @@ let
     dzgui
 
     # AMD ROCm thingies - use docker containers for more up to date support
-    rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.clr nvtopPackages.amd
+    rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.rocm-device-libs nvtopPackages.amd
 
     # DEV ENV from above
     py-env r-env
