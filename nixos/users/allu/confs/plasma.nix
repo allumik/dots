@@ -11,7 +11,7 @@
       theme = "reactplus";
       lookAndFeel = "org.magpie.reactplus.desktop"; # not used with windowDecor
       iconTheme = "Memphis98";
-      colorScheme = "CommonalitySol";
+      colorScheme = "Reactionary-Travel";
       cursor = {
         size = 24;
         theme = "Bibata-Modern-Ice";
@@ -101,7 +101,7 @@
         alignment = "center";
         floating = false;
         height = 36; # different screens, different resolutions...
-        hiding = "normalpanel";
+        hiding = "dodgewindows";
         lengthMode = "fill";
         opacity = "opaque";
         widgets = [
