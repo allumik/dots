@@ -11,10 +11,10 @@
       theme = "reactplus";
       lookAndFeel = "org.magpie.reactplus.desktop"; # not used with windowDecor
       iconTheme = "Memphis98";
-      colorScheme = "Reactionary-Travel";
+      colorScheme = "ReactionaryTravel";
       cursor = {
-        size = 24;
-        theme = "Bibata-Modern-Ice";
+        size = 26;
+        theme = "windows-cursors";
       };
       clickItemTo = "select";
       # wallpaperPlainColor = "44,81,80";
@@ -141,7 +141,7 @@
           "org.kde.plasma.marginsseparator"
           "org.kde.plasma.systemtray"
           "org.kde.plasma.marginsseparator"
-          "org.kde.plasma.analogclock"
+          "org.kde.plasma.digitalclock"
         ];
       }
     ];
