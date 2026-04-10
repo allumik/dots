@@ -40,6 +40,8 @@
     libssh libxml2 libpng libxslt libtiff cairo  # R needs this
     # terminal bling
     zsh zsh-nix-shell zsh-fast-syntax-highlighting zsh-fzf-tab
+    # for the cursor theme
+    hackneyed
   ];
 
     # You should not change this value, even if you update Home Manager.
