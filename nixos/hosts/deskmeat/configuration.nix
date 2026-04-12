@@ -14,6 +14,11 @@
 
   ## Networking
   networking.hostName = "deskmeat";
+  # Trust the Tailscale interface in the firewall
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+  # Wake-on-LAN Configuration
+  # Replace "enp3s0" with your actual ethernet interface name (find it using 'ip a')
+  networking.interfaces.wlp3s0.wakeOnLan.enable = true;
   networking.networkmanager = {
     enable = true;
     wifi.powersave = false; # set it to false just to be sure that it works
@@ -32,7 +37,10 @@
     spice-vdagentd.enable = true; # Necessary for the QEMU spice
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
     lact.enable = true; # Manage your GPU from 25.11 onward
-    tailscale.enable = true;
+    tailscale = {
+      enable = true;
+      extraUpFlags = [ "--ssh" ];
+    };
     pcscd = {
       enable = true; # smard card reader support
       plugins = [ pkgs.ccid ];

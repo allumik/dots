@@ -3,6 +3,26 @@
 {
   # imports = [<plasma-manager/modules>];
 
+  programs.rofi = {
+    enable = true;
+    font = "Lucida Sans 10";
+    theme = builtins.toFile "powershell-dmenu.rasi" ''
+      @theme "dmenu"
+
+      * {
+        background-color: #012456;
+        text-color: #FFFFFF;
+      }
+
+      element selected {
+        background-color: #FFFFCC;
+        text-color: #012456;
+      }
+    '';
+    plugins = with pkgs; [ rofi-calc ];
+    terminal = "\${pkgs.foot}/bin/foot";
+  };
+
   programs.plasma = {
     enable = true; # enable and configure plasma settings
     overrideConfig = true; # default all else
@@ -18,18 +38,21 @@
       };
       clickItemTo = "select";
       # wallpaperPlainColor = "44,81,80";
-      wallpaper = ./art002e009287.jpg;
-      wallpaperFillMode = "preserveAspectCrop"; # pad
+      wallpaper = ./art002e012279.jpg;
+      wallpaperFillMode = "pad"; # preserveAspectCrop
       wallpaperBackground.color = "0,0,0"; # R,G,B
     };
 
     configFile."kwinrc" = {
       "org.kde.kdecoration2" = {
-      # Use "None" to strip all side/bottom borders
-      "BorderSize" = "Tiny";
-      "BorderSizeAuto" = false;
-      "ButtonsOnLeft" = "MF";
-      "ButtonsOnRight" = "HIAX";
+        # Use "None" to strip all side/bottom borders
+        "BorderSize" = "Tiny";
+        "BorderSizeAuto" = false;
+      };
+      "TabBox" = {
+        # 'informative' or 'text' layouts provide a cleaner, list-based UI
+        "LayoutName" = "informative"; 
+        "ShowDesktopMode" = 1;
       };
     };
 
@@ -41,10 +64,30 @@
       menu = { family = "Lucida Sans"; pointSize = 10; };
       windowTitle = { family = "Fixedsys Excelsior 3.01"; pointSize = 11; };
     };
+
+    hotkeys.commands = {
+      "rofi-app" = {
+        name = "Rofi App Launcher";
+        key = "Alt+Space";
+        command = "rofi -show drun";
+      };
+    };
     
     shortcuts = {
+      "services/plasma-manager-commands.desktop" = {
+        "rofi-app" = "Meta+Space";
+        "rofi-window" = "Meta+Tab";
+      };
+      "org.kde.krunner.desktop" = {
+        "_launch" = [ ];
+      };
+      "krunner.desktop" = {
+        "_launch" = [ ];
+      };
+      # plasmashell = {
+      #   "activate application launcher" = [ ];
+      # };
       kwin = {
-        "Grid View" = "Meta+Tab";
         "Window Fullscreen" = "Meta+Shift+M";
         "Window Maximize" = "Meta+M";
         "Window Close" = "Meta+Q";
@@ -74,8 +117,8 @@
         translucency.enable = false;
         windowOpenClose.animation = "off";
       };
-      titlebarButtons.left = [ "more-window-actions" "keep-above-windows" ];
-      titlebarButtons.right = [ "help" "minimize" "maximize" "close" ];
+      titlebarButtons.left = [ ];
+      titlebarButtons.right = [ "minimize" "keep-above-windows" "maximize" "close" ];
     };
 
     configFile = {
@@ -94,54 +137,43 @@
     };
 
     # check out examples in https://github.com/nix-community/plasma-manager/blob/trunk/examples/home.nix
-    # Here I have a simple vertical Windows style panel with a app launcher, manager, systray and a clock
+    # Here I have a simple vertical mac style menu panel with a app launcher, manager, systray and a clock
     panels = [
       { 
-        location = "bottom";
+        location = "top";
         alignment = "center";
         floating = false;
-        height = 36; # different screens, different resolutions...
-        hiding = "dodgewindows";
+        height = 28; # different screens, different resolutions...
+        hiding = "dodgewindows"; # normalpanel
         lengthMode = "fill";
         opacity = "opaque";
         widgets = [
+          "org.kde.plasma.marginsseparator"
           {
             kicker = {
               behavior.sortAlphabetically = false;
-              behavior.flattenCategories = false;
+              behavior.flattenCategories = true;
               behavior.showIconsOnRootLevel = false;
-              categories.show.recentApplications = true;
-              categories.show.recentFiles = true;
+              categories.show.recentApplications = false;
+              categories.show.recentFiles = false;
               categories.order = "recentFirst";
-              search.alignResultsToBottom = true;
-              search.expandSearchResults = true;
+              search.alignResultsToBottom = false;
+              search.expandSearchResults = false;
             }; 
           }
+	  {
+	    name = "org.kde.plasma.windowlist";
+	    config.General.showIcon = false;
+	  }
           "org.kde.plasma.marginsseparator"
-          {
-            iconTasks = {
-              iconsOnly = false;
-              appearance.fill = true;
-              appearance.showTooltips = false;
-              appearance.iconSpacing = "small";
-              appearance.rows.multirowView = "never";
-              behavior.sortingMethod = "manually";
-              behavior.grouping.method = "byProgramName";
-              behavior.grouping.clickAction = "showTextualList";
-              launchers = [
-                # "preferred://browser" # does not behave well
-                "applications:brave-browser.desktop"
-                "applications:org.kde.dolphin.desktop"
-                "applications:foot.desktop"
-                "applications:thunderbird.desktop"
-                "applications:org.keepassxc.KeePassXC.desktop"
-              ];
-            };
-          }
-          "org.kde.plasma.marginsseparator"
+	  "org.kde.plasma.appmenu"
+	  "org.kde.plasma.panelspacer"
           "org.kde.plasma.systemtray"
           "org.kde.plasma.marginsseparator"
-          "org.kde.plasma.digitalclock"
+          {
+            name = "org.kde.plasma.digitalclock";
+            config.Appearance.showDate = false;
+          }
         ];
       }
     ];
