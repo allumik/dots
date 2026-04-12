@@ -3,26 +3,6 @@
 {
   # imports = [<plasma-manager/modules>];
 
-  programs.rofi = {
-    enable = true;
-    font = "Lucida Sans 10";
-    theme = builtins.toFile "powershell-dmenu.rasi" ''
-      @theme "dmenu"
-
-      * {
-        background-color: #012456;
-        text-color: #FFFFFF;
-      }
-
-      element selected {
-        background-color: #FFFFCC;
-        text-color: #012456;
-      }
-    '';
-    plugins = with pkgs; [ rofi-calc ];
-    terminal = "\${pkgs.foot}/bin/foot";
-  };
-
   programs.plasma = {
     enable = true; # enable and configure plasma settings
     overrideConfig = true; # default all else
@@ -65,28 +45,7 @@
       windowTitle = { family = "Fixedsys Excelsior 3.01"; pointSize = 11; };
     };
 
-    hotkeys.commands = {
-      "rofi-app" = {
-        name = "Rofi App Launcher";
-        key = "Alt+Space";
-        command = "rofi -show drun";
-      };
-    };
-    
     shortcuts = {
-      "services/plasma-manager-commands.desktop" = {
-        "rofi-app" = "Meta+Space";
-        "rofi-window" = "Meta+Tab";
-      };
-      "org.kde.krunner.desktop" = {
-        "_launch" = [ ];
-      };
-      "krunner.desktop" = {
-        "_launch" = [ ];
-      };
-      # plasmashell = {
-      #   "activate application launcher" = [ ];
-      # };
       kwin = {
         "Window Fullscreen" = "Meta+Shift+M";
         "Window Maximize" = "Meta+M";
