@@ -58,6 +58,7 @@
           enable = true;
           tray.enable = true;
         };
+	tailscale-systray.enable = true;
       };
     };
   };
