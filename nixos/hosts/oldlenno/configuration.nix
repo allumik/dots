@@ -33,7 +33,10 @@
     spice-vdagentd.enable = true; # Necessary for the QEMU spice
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
     openssh.enable = true;
-    tailscale.enable = true;
+    tailscale = {
+      enable = true;
+      extraUpFlags = [ "--ssh" ];
+    };
     pcscd = { 
       enable = true; # smard card reader support
       plugins = [ pkgs.ccid ];
