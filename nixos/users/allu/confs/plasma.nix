@@ -29,6 +29,7 @@
         "BorderSize" = "Tiny";
         "BorderSizeAuto" = false;
       };
+      # TODO: find out how to style the app switcher
       "TabBox" = {
         # 'informative' or 'text' layouts provide a cleaner, list-based UI
         "LayoutName" = "informative"; 
