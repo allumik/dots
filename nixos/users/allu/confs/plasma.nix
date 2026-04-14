@@ -22,6 +22,7 @@
       wallpaperFillMode = "pad"; # preserveAspectCrop
       wallpaperBackground.color = "0,0,0"; # R,G,B
     };
+    kscreenlocker.appearance.wallpaperPlainColor = "44,81,80";
 
     configFile."kwinrc" = {
       "org.kde.kdecoration2" = {
@@ -31,9 +32,7 @@
       };
       # TODO: find out how to style the app switcher
       "TabBox" = {
-        # 'informative' or 'text' layouts provide a cleaner, list-based UI
-        "LayoutName" = "informative"; 
-        "ShowDesktopMode" = 1;
+        "LayoutName" = "Compact"; 
       };
     };
 
@@ -103,7 +102,7 @@
         location = "top";
         alignment = "center";
         floating = false;
-        height = 28; # different screens, different resolutions...
+        height = 32; # different screens, different resolutions...
         hiding = "dodgewindows"; # normalpanel
         lengthMode = "fill";
         opacity = "opaque";

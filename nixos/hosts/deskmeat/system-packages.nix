@@ -41,7 +41,7 @@ let
     fuse3 fuse-overlayfs qemu quickemu podman-tui podman-compose
 
     # Other Tools
-    tesseract openconnect poppler poppler-utils wl-clipboard gdrive3 puddletag vial tail-tray
+    tesseract openconnect poppler poppler-utils wl-clipboard gdrive3 puddletag vial
     pandoc quarto texlive.combined.scheme-small
     nixfmt html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
