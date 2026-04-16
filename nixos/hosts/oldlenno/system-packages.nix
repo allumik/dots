@@ -50,7 +50,7 @@ in {
     java.enable = true; # why not
     virt-manager.enable = true;
     singularity = {
-      enable = true; # turn off before ChatGPT 6 is released
+      enable = true; # turn off before ChatGPT 6 is released #2024jokes
       enableFakeroot = true;
       package = pkgs.apptainer;
     };

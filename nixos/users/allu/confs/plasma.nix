@@ -1,7 +1,35 @@
 { config, pkgs, ... }:
 
 {
-  # imports = [<plasma-manager/modules>];
+  programs.fuzzel = {
+    enable = true;
+    settings = {
+      main = {
+        font = "Lucida Sans:size=10";
+        anchor = "top";
+	vertical-pad = 5;
+	horizontal-pad = 5;
+	lines = 4;
+      };
+      border = {
+        width = 3;
+	radius = 0;
+      };
+      colors = {
+        background = "1e1e2eff";
+        text = "cdd6f4ff";
+        prompt = "bac2deff";
+        placeholder = "7f849cff";
+        input = "cdd6f4ff";
+        match = "89b4faff";
+        selection = "585b70ff";
+        selection-text = "cdd6f4ff";
+        selection-match = "89b4faff";
+        counter = "7f849cff";
+        border = "89b4faff";
+      };
+    };
+  };
 
   programs.plasma = {
     enable = true; # enable and configure plasma settings
@@ -30,9 +58,12 @@
         "BorderSize" = "Tiny";
         "BorderSizeAuto" = false;
       };
-      # TODO: find out how to style the app switcher
       "TabBox" = {
         "LayoutName" = "Compact"; 
+	"ShowTabBox" = false;
+      };
+      "Windows" = {
+	"Placement" = "Smart";
       };
     };
 
@@ -45,7 +76,25 @@
       windowTitle = { family = "Fixedsys Excelsior 3.01"; pointSize = 11; };
     };
 
+    hotkeys.commands = {
+      "fuzzel-app" = {
+        name = "Fuzzel App Launcher";
+        key = "Alt+Space";
+        command = "fuzzel";
+      };
+    };
+
     shortcuts = {
+      # enable the fuzzel app, and disable the krunner
+      "services/plasma-manager-commands.desktop" = {
+        "fuzzel-app" = "Meta+Space";
+      };
+      "org.kde.krunner.desktop" = {
+        "_launch" = [ ];
+      };
+      "krunner.desktop" = {
+        "_launch" = [ ];
+      };
       kwin = {
         "Window Fullscreen" = "Meta+Shift+M";
         "Window Maximize" = "Meta+M";
@@ -93,6 +142,12 @@
           TerminalService = "foot.desktop";
         };
       };
+      "klaunchrc" = {
+        Feedback = {
+          BusyCursor = false;
+          TaskbarButton = false;
+        };
+      };
     };
 
     # check out examples in https://github.com/nix-community/plasma-manager/blob/trunk/examples/home.nix
@@ -120,6 +175,7 @@
               search.expandSearchResults = false;
             }; 
           }
+          "org.kde.plasma.marginsseparator"
 	  {
 	    name = "org.kde.plasma.windowlist";
 	    config.General.showIcon = false;
