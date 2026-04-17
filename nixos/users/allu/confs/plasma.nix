@@ -182,13 +182,30 @@
             }; 
           }
           "org.kde.plasma.marginsseparator"
-	  {
-	    name = "org.kde.plasma.windowlist";
-	    config.General.showIcon = false;
-	  }
+          {
+            iconTasks = {
+              iconsOnly = true;
+              appearance.fill = true;
+              appearance.showTooltips = false;
+              appearance.iconSpacing = "small";
+              appearance.rows.multirowView = "never";
+              behavior.sortingMethod = "manually";
+              behavior.grouping.method = "byProgramName";
+              behavior.grouping.clickAction = "showTextualList";
+              launchers = [
+                # "preferred://browser" # does not behave well
+                "applications:brave-browser.desktop"
+                "applications:org.kde.dolphin.desktop"
+                "applications:foot.desktop"
+                "applications:thunderbird.desktop"
+                "applications:org.keepassxc.KeePassXC.desktop"
+              ];
+            };
+          }
           "org.kde.plasma.marginsseparator"
 	  "org.kde.plasma.appmenu"
 	  "org.kde.plasma.panelspacer"
+          "org.kde.plasma.marginsseparator"
           "org.kde.plasma.systemtray"
           "org.kde.plasma.marginsseparator"
           {
