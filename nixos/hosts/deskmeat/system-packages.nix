@@ -27,10 +27,10 @@ let
 
     # KDE account management & other stuff
     kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
-    kdePackages.kcolorpicker
+    kdePackages.kcolorchooser
 
     kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras kdePackages.libkgapi 
-    kdePackages.kaccounts-providers kdePackages.kaccounts-integration
+    kdePackages.kaccounts-providers kdePackages.kaccounts-integration 
 
     # Gaming
     winetricks wineWow64Packages.stable wineWow64Packages.waylandFull wineWow64Packages.fonts

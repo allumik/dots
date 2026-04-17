@@ -5,28 +5,34 @@
     enable = true;
     settings = {
       main = {
-        font = "Lucida Sans:size=10";
+        font = "Lucida Sans:size=11";
         anchor = "top";
-	vertical-pad = 5;
-	horizontal-pad = 5;
-	lines = 4;
+	y-margin = 10;
+	vertical-pad = 6;
+	horizontal-pad = 6;
+	inner-pad = 4;
+	lines = 5;
+	use-bold = true;
+	show-actions = true;
+	list-executables-in-path = true;
       };
       border = {
-        width = 3;
+        width = 2;
 	radius = 0;
+	selection-radius = 2;
       };
       colors = {
-        background = "1e1e2eff";
-        text = "cdd6f4ff";
-        prompt = "bac2deff";
-        placeholder = "7f849cff";
-        input = "cdd6f4ff";
-        match = "89b4faff";
-        selection = "585b70ff";
-        selection-text = "cdd6f4ff";
-        selection-match = "89b4faff";
+        background = "b8b8b8ff";
+        border = "9b9b9bff";
+        text = "000000ff";
+        prompt = "ae3623ff";
+        placeholder = "969696ff";
+        input = "000000ff";
+        match = "e15b36ff";
+        selection = "969696ff";
+        selection-text = "902018ff";
+        selection-match = "e15b36ff";
         counter = "7f849cff";
-        border = "89b4faff";
       };
     };
   };
@@ -154,7 +160,7 @@
     # Here I have a simple vertical mac style menu panel with a app launcher, manager, systray and a clock
     panels = [
       { 
-        location = "top";
+        location = "bottom";
         alignment = "center";
         floating = false;
         height = 32; # different screens, different resolutions...
