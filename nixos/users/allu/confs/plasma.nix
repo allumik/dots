@@ -140,6 +140,7 @@
         DetailsMode.PreviewSize = 16;
         General.EditableUrl = true;
         General.ShowFullPath = true;
+	General.BrowseThroughArchives = true;
       };
       "kdeglobals" = {
         KDE.widgetStyle = "Windows";
@@ -160,11 +161,11 @@
     # Here I have a simple vertical mac style menu panel with a app launcher, manager, systray and a clock
     panels = [
       { 
-        location = "bottom";
+        location = "top";
         alignment = "center";
         floating = false;
         height = 32; # different screens, different resolutions...
-        hiding = "dodgewindows"; # normalpanel
+        hiding = "normalpanel"; # dodgewindows
         lengthMode = "fill";
         opacity = "opaque";
         widgets = [
