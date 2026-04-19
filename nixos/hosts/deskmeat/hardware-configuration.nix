@@ -22,13 +22,7 @@
     # AMD GPU and CPU related, keep dm-crypt for encrypted drives
     "amdgpu" "kvm-amd" "dm-crypt"
   ];
-  boot.blacklistedKernelModules = [ "r8169" ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.r8168 ];
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ]; 
-  # Force the r8168 driver to allow waking from an S5 powered-off state
-  boot.extraModprobeConfig = ''
-    options r8168 s5wol=1
-  '';
 
 
   # Filesystems and Swap
