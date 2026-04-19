@@ -11,7 +11,7 @@
   environment.systemPackages = with pkgs; [
     # Utilities
     coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd hd-idle ntfsprogs-plus cachix libsixel
-    jq pixi uv dos2unix 
+    jq pixi uv dos2unix parted
     # Development & Build
     gnumake cmake gcc cargo rustc tlp auto-cpufreq
     # Default terminal

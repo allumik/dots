@@ -140,6 +140,7 @@
         DetailsMode.PreviewSize = 16;
         General.EditableUrl = true;
         General.ShowFullPath = true;
+	General.BrowseThroughArchives = true;
       };
       "kdeglobals" = {
         KDE.widgetStyle = "Windows";
@@ -160,11 +161,11 @@
     # Here I have a simple vertical mac style menu panel with a app launcher, manager, systray and a clock
     panels = [
       { 
-        location = "bottom";
+        location = "top";
         alignment = "center";
         floating = false;
         height = 32; # different screens, different resolutions...
-        hiding = "dodgewindows"; # normalpanel
+        hiding = "normalpanel"; # dodgewindows
         lengthMode = "fill";
         opacity = "opaque";
         widgets = [
@@ -182,10 +183,26 @@
             }; 
           }
           "org.kde.plasma.marginsseparator"
-	  {
-	    name = "org.kde.plasma.windowlist";
-	    config.General.showIcon = false;
-	  }
+          {
+            iconTasks = {
+              iconsOnly = true;
+              appearance.fill = true;
+              appearance.showTooltips = false;
+              appearance.iconSpacing = "small";
+              appearance.rows.multirowView = "never";
+              behavior.sortingMethod = "manually";
+              behavior.grouping.method = "byProgramName";
+              behavior.grouping.clickAction = "showTextualList";
+              launchers = [
+                # "preferred://browser" # does not behave well
+                "applications:brave-browser.desktop"
+                "applications:org.kde.dolphin.desktop"
+                "applications:foot.desktop"
+                "applications:thunderbird.desktop"
+                "applications:org.keepassxc.KeePassXC.desktop"
+              ];
+            };
+          }
           "org.kde.plasma.marginsseparator"
 	  "org.kde.plasma.appmenu"
 	  "org.kde.plasma.panelspacer"
