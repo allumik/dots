@@ -59,7 +59,7 @@
     "zswap.zpool=zsmalloc"
     "iwlwifi.disable_11ax=0"
     "iwlwifi.uapsd_disable=1"  # Disable U-APSD to improve stability on some APs
-    "usbcore.autosuspend=-1"
+    "usbcore.autosuspend=-1" # for the troubling usb to sata cable
   ];
 
 
