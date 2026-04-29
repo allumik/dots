@@ -42,14 +42,13 @@ let
 
     # Other Tools
     tesseract openconnect poppler poppler-utils wl-clipboard gdrive3 puddletag vial
-    pandoc quarto texlive.combined.scheme-small
+    pandoc quarto texlive.combined.scheme-small wakeonlan
     nixfmt html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
     noisetorch # noise reduction for mic
     beets # music library manager # broken in unstable
     nextflow
     gemini-cli
-    dzgui
 
     # AMD ROCm thingies - use docker containers for more up to date support
     rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.rocm-device-libs nvtopPackages.amd

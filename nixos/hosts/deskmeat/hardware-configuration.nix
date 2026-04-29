@@ -14,7 +14,7 @@
   boot.loader.grub.useOSProber = true;
 
   # Kernel modules and initrd
-  boot.kernelPackages = pkgs.linuxPackages_latest; # not working well with wifi
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   services.scx.enable = true; # default scx_rustland, build issue on 250914
   services.scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
 
@@ -22,8 +22,7 @@
     # AMD GPU and CPU related, keep dm-crypt for encrypted drives
     "amdgpu" "kvm-amd" "dm-crypt"
   ];
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ]; 
-
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "uas" "usbhid" "sd_mod" ]; 
 
   # Filesystems and Swap
   fileSystems."/" = { device = "/dev/disk/by-uuid/fae35e59-edc7-41b1-9d8c-8cc5bead8d11"; fsType = "ext4"; };
@@ -59,7 +58,6 @@
     "zswap.zpool=zsmalloc"
     "iwlwifi.disable_11ax=0"
     "iwlwifi.uapsd_disable=1"  # Disable U-APSD to improve stability on some APs
-    "usbcore.autosuspend=-1" # for the troubling usb to sata cable
   ];
 
 

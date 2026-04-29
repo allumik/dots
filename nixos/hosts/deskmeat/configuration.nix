@@ -19,6 +19,7 @@
   # Wake-on-LAN Configuration
   # Replace "enp3s0" with your actual ethernet interface name (find it using 'ip a')
   networking.interfaces.enp2s0.wakeOnLan.enable = true;
+  networking.firewall.allowedUDPPorts = [ 9 ];
   networking.networkmanager = {
     enable = true;
     wifi.powersave = false; # set it to false just to be sure that it works

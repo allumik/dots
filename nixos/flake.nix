@@ -11,10 +11,6 @@
     ## for fixing some working version
     # nixpkgs.url = "github:NixOS/nixpkgs/2343bbb58f99267223bc2aac4fc9ea301a155a16";
 
-    # gotta have dayz
-    dzgui.url = "github:jiriks74/dzgui.flake";
-    dzgui.inputs.nixpkgs.follows = "nixpkgs";
-
     # Add home-manager input
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -32,7 +28,6 @@
     nixpkgs, 
     home-manager, 
     plasma-manager,
-    dzgui,
     ... 
   }@inputs: {
     nixosConfigurations = {
@@ -85,6 +80,6 @@
     };
 
     # The overlay containing custom packages
-    overlays.default = import ./overlays/default.nix { dzgui-flake = inputs.dzgui; };
+    overlays.default = import ./overlays/default.nix { };
   };
 }

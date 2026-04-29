@@ -1,48 +1,10 @@
 # overlays/default.nix
 
-{ dzgui-flake }: self: super:
+{ }: self: super:
 
 {
-  # Override for conda to include `which`
-  # !This is a temporary fix, prolly fixed in 25.11, search "nixpkgs conda which" for more info
-  # conda = super.conda.override {
-    # extraPkgs = [ super.which ];
-  # };
-  dzgui = dzgui-flake.packages.${super.system}.default;
-
-  # This adds a new package 'vis-unstable'
-  vis-git =
-    let
-      # Re-define luaEnv based on 'super' (the previous nixpkgs snapshot)
-      luaEnv = super.lua.withPackages (ps: [ ps.lpeg ]);
-    in
-    # Use overrideAttrs to modify the existing 'vis' package from 'super'
-    super.vis.overrideAttrs (oldAttrs: rec {
-      pname = "vis-git";
-      
-      # This version string is just for informational purposes
-      version = "master-git";
-
-      # Override the source to point to the master branch
-      src = super.fetchFromGitHub {
-        owner = "martanne";
-        repo = "vis";
-        rev = "a730d3433ff0afc517eae8ddf4cd80997a9cd2a1"; # or "master"
-        hash = "sha256-U4r4Vr32mYOXAaT1sYPOHeKlToq9t3c5OYq/ssRTqQc=";
-      };
-
-      # Re-define postInstall to use the correct lua version from 'super'
-      # This is necessary because the luaEnv is built against 'super'
-      postInstall = ''
-        wrapProgram $out/bin/vis \
-          --prefix LUA_CPATH ';' "${luaEnv}/lib/lua/${super.lua.luaversion}/?.so" \
-          --prefix LUA_PATH ';' "${luaEnv}/share/lua/${super.lua.luaversion}/?.lua" \
-          --prefix VIS_PATH : "\$HOME/.config:$out/share/vis"
-      '';
-
-      # Update meta description
-      meta = oldAttrs.meta // {
-        description = "Vim like editor (unstable git version)";
-      };
-    });
+  # https://github.com/NixOS/nixpkgs/issues/513245
+  openldap = super.openldap.overrideAttrs {
+    doCheck = !super.stdenv.hostPlatform.isi686;
+  };
 }
