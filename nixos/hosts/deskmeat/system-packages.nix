@@ -12,7 +12,7 @@ let
 
   r-env = rWrapper.override{ packages = with rPackages; [
     # some deps for other packages
-    devtools rlang renv png curl openssl ssh jsonlite # httpgd
+    devtools rlang renv png curl openssl ssh jsonlite httpgd
     # support for common files and libs
     languageserver tinytex pandoc rmdformats quarto feather readxl dotenv
     # basic dev env

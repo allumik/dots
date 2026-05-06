@@ -14,7 +14,7 @@
   boot.loader.grub.useOSProber = true;
 
   # Kernel modules and initrd
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   services.scx.enable = true; # default scx_rustland, build issue on 250914
   services.scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
 

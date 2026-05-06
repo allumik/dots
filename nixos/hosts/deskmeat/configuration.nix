@@ -40,7 +40,7 @@
     lact.enable = true; # Manage your GPU from 25.11 onward
     tailscale = {
       enable = true;
-      extraUpFlags = [ "--ssh" ];
+      # extraUpFlags = [ "--ssh" ];
     };
     pcscd = {
       enable = true; # smard card reader support
