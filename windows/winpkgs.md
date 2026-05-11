@@ -41,15 +41,12 @@ WinSCP.WinSCP
 Microsoft.PowerShell
 Git.Git
 GitHub.GitHubDesktop
-Docker.DockerDesktop
 # winget installation of R has proven to work better than chocolatey
 RProject.R -v 4.1.3 # 4.2.0 > does not work with electricShine yet
 RProject.Rtools -v 4.0 # compatible with < 4.2.0, as opposed to -v 4.2
 
 VideoLAN.VLC
 Audacity.Audacity
-
-JanDeDobbeleer.OhMyPosh
 ```
 
 Or use a generated JSON file (`./confs/pkgs_min.json`) and run a command `winget import -i pkgs_min.json --accept-package-agreements --accept-source-agreements --ignore-unavailable`
@@ -82,10 +79,10 @@ But as with the `winget`, it is more convinient to use exported conf file (`choc
 
 **Don't forget to save the postgres user password!**
 
-## Unlisted applications
+## US-EE keyboard
 
-* Facebook Messenger standalone application
-* US keyboard with Estonian letters - install with installer in `./configs/`
+US keyboard with Estonian letters - install with the installer.
+[Or follow this guide to compile a new one, especially for ARM64 platform](https://github.com/johanson/US_EE)
 
 ## Postgres server setup
 
