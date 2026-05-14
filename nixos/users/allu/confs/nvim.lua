@@ -23,7 +23,14 @@ add({ source = 'yousefhadder/markdown-plus.nvim' })
 
 -- Safely execute at startup
 local now_setups = {
-  function() vim.cmd('colorscheme minischeme') end,
+  function() 
+    vim.cmd('colorscheme default')
+    -- Clear background highlights to use terminal theme
+    local highlights = { "Normal", "NormalFloat", "SignColumn", "StatusLine" }
+    for _, group in ipairs(highlights) do
+      vim.api.nvim_set_hl(0, group, { bg = "none", ctermbg = "none" })
+    end
+  end,
   function() require('mini.basics').setup() end, 
   function() require('mini.bracketed').setup() end, 
   
@@ -92,6 +99,7 @@ for _, func in ipairs(now_setups) do now(func) end
 for _, func in ipairs(later_setups) do later(func) end
 
 -- Some configuration after all the setups
+vim.opt.termguicolors = false
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 vim.opt.clipboard = "unnamedplus"
