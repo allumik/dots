@@ -30,7 +30,7 @@
           };
         };
 
-        # power configuration for user
+        # power configuration for this host
         plasma = {
           powerdevil.general.pausePlayersOnSuspend = false;
           powerdevil.AC = {

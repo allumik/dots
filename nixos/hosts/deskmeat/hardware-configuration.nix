@@ -35,17 +35,12 @@
     options = [ "users" "nofail" "relatime" "x-gvfs-show" "exec" ]; 
   };
 
-  # USB Header Storage (Crucial BX500)
-  fileSystems."/mnt/data_usb" = { 
+  # Secondary SATA Storage (Crucial BX500)
+  fileSystems."/mnt/data_extra" = { 
     device = "/dev/disk/by-uuid/00c47e7d-748e-4cf8-b6f7-0a1dd14b9fdc"; 
     fsType = "ext4"; 
     options = [ "users" "nofail" "relatime" "x-gvfs-show" "exec" ]; 
   };
-  # and mark it as not removable, so that we don't remove it by accident
-  services.udev.extraRules = ''
-    # Hide USB header drive from removable media applets
-    SUBSYSTEM=="block", ENV{ID_FS_UUID}=="00c47e7d-748e-4cf8-b6f7-0a1dd14b9fdc", ENV{UDISKS_IGNORE}="1"
-  '';
 
   swapDevices = [ { device = "/dev/nvme0n1p3"; } ];
   boot.resumeDevice = "/dev/nvme0n1p3";

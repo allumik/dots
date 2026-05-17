@@ -28,7 +28,7 @@
 	};
       };
 
-      # set it to run constatntly
+      # set it to run constatntly on this host
       plasma = {
         powerdevil = {
 	  general.pausePlayersOnSuspend = false;
