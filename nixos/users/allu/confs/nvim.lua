@@ -18,7 +18,6 @@ require('mini.deps').setup({ path = { package = path_package } })
 -- Install plugins
 local add = MiniDeps.add
 add({ source = 'jpalardy/vim-slime' })
-add({ source = 'serenevoid/kiwi.nvim' })
 add({ source = 'yousefhadder/markdown-plus.nvim' })
 
 -- Safely execute at startup
@@ -89,8 +88,7 @@ local later_setups = {
     vim.api.nvim_create_autocmd('FileType', {
       pattern = 'markdown',
       callback = function() require('markdown-plus').setup() end,
-  }) end,
-  function() require('kiwi').setup({{ name = "notes", path = "/home/allu/Documents/Notes/notes" }}) end,
+  }) end
 }
 
 -- And call them
@@ -130,6 +128,3 @@ map('n', '<leader>"',  ':Pick registers<cr>', { silent = true })
 
 map('x', '<leader>ts', '<Plug>SlimeRegionSend', { silent = true })
 map('n', '<leader>ts', '<Plug>SlimeParagraphSend', { silent = true })
-
-map('n', '<leader>nn', ':lua require("kiwi").open_wiki_index("notes")<cr>', { silent = true })
-map('n', '<C-k>t',     ':lua require("kiwi").todo.toggle()<cr>', { silent = true })
