@@ -28,11 +28,6 @@
   security.rtkit.enable = true;
   services = {
     xserver.videoDrivers = [ "vmware"]; # Xorg video drivers for this host
-    fstrim.enable = true; # To trim SSD blocks
-    flatpak.enable = true;
-    lvm.boot.thin.enable = true;
-    qemuGuest.enable = true; # Enable QEMU
-    spice-vdagentd.enable = true; # Necessary for the QEMU spice
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
     openssh.enable = true;
     tailscale = {
@@ -59,7 +54,6 @@
       defaultNetwork.settings.dns_enabled = true;
     };
     libvirtd.enable = true;
-    spiceUSBRedirection.enable = true; # Enable USB devices connecting to QEMU spice
     vmware.guest.enable = true;
   };
 }

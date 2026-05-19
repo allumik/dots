@@ -9,7 +9,7 @@
 
   ## Core packages and services
   environment.systemPackages = with pkgs; [
-    # Utilities
+    # More utilities
     coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd hd-idle ntfsprogs-plus cachix libsixel
     jq pixi uv dos2unix parted usbutils
     # Development & Build
@@ -38,17 +38,26 @@
     merriweather merriweather-sans
   ];
 
+  environment.pathsToLink = [
+    "/share/applications"
+    "/share/xdg-desktop-portal"
+  ];
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [ 
+      xdg-desktop-portal-gnome 
+      xdg-desktop-portal-gtk 
+    ];
+    config.common.default = "*";
+  };
+
 
   ## Desktop system settings
-  # Minimal Plasma 6 install by excluding some default packages
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [ konsole oxygen kate elisa ];
   services = {
-    # We are running Plasma 6 now, so use SDDM and Plasma 6
-    displayManager.sddm.enable = true;
-    desktopManager.plasma6.enable = true;
+    flatpak.enable = true;
+    fstrim.enable = true; # To trim SSD blocks
 
-    # Sound System
-    pulseaudio.enable = false; # Disable pulseaudio in favor of pipewire
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -61,7 +70,6 @@
   programs = {
     nix-ld.enable = true; # might make your life easier with linked library adapter
   };
- 
 
   ## Extras
   systemd.services = {

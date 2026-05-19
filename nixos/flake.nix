@@ -3,23 +3,14 @@
 
   inputs = {
     ## the stable channel
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     ## the (usual) unstable channel
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    ## for the bleeding edge stuff
-    # nixpkgs-staging.url = "github:nixos/nixpkgs/staging";
-    ## for fixing some working version
-    # nixpkgs.url = "github:NixOS/nixpkgs/2343bbb58f99267223bc2aac4fc9ea301a155a16";
 
     # Add home-manager input
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
   };
 
@@ -27,7 +18,6 @@
     self, 
     nixpkgs, 
     home-manager, 
-    plasma-manager,
     ... 
   }@inputs: {
     nixosConfigurations = {
@@ -48,7 +38,6 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
           }
         ];
       };
@@ -70,7 +59,6 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
           }
         ];
       };
