@@ -1,5 +1,0 @@
-[fuzzel_launcher]
-enter_command = ["fuzzel"]
-locations = ["top_right"]
-timeout_ms = 150
-size = 10
