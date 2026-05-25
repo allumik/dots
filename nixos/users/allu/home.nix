@@ -20,6 +20,16 @@
       "niri/config.kdl".source = ./confs/niri.kdl;
       "waycorner/config.toml".source = ./confs/waycorner.toml;
     };
+    portal = {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-termfilechooser ];
+      config = {
+        common = {
+          default = [ "gtk" ];
+          "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
+        };
+      };
+    };
   };
 
 
@@ -35,6 +45,21 @@
       "$HOME/.nix-profile/bin"
       "$HOME/.local/bin" 
     ];
+
+    file.".config/xdg-desktop-portal-termfilechooser/config".text = ''
+      [filechooser]
+      cmd=${config.home.homeDirectory}/.config/xdg-desktop-portal-termfilechooser/wrapper.sh %s
+    '';
+
+    file.".config/xdg-desktop-portal-termfilechooser/wrapper.sh" = {
+      executable = true;
+      text = ''
+        #!/bin/sh
+        set -e
+        out="$1"
+        foot -a termfilechooser -e lf -selection-path "$out"
+      '';
+    };
 
     packages = with pkgs; [
       ## Tools & Shells
