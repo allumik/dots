@@ -34,7 +34,6 @@ in
       VISUAL = "nvim";
       PAGER = "less";
     };
-    sessionVariables.NIXOS_OZONE_WL = "1";
   };
 
   programs.gnupg.agent = {
@@ -61,7 +60,7 @@ in
   nix.gc = {
     automatic = true;
     dates = "daily";
-    options = "--delete-older-than 3d";
+    options = "--delete-older-than 7d";
   };
 
   # Automatic system upgrades

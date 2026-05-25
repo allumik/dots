@@ -7,7 +7,7 @@
   imports = [
     ./confs/shell.nix
     ./confs/zellij.nix
-    ./confs/desktop.nix
+    ./confs/plasma.nix
   ];
 
   xdg = {
@@ -17,18 +17,6 @@
       "nvim/init.lua".source = ./confs/nvim.lua;
       "lf/lfrc".source = ./confs/lfrc;
       "euporie/config.json".source = ./confs/euporie.json;
-      "niri/config.kdl".source = ./confs/niri.kdl;
-      "waycorner/config.toml".source = ./confs/waycorner.toml;
-    };
-    portal = {
-      enable = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-termfilechooser ];
-      config = {
-        common = {
-          default = [ "gtk" ];
-          "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
-        };
-      };
     };
   };
 
@@ -46,28 +34,15 @@
       "$HOME/.local/bin" 
     ];
 
-    file.".config/xdg-desktop-portal-termfilechooser/config".text = ''
-      [filechooser]
-      cmd=${config.home.homeDirectory}/.config/xdg-desktop-portal-termfilechooser/wrapper.sh %s
-    '';
-
-    file.".config/xdg-desktop-portal-termfilechooser/wrapper.sh" = {
-      executable = true;
-      text = ''
-        #!/bin/sh
-        set -e
-        out="$1"
-        foot -a termfilechooser -e lf -selection-path "$out"
-      '';
-    };
-
-    packages = with pkgs; [
-      ## Tools & Shells
-      # some minuscle stuff for python/R environments
-      libssh libxml2 libpng libxslt libtiff cairo  # R needs this
-      # terminal bling
-      zsh zsh-nix-shell zsh-fast-syntax-highlighting zsh-fzf-tab
-    ];
+  packages = with pkgs; [
+    ## Tools & Shells
+    # some minuscle stuff for python/R environments
+    libssh libxml2 libpng libxslt libtiff cairo  # R needs this
+    # terminal bling
+    zsh zsh-nix-shell zsh-fast-syntax-highlighting zsh-fzf-tab
+    # for the cursor theme
+    hackneyed
+  ];
 
     # You should not change this value, even if you update Home Manager.
     stateVersion = "26.05";
