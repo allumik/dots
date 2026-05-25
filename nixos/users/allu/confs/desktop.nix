@@ -185,7 +185,7 @@
 
     brave = {
       enable = true;
-      commandLineArgs = [ "--ozone-platform=wayland" ];
+      commandLineArgs = [ "--enable-features=UseOzonePlatform --ozone-platform=wayland" ];
     };
   };
 

@@ -20,7 +20,7 @@
 
   boot.kernelModules = [ 
     # AMD GPU and CPU related, keep dm-crypt for encrypted drives
-    "amdgpu" "kvm-amd" "dm-crypt"
+    "amdgpu" "kvm-amd" "dm-crypt" "iwlwifi"
   ];
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "uas" "usbhid" "sd_mod" ]; 
 
