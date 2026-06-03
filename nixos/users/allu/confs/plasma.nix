@@ -1,42 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  programs.fuzzel = {
-    enable = true;
-    settings = {
-      main = {
-        font = "Lucida Sans:size=11";
-        anchor = "top";
-	y-margin = 10;
-	vertical-pad = 6;
-	horizontal-pad = 6;
-	inner-pad = 4;
-	lines = 5;
-	use-bold = true;
-	show-actions = true;
-	list-executables-in-path = true;
-      };
-      border = {
-        width = 2;
-	radius = 0;
-	selection-radius = 2;
-      };
-      colors = {
-        background = "b8b8b8ff";
-        border = "9b9b9bff";
-        text = "000000ff";
-        prompt = "ae3623ff";
-        placeholder = "969696ff";
-        input = "000000ff";
-        match = "e15b36ff";
-        selection = "969696ff";
-        selection-text = "902018ff";
-        selection-match = "e15b36ff";
-        counter = "7f849cff";
-      };
-    };
-  };
-
   programs.plasma = {
     enable = true; # enable and configure plasma settings
     overrideConfig = true; # default all else
@@ -82,22 +46,7 @@
       windowTitle = { family = "Fixedsys Excelsior 3.01"; pointSize = 11; };
     };
 
-    hotkeys.commands = {
-      "fuzzel-app" = {
-        name = "Fuzzel App Launcher";
-        key = "Alt+Space";
-        command = "fuzzel";
-      };
-    };
-
     shortcuts = {
-      # enable the fuzzel app, and disable the krunner
-      "services/plasma-manager-commands.desktop" = {
-        "fuzzel-app" = "Meta+Space";
-      };
-      "org.kde.krunner.desktop" = {
-        "_launch" = [ ];
-      };
       "krunner.desktop" = {
         "_launch" = [ ];
       };

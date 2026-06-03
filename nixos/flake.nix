@@ -3,17 +3,13 @@
 
   inputs = {
     ## the stable channel
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    ## the (usual) unstable channel
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    ## for the bleeding edge stuff
-    # nixpkgs-staging.url = "github:nixos/nixpkgs/staging";
-    ## for fixing some working version
-    # nixpkgs.url = "github:NixOS/nixpkgs/2343bbb58f99267223bc2aac4fc9ea301a155a16";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    ## the unstable channel
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Add home-manager input
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
@@ -26,6 +22,7 @@
   outputs = { 
     self, 
     nixpkgs, 
+    nixpkgs-unstable,
     home-manager, 
     plasma-manager,
     ... 
@@ -80,6 +77,6 @@
     };
 
     # The overlay containing custom packages
-    overlays.default = import ./overlays/default.nix { };
+    overlays.default = import ./overlays/default.nix { inherit inputs; };
   };
 }

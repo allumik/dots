@@ -17,7 +17,6 @@
   # Trust the Tailscale interface in the firewall
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   # Wake-on-LAN Configuration
-  # Replace "enp3s0" with your actual ethernet interface name (find it using 'ip a')
   networking.interfaces.enp2s0.wakeOnLan.enable = true;
   networking.firewall.allowedUDPPorts = [ 9 ];
   networking.networkmanager = {
@@ -36,7 +35,6 @@
     lvm.boot.thin.enable = true;
     qemuGuest.enable = true; # Enable QEMU
     spice-vdagentd.enable = true; # Necessary for the QEMU spice
-    udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
     lact.enable = true; # Manage your GPU from 25.11 onward
     tailscale = {
       enable = true;
