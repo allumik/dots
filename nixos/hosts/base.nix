@@ -27,7 +27,7 @@ in
   environment = {
     systemPackages = with pkgs; [
       # Core Tools
-      neovim tre fzf fd lf ripgrep wget lz4 zip unzip p7zip moreutils
+      neovim tre fzf fd lf ripgrep wget lz4 zip unzip p7zip difftastic moreutils
     ];
     variables = {
       EDITOR = "nvim";
