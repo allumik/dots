@@ -24,12 +24,12 @@
     vlc ffmpeg fdupes bluez-experimental pulseaudioFull exfatprogs
     # Other GUI
     transmission_4-qt keepassxc gimp3-with-plugins
-    eduvpn-client openvpn libreoffice-qt zotero thunderbird 
-    vscode.fhs
+    eduvpn-client openvpn libreoffice-qt zotero thunderbird
+    zed # vscode.fhs
   ];
   fonts.packages = with pkgs; [
     # Font packs for compatibility
-    unifont corefonts vista-fonts noto-fonts liberation_ttf 
+    unifont corefonts vista-fonts noto-fonts liberation_ttf
     # Pretty symbol packs, often used as fallback symbols
     font-awesome material-icons powerline-symbols
     # Some fonts
@@ -61,7 +61,7 @@
   programs = {
     nix-ld.enable = true; # might make your life easier with linked library adapter
   };
- 
+
 
   ## Extras
   systemd.services = {
@@ -76,4 +76,3 @@
     };
   };
 }
-

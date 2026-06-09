@@ -51,8 +51,11 @@ in
     # SSH Daemon
     openssh = {
       enable = true;
-      settings.PasswordAuthentication = false;
-      settings.KbdInteractiveAuthentication = false;
+      settings = {
+        PasswordAuthentication = false;       
+        KbdInteractiveAuthentication = false; 
+        X11Forwarding = true;                 
+      };
     };
   };
 

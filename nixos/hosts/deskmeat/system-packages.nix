@@ -1,7 +1,7 @@
 { config, lib, pkgs, inputs, ... }:
 
 with pkgs;
-let 
+let
   # https://github.com/NixOS/nixpkgs/issues/475732 for python314
   py-env = python313.withPackages(ps: with ps; [
     pip setuptools
@@ -24,14 +24,14 @@ let
     # GUI Apps
     veracrypt gparted scarlett2 alsa-scarlett-gui qdigidoc
     digikam audacity omnissa-horizon-client calibre vial
-    antigravity # antigravity-cli
+    antigravity antigravity-cli
 
     # KDE account management & other stuff
-    kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
+    kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera
     kdePackages.kcolorchooser
 
-    kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras kdePackages.libkgapi 
-    kdePackages.kaccounts-providers kdePackages.kaccounts-integration 
+    kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras kdePackages.libkgapi
+    kdePackages.kaccounts-providers kdePackages.kaccounts-integration
 
     # Gaming
     winetricks wineWow64Packages.stable wineWow64Packages.waylandFull wineWow64Packages.fonts
@@ -44,7 +44,7 @@ let
     # Other Tools
     tesseract openconnect puddletag poppler poppler-utils wl-clipboard gdrive3
     pandoc quarto texlive.combined.scheme-small wakeonlan
-    nixfmt html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
+    nixfmt nil nixd html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
     noisetorch # noise reduction for mic
     beets # music library manager
