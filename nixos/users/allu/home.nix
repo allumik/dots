@@ -14,9 +14,9 @@
     enable = true;
     mime.enable = true;
     configFile = {
-      "nvim/init.lua".source = ./confs/nvim.lua;
-      "lf/lfrc".source = ./confs/lfrc;
-      "euporie/config.json".source = ./confs/euporie.json;
+      "nvim/init.lua".source = ../../../confs_stash/nvim/init.lua;
+      "lf/lfrc".source = ../../../confs_stash/lf/lfrc;
+      "euporie/config.json".source = ../../../confs_stash/euporie/euporie.json;
     };
   };
 
