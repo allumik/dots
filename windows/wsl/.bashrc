@@ -119,54 +119,15 @@ fi
 
 #### User mods
 
-
-# define TZ for apps
-export TZ="Europe/Tallinn"
-
-## NNN settings
-# use Windows opener
-export NNN_OPENER="wslview"
-# automatically cd into directory
-export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-export NNN_FIFO="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/nnn.fifo"
-# plugin selector
-export NNN_PLUG="t:fzcd;d:diffs;x:preview-tui;v:imgview;e:suedit"
-# put dotfiles first!
+# define TZ and some LC links
+export TZ="Europe/Amsterdam"
 export LC_COLLATE="C"
-
-# add an depth indicator
-[ -n "$NNNLVL" ] && PS1="!~$NNNLVL $PS1"
-
-nn () {
-  # Block nesting of nnn in subshells
-  if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
-    echo "nnn is already running"
-    return
-  fi
-
-  export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-
-  nnn "$@"
-
-  if [ -f "$NNN_TMPFILE" ]; then
-    . "$NNN_TMPFILE"
-    rm -f "$NNN_TMPFILE" > /dev/null
-  fi
-}
-
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.bin:/usr/local/bin:$PATH
-export PATH=$HOME/git/qmk_firmware/bin:$HOME/.local/bin:$PATH
 
-
-# something needed for texlive full
-# export PATH=/opt/texlive/2020/bin/x86_64-linux:$PATH
-# export MANPATH=/opt/texlive/2020/texmf-dist/doc/man:$MANPATH
-# export INFOPATH=/opt/texlive/2020/texmf-dist/doc/info:$INFOPATH
-
-# export main path: /Users/allu/anaconda3/bin:/root/.gem/ruby/2.7.0/bin 
-export PATH=$HOME/.local/bin/:$PATH #:$HOME/.emacs.d/bin:$HOME/miniconda3/bin:$PATH
+# pixi autocomplete setup
+eval "$(pixi completion --shell bash)"
 
 # help fzf be better at search
 export FZF_DEFAULT_COMMAND="fdfind -H"
@@ -178,16 +139,12 @@ alias free='free -m' # show sizes in MB
 alias pkgbld='vim -w PKGBUILD'
 alias np="nano -w PKGBUILD"
 alias more=less
-# extreme measures:
-alias python='python3'
 
 alias ls="ls --color=auto"
 alias la="ls -A"
-alias ll="exa -alF"
+alias ll="eza -alF"
 
-alias unmount@='umount -f ~/mntpnt'
 alias tmux='tmux new-session -A -s main'
-alias pac='sudo pacman'
 alias cdfd='cd $(dirname $(fzf))'
 alias vimit='nvim $(fzf)'
 alias openit='wslview $(fzf)'
@@ -197,3 +154,5 @@ alias wv='wslview'
 
 export EDITOR=nvim  # $EDITOR opens in terminal
 export VISUAL=code  # $VISUAL opens in GUI mode
+
+

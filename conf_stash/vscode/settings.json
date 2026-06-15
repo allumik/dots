@@ -44,7 +44,6 @@
   "workbench.browser.showInTitleBar": false,
   "workbench.layoutControl.enabled": false,
   "workbench.startupEditor": "none",
-  "workbench.statusBar.visible": false,
   "window.commandCenter": false,
   "window.density.editorTabHeight": "compact",
   "window.dialogStyle": "custom",
@@ -95,4 +94,5 @@
     "editor.fontSize",
     "remote.SSH.configFile"
   ],
+  "workbench.statusBar.visible": false,
 }

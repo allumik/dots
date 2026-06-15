@@ -1,92 +1,52 @@
-# Description of packages installed on Windows
+# Windows-specific configurations
 
 ## Pre-setup
 
-To enable **WSL** (Canonical Ubuntu), run 
+To enable **WSL** (Canonical Ubuntu), run:
 
 ```pwsh
 wsl --install -d Ubuntu
 ```
 
-Installing **chocolatey** is described in [this guide](https://chocolatey.org/install)
+`TODO: investigate NixOS WSL setup`
 
+## WinGet
 
-## Windows Store
+Simply, applications can be installed with the command `winget install -id <pkgId>`. To find the ID, use `winget search "name"`.
 
-The Windows Store applications can be installed with the command `winget install -Id <pkgId>`
+Here I have provided a quick minimal set of packages that should speed along with the search <-> install mantra in the `winget_pkgs.json` file. To reinstall those packages use this command `winget import -i winget_pkgs.json --accept-package-agreements --accept-source-agreements --ignore-unavailable`. 
 
-For example, `pkgs_min.json` has those apps:
+Exporting is done with the command `winget export -o winget_pkgs.json` and by moving the file to dotfiles repo.
 
-```
-GIMP.GIMP
-Google.Chrome
-Microsoft.Office
-Microsoft.PowerToys
-Google.Drive
-9PFPFK4DJ1S6 # digidoc4
+## Windows Terminal
 
-Spotify.Spotify
-SlackTechnologies.Slack
-WhatsApp.WhatsApp
-Discord.Discord
-Zoom.Zoom
-Microsoft.Skype
-Microsoft.Teams
-
-JetBrains.Toolbox
-VMware.WorkstationPlayer
-Microsoft.VisualStudioCode
-WinSCP.WinSCP
-
-Microsoft.PowerShell
-Git.Git
-GitHub.GitHubDesktop
-# winget installation of R has proven to work better than chocolatey
-RProject.R -v 4.1.3 # 4.2.0 > does not work with electricShine yet
-RProject.Rtools -v 4.0 # compatible with < 4.2.0, as opposed to -v 4.2
-
-VideoLAN.VLC
-Audacity.Audacity
-```
-
-Or use a generated JSON file (`./confs/pkgs_min.json`) and run a command `winget import -i pkgs_min.json --accept-package-agreements --accept-source-agreements --ignore-unavailable`
-
-*Exporting is done with the command `winget export -o pkgs.json` and move the file to dotfiles repo.*
-
-
-## Chocolatey
-
-After installing chocolatey restart the shell and at first install `gsudo`: `choco install -y gsudo`. This enables *sudo-like* behaviour in the `pwsh` shell.
-
-Then restart shell and use the command `gsudo choco install -y <pkgsName>` to install:
-
-```
-neovim
-postgresql
-pgadmin4
-pandoc
-python3
-nodejs-lts
-yarn
-ripgrep
-
-tjs # jaspersoft studio
-```
-
-But as with the `winget`, it is more convinient to use exported conf file (`chocoPkgs.config`) for installation. For this, the command would be `gsudo choco install -y chocoPkgs.config`.
-
-*Exporting is done via command `choco export -o="'chocoPkgs.config'"`.*
-
-**Don't forget to save the postgres user password!**
+You will have to use the Terminal's settings menu to locate the configuration file and then copy it from `win_terminal/settings.json` to that file.
 
 ## US-EE keyboard
 
 US keyboard with Estonian letters - install with the installer.
-[Or follow this guide to compile a new one, especially for ARM64 platform](https://github.com/johanson/US_EE)
+[Or follow this guide to compile a new one, especially for ARM64 platform of Surface devices](https://github.com/johanson/US_EE)
+
+Additionally, the `powertoys_bp` contains the keyboard mappings to duplicate the US-EE keyboard behaviour by mapping the EE letters to the right alt + {key} combinations.
+
+## PowerToys
+
+Simply install it and use their backup / restore functionality, restoring from teh `powertoys_bp/settings.json` file.
+
+## VSCode
+
+VSCode user configuration files are usually stored in `%APPDATA%\Code\User\`. So for using those configuration files, just dump them from `dots/conf_stash/vscode/*` to that location. Main plugins used are:
+
+* VSCode Neovim by Alexey Svetliakov
+* File Browser by Bodil Stokke
+* Rainbow CSV by mechatroner
+* modus-t by 月波 清火 (theme)
+
+For full environment, install [Aporetic fonts](https://github.com/protesilaos/aporetic), set up Python and Pixi with their extensions, and the NeoVim configuration with headless configuration.
 
 ## Postgres server setup
 
-Use the *postgres* user password saved from installation with chocolatey to log into the shell with
+Use the *postgres* user password saved from installation with winget to log into the shell with
 
 ```pwsh
 gsudo psql -U postgres
@@ -95,11 +55,3 @@ gsudo psql -U postgres
 And in the shell use command `\password` to reset the password for the postgres user.
 
 Now you should be able to enter pgAdmin4 and setup necessary databases and users.
-
-## Other comments
-
-VSCode user configuration files are in `C:\Users\alvin\AppData\Roaming\Code\User`.
-
-Make a **neovide** shortcut with flag `neovide --wsl`.
-
-TODO: postgres setup and database creation
