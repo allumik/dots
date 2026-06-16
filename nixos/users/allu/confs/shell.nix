@@ -82,7 +82,7 @@ in
       autosuggestion.enable = true;
       history.extended = true;
 
-      profileExtra = ''
+      envExtra = ''
         ${xdgDataDirs}
 
         update_nixos() {
@@ -117,10 +117,6 @@ in
           "extract"
           "gitfast"
           "gh"
-          "rsync"
-          "rclone"
-          "python"
-          "uv"
         ];
       };
     };

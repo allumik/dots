@@ -3,22 +3,14 @@
 {
   programs.plasma = {
     enable = true; # enable and configure plasma settings
-    overrideConfig = true; # default all else
+    overrideConfig = false; # this overwrites all other conf if set
 
     workspace = {
-      theme = "reactplus";
-      lookAndFeel = "org.magpie.reactplus.desktop"; # not used with windowDecor
-      iconTheme = "Memphis98";
-      colorScheme = "ReactionaryLeaves";
-      cursor = {
-        size = 24;
-        theme = "Hackneyed";
-      };
       clickItemTo = "select";
       # wallpaperPlainColor = "44,81,80";
-      wallpaper = ./art002e012279.jpg;
+      wallpaper = ./59028ca.png;
       wallpaperFillMode = "pad"; # preserveAspectCrop
-      wallpaperBackground.color = "0,0,0"; # R,G,B
+      wallpaperBackground.color = "44,81,80"; # R,G,B
     };
     kscreenlocker.appearance.wallpaperPlainColor = "44,81,80";
 
@@ -26,7 +18,7 @@
       "org.kde.kdecoration2" = {
         # Use "None" to strip all side/bottom borders
         "BorderSize" = "Tiny";
-        "BorderSizeAuto" = false;
+        "BorderSizeAuto" = true;
       };
       "TabBox" = {
         "LayoutName" = "Compact"; 
@@ -69,7 +61,7 @@
         enable = true;
         mode = "times";
         temperature.night = 5400;
-        time.evening = "17:00";
+        time.evening = "19:00";
         time.morning = "08:00";
         transitionTime = 3;
       };
@@ -92,8 +84,11 @@
 	General.BrowseThroughArchives = true;
       };
       "kdeglobals" = {
-        KDE.widgetStyle = "Windows";
+        # KDE.widgetStyle = "Windows";
+        KDE.AutomaticLookAndFeel = true;
+        Icons.Theme.persistent = true;
         General = {
+          ColorScheme.persistent = true;
           TerminalApplication = "foot";
           TerminalService = "foot.desktop";
         };

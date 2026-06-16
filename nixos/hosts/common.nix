@@ -25,7 +25,7 @@
     # Other GUI
     transmission_4-qt keepassxc gimp3-with-plugins
     eduvpn-client openvpn libreoffice-qt zotero thunderbird
-    zed # vscode.fhs
+    vscode.fhs
   ];
   fonts.packages = with pkgs; [
     # Font packs for compatibility
