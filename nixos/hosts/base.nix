@@ -52,9 +52,9 @@ in
     openssh = {
       enable = true;
       settings = {
-        PasswordAuthentication = false;       
-        KbdInteractiveAuthentication = false; 
-        X11Forwarding = true;                 
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        X11Forwarding = true;
       };
     };
   };

@@ -12,20 +12,20 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager";
+
+    # Unified theming across GTK/Qt/fuzzel/waybar
+    stylix = {
+      url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
   };
 
-  outputs = { 
-    self, 
-    nixpkgs, 
-    nixpkgs-unstable,
-    home-manager, 
-    plasma-manager,
-    ... 
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    stylix,
+    ...
   }@inputs: {
     nixosConfigurations = {
 
@@ -39,6 +39,9 @@
 
           # Host-specific configurations
           ./hosts/deskmeat/configuration.nix
+
+          # Unified GTK/Qt/fuzzel/waybar theming
+          stylix.nixosModules.stylix
 
           # Import Home-Manager configurations for users
           home-manager.nixosModules.home-manager

@@ -1,4 +1,5 @@
-{ config, lib, pkgs, inputs, ... }:
+# hosts/deskmeat/system-packages.nix
+{ config, lib, pkgs, ... }:
 
 with pkgs;
 let
@@ -23,15 +24,12 @@ let
   pkgs_list = [
     # GUI Apps
     veracrypt gparted scarlett2 alsa-scarlett-gui qdigidoc
-    digikam audacity omnissa-horizon-client calibre vial
-    antigravity antigravity-cli
+    digikam audacity omnissa-horizon-client calibre
 
-    # KDE account management & other stuff
-    kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera
-    kdePackages.kcolorchooser
-
-    kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras kdePackages.libkgapi
-    kdePackages.kaccounts-providers kdePackages.kaccounts-integration
+    # desktop stuff
+    nirius chameleos waycorner udiskie xwayland-satellite swaybg wdisplays hyprpicker fontpreview
+    playerctl brightnessctl
+    xdg-desktop-portal-termfilechooser
 
     # Gaming
     winetricks wineWow64Packages.stable wineWow64Packages.waylandFull wineWow64Packages.fonts
@@ -55,7 +53,7 @@ let
     rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.rocm-device-libs nvtopPackages.amd
 
     # DEV ENV from above
-    py-env r-env
+    # py-env r-env
   ];
 in {
   ## System-wide packages and variables for this host

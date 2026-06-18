@@ -18,7 +18,7 @@
   services.scx.enable = true; # default scx_rustland, build issue on 250914
   services.scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
 
-  boot.kernelModules = [ 
+  boot.kernelModules = [
     # AMD GPU and CPU related, keep dm-crypt for encrypted drives
     "amdgpu" "kvm-amd" "dm-crypt"
   ];
@@ -52,7 +52,7 @@
     "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
     "zswap.zpool=zsmalloc"
     "iwlwifi.disable_11ax=1"
-    "iwlwifi.uapsd_disable=1"
+    "iwlwifi.uapsd_disable=1" # Disable U-APSD to improve stability on some APs
     "iwlwifi.optout_pm=1"
     "iwlmvm.power_scheme=1"
     "pcie_aspm=off"

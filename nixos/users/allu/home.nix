@@ -7,7 +7,8 @@
   imports = [
     ./confs/shell.nix
     ./confs/zellij.nix
-    ./confs/plasma.nix
+    ./confs/desktop.nix
+    ./confs/theme.nix
   ];
 
   xdg = {

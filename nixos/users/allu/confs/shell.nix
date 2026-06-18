@@ -131,11 +131,8 @@ in
 
     bat = {
       enable = true;
-      # This should pick up the correct colors for the generated theme.
-      # Otherwise
-      # it is possible to generate a custom bat theme to ~/.config/bat/config
+      # theme is set by Stylix (base16-stylix) to match the rest of the desktop
       config = {
-        theme = "base16";
         color = "always";
         style = "numbers";
         line-range = ":500";

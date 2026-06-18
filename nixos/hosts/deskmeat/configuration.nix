@@ -6,10 +6,13 @@
   imports = [
     ../base.nix # Minimal conf
     ../common.nix # Common configuration options for all hosts
+    ../stylix.nix # Unified GTK/Qt/fuzzel/waybar theming
     ./hardware-configuration.nix # Hardware-specific configuration
     ./system-packages.nix
     ./users.nix
   ];
+
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
 
   ## Networking
@@ -27,7 +30,12 @@
 
 
   ## Program Settings and Services
-  security.rtkit.enable = true;
+  programs = {
+    niri.enable = true;
+  };
+
+  security.rtkit.enable = true; # realtime scheduling for pipewire
+
   services = {
     xserver.videoDrivers = [ "amdgpu" "vmware"]; # Xorg video drivers for this host
     fstrim.enable = true; # To trim SSD blocks

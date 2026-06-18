@@ -38,17 +38,34 @@
     merriweather merriweather-sans
   ];
 
+  environment.pathsToLink = [
+    "/share/applications"
+    "/share/xdg-desktop-portal"
+  ];
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
+    ];
+    # gtk handles file pickers (lighter, themeable); gnome is kept only for
+    # ScreenCast/RemoteDesktop, since niri implements the GNOME Shell DBus
+    # interface those portals expect.
+    config.common = {
+      default = [ "gtk" ];
+      "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+      "org.freedesktop.impl.portal.RemoteDesktop" = [ "gnome" ];
+    };
+  };
+
+  ## Bluetooth
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
   ## Desktop system settings
-  # Minimal Plasma 6 install by excluding some default packages
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [ konsole oxygen kate elisa ];
+  # fstrim/flatpak are opt-in per host (see hosts/<host>/configuration.nix)
   services = {
-    # We are running Plasma 6 now, so use SDDM and Plasma 6
-    displayManager.sddm.enable = true;
-    desktopManager.plasma6.enable = true;
-
-    # Sound System
-    pulseaudio.enable = false; # Disable pulseaudio in favor of pipewire
     pipewire = {
       enable = true;
       alsa.enable = true;
