@@ -9,7 +9,7 @@
 
   ## Core packages and services
   environment.systemPackages = with pkgs; [
-    # More utilities
+    # Utilities
     coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd hd-idle ntfsprogs-plus cachix libsixel
     jq pixi uv dos2unix parted usbutils
     # Development & Build
@@ -24,12 +24,12 @@
     vlc ffmpeg fdupes bluez-experimental pulseaudioFull exfatprogs
     # Other GUI
     transmission_4-qt keepassxc gimp3-with-plugins
-    eduvpn-client openvpn libreoffice-qt zotero thunderbird 
+    eduvpn-client openvpn libreoffice-qt zotero thunderbird
     vscode.fhs
   ];
   fonts.packages = with pkgs; [
     # Font packs for compatibility
-    unifont corefonts vista-fonts noto-fonts liberation_ttf 
+    unifont corefonts vista-fonts noto-fonts liberation_ttf
     # Pretty symbol packs, often used as fallback symbols
     font-awesome material-icons powerline-symbols
     # Some fonts
@@ -79,6 +79,7 @@
     nix-ld.enable = true; # might make your life easier with linked library adapter
   };
 
+
   ## Extras
   systemd.services = {
     # Spin down HDDs after 5 minutes
@@ -92,4 +93,3 @@
     };
   };
 }
-

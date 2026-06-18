@@ -15,11 +15,9 @@
     enable = true;
     mime.enable = true;
     configFile = {
-      "nvim/init.lua".source = ./confs/nvim.lua;
-      "lf/lfrc".source = ./confs/lfrc;
-      "euporie/config.json".source = ./confs/euporie.json;
-      "niri/config.kdl".source = ./confs/niri.kdl;
-      "waycorner/config.toml".source = ./confs/waycorner.toml;
+      "nvim/init.lua".source = ../../../conf_stash/nvim/init.lua;
+      "lf/lfrc".source = ../../../conf_stash/lf/lfrc;
+      "euporie/config.json".source = ../../../conf_stash/euporie/euporie.json;
     };
   };
 
@@ -37,13 +35,15 @@
       "$HOME/.local/bin" 
     ];
 
-    packages = with pkgs; [
-      ## Tools & Shells
-      # some minuscle stuff for python/R environments
-      libssh libxml2 libpng libxslt libtiff cairo  # R needs this
-      # terminal bling
-      zsh zsh-nix-shell zsh-fast-syntax-highlighting zsh-fzf-tab
-    ];
+  packages = with pkgs; [
+    ## Tools & Shells
+    # some minuscle stuff for python/R environments
+    libssh libxml2 libpng libxslt libtiff cairo  # R needs this
+    # terminal bling
+    zsh zsh-nix-shell zsh-fast-syntax-highlighting zsh-fzf-tab
+    # for the cursor theme
+    hackneyed
+  ];
 
     # You should not change this value, even if you update Home Manager.
     stateVersion = "26.05";

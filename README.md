@@ -17,4 +17,4 @@ It's not pretty...
 
 `nixos/` - NixOS configuration, including integrated home-manager modules and custom development environments.
 
-`windows/` - Outdated collection of Windows configurations and some helpful programs.
+`windows/` - Collection of Windows configurations and some helpful programs.

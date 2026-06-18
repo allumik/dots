@@ -7,9 +7,8 @@ let
   py-env = python313.withPackages(ps: with ps; [
     pip setuptools
     numpy numba pandas scipy scikit-learn # use containers for gpu torch
-    matplotlib seaborn altair ipykernel euporie
-    torchWithRocm
-    west # for zmk firmware builds
+    matplotlib seaborn altair ipykernel euporie torchWithRocm
+    west # for zmk
   ]);
 
   r-env = rWrapper.override{ packages = with rPackages; [
@@ -41,13 +40,14 @@ let
     fuse3 fuse-overlayfs qemu quickemu podman-tui podman-compose
 
     # Other Tools
-    tesseract openconnect poppler poppler-utils wl-clipboard gdrive3 puddletag vial dfu-util
+    tesseract openconnect puddletag poppler poppler-utils wl-clipboard gdrive3
     pandoc quarto texlive.combined.scheme-small wakeonlan
     nixfmt nil nixd html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
     noisetorch # noise reduction for mic
     beets # music library manager
     nextflow
+    dfu-util
 
     # AMD ROCm thingies - use docker containers for more up to date support
     rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.rocm-device-libs nvtopPackages.amd

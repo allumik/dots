@@ -1,5 +1,5 @@
 # hosts/deskmeat/configuration.nix
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   ## Imports
@@ -20,7 +20,6 @@
   # Trust the Tailscale interface in the firewall
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   # Wake-on-LAN Configuration
-  # Replace "enp3s0" with your actual ethernet interface name (find it using 'ip a')
   networking.interfaces.enp2s0.wakeOnLan.enable = true;
   networking.firewall.allowedUDPPorts = [ 9 ];
   networking.networkmanager = {
@@ -44,7 +43,6 @@
     lvm.boot.thin.enable = true;
     qemuGuest.enable = true; # Enable QEMU
     spice-vdagentd.enable = true; # Necessary for the QEMU spice
-    udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
     lact.enable = true; # Manage your GPU from 25.11 onward
     tailscale = {
       enable = true;
@@ -54,24 +52,7 @@
       enable = true; # smard card reader support
       plugins = [ pkgs.ccid ];
     };
-    # login manager
-    greetd = {
-      enable = true;
-      settings = {
-        default_session = {
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd ${config.programs.niri.package}/bin/niri-session";
-          user = "greeter";
-        };
-      };
-    };
-    gnome.gnome-keyring.enable = true; # secret service
   };
-
-  # NixOS otherwise injects a stripped PATH via Environment= on the niri.service
-  # unit which shadows the imported user-manager PATH. Disabling the default
-  # lets niri inherit the full PATH set up by niri-session.
-  systemd.user.services.niri.enableDefaultPath = false;
-
   virtualisation = {
     containers.enable = true;
     oci-containers.backend = "podman";

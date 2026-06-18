@@ -1,22 +1,30 @@
 # pwsh configuration
-# install fzf, ripgrep, neovim
 
-# set some defaults
+## ENV VARS
 $env:EDITOR = 'nvim'
 $env:VISUAL = 'nvim'
 $env:EUPORIE_CONFIG_FILE = (Join-Path $env:APPDATA "euporie\config.json")
 
-# set aliases here for quicker access
+## Set aliases here
 # Set-Alias zl zellij
 Set-Alias ll dir
 
-# Wrapper for calling wsl bash
+# remap the coreutils (from MS) to native commands, overwriting if needed
+$coreutilsCommands = @('cat', 'cp', 'date', 'echo', 'ls', 'mkdir', 'mv', 'pwd', 'rm', 'rmdir', 'sleep', 'sort', 'tee', 'uptime')
+foreach ($command in $coreutilsCommands) {
+  if (Get-Alias -Name $command -ErrorAction SilentlyContinue) {
+    Remove-Item -Path "Alias:\$command" -Force -ErrorAction SilentlyContinue
+  }
+  Set-Alias -Name $command -Value "$command.exe" -Scope Global -Force
+}
+
+## UTILITIES
+# wrapper for calling wsl bash
 function bash {
   $env:CHERE_INVOKING = 1
   & "C:\Windows\system32\wsl.exe" --distribution Ubuntu -e bash
 }
 
-# and some functionality, taking into account that we have some tools installed
 # use fzf for backwards search
 Set-PSReadLineKeyHandler -Key 'Ctrl+r' -ScriptBlock {
   $line = ""
@@ -32,3 +40,6 @@ Set-PSReadLineKeyHandler -Key 'Ctrl+r' -ScriptBlock {
     [Microsoft.PowerShell.PSConsoleReadLine]::Insert($command)
   }
 }
+
+# Pixi autocompletion setup
+(& pixi completion --shell powershell) | Out-String | Invoke-Expression
