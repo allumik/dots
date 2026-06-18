@@ -27,14 +27,13 @@ in
   environment = {
     systemPackages = with pkgs; [
       # Core Tools
-      neovim tre fzf fd lf ripgrep wget lz4 zip unzip p7zip moreutils
+      neovim tre fzf fd lf ripgrep wget lz4 zip unzip p7zip difftastic moreutils
     ];
     variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
       PAGER = "less";
     };
-    sessionVariables.NIXOS_OZONE_WL = "1";
   };
 
   programs.gnupg.agent = {
@@ -52,8 +51,11 @@ in
     # SSH Daemon
     openssh = {
       enable = true;
-      settings.PasswordAuthentication = false;
-      settings.KbdInteractiveAuthentication = false;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        X11Forwarding = true;
+      };
     };
   };
 
@@ -61,7 +63,7 @@ in
   nix.gc = {
     automatic = true;
     dates = "daily";
-    options = "--delete-older-than 3d";
+    options = "--delete-older-than 7d";
   };
 
   # Automatic system upgrades

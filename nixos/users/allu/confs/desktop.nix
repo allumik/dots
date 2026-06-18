@@ -1,43 +1,10 @@
 { config, pkgs, ... }:
 
 {
+  # fuzzel is configured by hand in confs/theme.nix instead of
+  # programs.fuzzel, so its colors can be swapped at runtime between
+  # Modus Operandi and Modus Vivendi.
   programs = {
-    fuzzel = {
-      enable = true;
-      settings = {
-        main = {
-          font = "IBM Plex Sans:size=12";
-          anchor = "right";
-          x-margin = 6;
-          vertical-pad = 6;
-          horizontal-pad = 6;
-          inner-pad = 4;
-          lines = 32;
-          use-bold = true;
-          show-actions = true;
-          # list-executables-in-path = true;
-        };
-        border = {
-          width = 2;
-          radius = 0;
-          selection-radius = 2;
-        };
-        colors = {
-          background = "b8b8b8ff";
-          border = "9b9b9bff";
-          text = "000000ff";
-          prompt = "ae3623ff";
-          placeholder = "969696ff";
-          input = "000000ff";
-          match = "e15b36ff";
-          selection = "969696ff";
-          selection-text = "902018ff";
-          selection-match = "e15b36ff";
-          counter = "7f849cff";
-        };
-      };
-    };
-
     swaylock.enable = true; # Super+Alt+L in the default setting (screen locker)
     waybar = {
       enable = true;
@@ -47,10 +14,16 @@
           layer = "top";
           position = "top";
           exclusive = false;
-          
+          # Without this, the bar's surface spans the full output width
+          # (even though only modules-right is visible) and swallows
+          # pointer events meant for windows underneath - this is exactly
+          # the scenario the option's own docs describe ("top layer
+          # without exclusive zone").
+          passthrough = true;
+
           modules-left = [];
           modules-center = [];
-          modules-right = [ "group/drawer" "custom/floating" "custom/close" "custom/fuzzel" "clock" ];
+          modules-right = [ "group/drawer" "custom/floating" "custom/close" "custom/settings" "custom/power-menu" "pulseaudio" "custom/fuzzel" "clock" ];
           
           clock = {
             format = "{:%H:%M}";
@@ -60,12 +33,16 @@
               mode-mon-col = 3;
               weeks-pos = "right";
               on-scroll = 1;
+              # No inline colors here: they'd be hardcoded regardless of
+              # light/dark mode. Plain text inherits "tooltip label"'s
+              # color from the swappable waybar CSS (see confs/theme.nix);
+              # bold/underline alone distinguish months/weekdays/today.
               format = {
-                months = "<span color='#000000'><b>{}</b></span>";
-                days = "<span color='#000000'>{}</span>";
-                weeks = "<span color='#9b9b9b'>W{}</span>";
-                weekdays = "<span color='#000000'><b>{}</b></span>";
-                today = "<span color='#ae3623'><b><u>{}</u></b></span>";
+                months = "<b>{}</b>";
+                days = "{}";
+                weeks = "W{}";
+                weekdays = "<b>{}</b>";
+                today = "<b><u>{}</u></b>";
               };
             };
             on-click = "fuzzel";
@@ -80,11 +57,33 @@
             format = "float";
             on-click = "niri msg action toggle-window-floating";
           };
+
+          pulseaudio = {
+            format = "vol {volume}%";
+            format-muted = "muted";
+            scroll-step = 5;
+            on-click = "pavucontrol";
+            on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            tooltip-format = "{desc} - {volume}%";
+          };
+
+          "custom/settings" = {
+            format = "settings";
+            on-click = "settings-menu";
+          };
+
+          "custom/power-menu" = {
+            format = "power";
+            on-click = "power-menu";
+          };
           
           "group/drawer" = {
             orientation = "horizontal";
             drawer = {
-              transition-duration = 300;
+              # Slow close animation so it doesn't snap shut the instant the
+              # mouse leaves - waybar has no separate "stay open" delay knob,
+              # so a long transition is the only way to make it linger.
+              transition-duration = 1200;
               transition-left-to-right = false;
             };
             modules = [
@@ -132,43 +131,9 @@
 	  };
         };
       };
-      style = ''
-        * {
-          font-family: IBM Plex Mono;
-          font-size: 14;
-        }
-
-        window#waybar {
-          background: transparent;
-          border: none;
-        }
-
-        .modules-right {
-          background: #b8b8b8;
-          border: 2px solid #9b9b9b;
-          margin: 0;
-          padding: 2px 4px;
-        }
-
-	tooltip {
-          background: #b8b8b8;
-          border: 2px solid #9b9b9b;
-          border-radius: 0;
-        }
-
-        tooltip label {
-          color: #000000;
-        }
-
-        #clock, #custom-expand, #tray, #custom-close, #custom-floating, #custom-sleep, #custom-logout, #custom-reboot, #custom-power {
-          color: #000000;
-          padding: 0 6px;
-        }
-
-        #custom-close:hover, #custom-floating:hover, #custom-sleep:hover, #custom-logout:hover, #custom-reboot:hover, #custom-power:hover {
-          text-decoration: underline;
-        }
-      '';
+      # The actual styling (incl. colors) lives in confs/theme.nix as two
+      # generated variants, swapped at runtime by ~/.local/bin/theme-switch.
+      style = ''@import url("file://${config.home.homeDirectory}/.config/waybar/style-current.css");'';
     };
 
     foot = {
@@ -179,6 +144,31 @@
           font-bold = "Aporetic Serif Mono:size=10";
           font-italic = "Aporetic Serif Mono:size=10";
           font-bold-italic = "Aporetic Serif Mono:size=10";
+        };
+        # Classic Windows PowerShell console palette: signature dark blue
+        # background, standard 16-color ANSI set. Overrides Stylix's
+        # default foot theming (see hosts/stylix.nix).
+        colors = {
+          background = "012456";
+          foreground = "eeedf0";
+
+          regular0 = "000000"; # black
+          regular1 = "800000"; # red
+          regular2 = "008000"; # green
+          regular3 = "808000"; # yellow
+          regular4 = "000080"; # blue
+          regular5 = "800080"; # magenta
+          regular6 = "008080"; # cyan
+          regular7 = "c0c0c0"; # white
+
+          bright0 = "808080"; # bright black
+          bright1 = "ff0000"; # bright red
+          bright2 = "00ff00"; # bright green
+          bright3 = "ffff00"; # bright yellow
+          bright4 = "0000ff"; # bright blue
+          bright5 = "ff00ff"; # bright magenta
+          bright6 = "00ffff"; # bright cyan
+          bright7 = "ffffff"; # bright white
         };
       };
     };
@@ -197,5 +187,189 @@
       enable = true;
       tray.enable = true;
     };
+    cliphist.enable = true; # clipboard history daemon, paired with the clipboard-picker script below
+    network-manager-applet.enable = true; # nm-applet tray icon + nm-connection-editor
+    tailscale-systray.enable = true; # tray icon for tailscale status (ported from master)
   };
-} 
+
+  home.packages = with pkgs; [
+    fuzzel # configured by hand in confs/theme.nix instead of programs.fuzzel
+    imv # lightweight Wayland-native photo viewer
+    wtype # used by emoji-picker to type the selected character
+    chafa file # used by lf-previewer to render image previews
+    thunar thunar-volman tumbler # GUI file manager + automount + thumbnails
+    pavucontrol # GUI audio/volume mixer, opened from the waybar pulseaudio module
+  ];
+
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "image/png" = "imv.desktop";
+      "image/jpeg" = "imv.desktop";
+      "image/gif" = "imv.desktop";
+      "image/webp" = "imv.desktop";
+      "image/bmp" = "imv.desktop";
+    };
+  };
+
+  home.file = {
+    ".local/bin/pick-color" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        # hyprpicker -a copies the picked hex straight to the clipboard
+        color=$(hyprpicker -a)
+        [ -n "$color" ] && notify-send "Color picked" "$color"
+      '';
+    };
+
+    ".local/bin/clipboard-picker" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        cliphist list | fuzzel --dmenu | cliphist decode | wl-copy
+      '';
+    };
+
+    ".local/bin/emoji-picker" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        selected=$(fuzzel --dmenu < "$HOME/.local/share/emoji-picker/emojis.txt" | cut -d' ' -f1)
+        [ -n "$selected" ] && wtype "$selected"
+      '';
+    };
+
+    ".local/share/emoji-picker/emojis.txt".text = builtins.readFile ./emojis.txt;
+
+    ".local/bin/lf-previewer" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        # lf calls this as: lf-previewer <path> <preview-width> <preview-height> <x> <y>
+        file="$1"
+        width="$2"
+        height="$3"
+
+        case "$(file --mime-type -Lb "$file")" in
+          image/*)
+            chafa --format=sixels --size="$width"x"$height" "$file"
+            ;;
+          *)
+            bat --color=always --style=numbers --line-range=:500 "$file" 2>/dev/null || cat "$file"
+            ;;
+        esac
+      '';
+    };
+
+    ".local/bin/power-menu" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        choice=$(printf "Lock\nSleep\nReboot\nPower Off\nLog Out\n" | fuzzel --dmenu --prompt="Power: ")
+        case "$choice" in
+          "Lock") swaylock ;;
+          "Sleep") systemctl suspend ;;
+          "Reboot") systemctl reboot ;;
+          "Power Off") systemctl poweroff ;;
+          "Log Out") niri msg action quit ;;
+        esac
+      '';
+    };
+
+    ".local/bin/settings-menu" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        choice=$(printf "Wi-Fi Settings\nBluetooth Settings\nVPN Connections\n" | fuzzel --dmenu --prompt="Settings: ")
+        case "$choice" in
+          "Wi-Fi Settings") nm-connection-editor ;;
+          "Bluetooth Settings") blueman-manager ;;
+          "VPN Connections")
+            vpn=$(nmcli -t -f NAME,TYPE connection show | awk -F: '$2=="vpn"||$2=="wireguard"{print $1}' | fuzzel --dmenu --prompt="VPN: ")
+            [ -n "$vpn" ] && nmcli connection up "$vpn"
+            ;;
+        esac
+      '';
+    };
+  };
+
+  xdg.dataFile = {
+    "applications/pick-color.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Color Picker
+      Comment=Pick a color from the screen and copy its hex code
+      Exec=pick-color
+      Icon=gtk-color-picker
+      Categories=Utility;
+      Terminal=false
+    '';
+
+    "applications/clipboard-picker.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Clipboard History
+      Comment=Browse and re-copy clipboard history
+      Exec=clipboard-picker
+      Icon=edit-paste
+      Categories=Utility;
+      Terminal=false
+    '';
+
+    "applications/emoji-picker.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Emoji Picker
+      Comment=Pick an emoji and type it into the focused window
+      Exec=emoji-picker
+      Icon=face-smile
+      Categories=Utility;
+      Terminal=false
+    '';
+
+    "applications/power-menu.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Power Menu
+      Comment=Lock, sleep, reboot, power off, or log out
+      Exec=power-menu
+      Icon=system-shutdown
+      Categories=System;
+      Terminal=false
+    '';
+
+    "applications/settings-menu.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Settings Menu
+      Comment=Wi-Fi, Bluetooth, and VPN connections
+      Exec=settings-menu
+      Icon=preferences-system
+      Categories=Settings;
+      Terminal=false
+    '';
+
+    "applications/monitor-layout.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Monitor Layout
+      Comment=Arrange and configure connected displays
+      Exec=wdisplays
+      Icon=video-display
+      Categories=Settings;
+      Terminal=false
+    '';
+
+    "applications/font-viewer.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Font Viewer
+      Comment=Preview installed fonts
+      Exec=foot -e fontpreview
+      Icon=preferences-desktop-font
+      Categories=Utility;
+      Terminal=false
+    '';
+  };
+}

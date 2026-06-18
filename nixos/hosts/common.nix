@@ -45,19 +45,27 @@
 
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ 
-      xdg-desktop-portal-gnome 
-      xdg-desktop-portal-gtk 
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
     ];
-    config.common.default = "*";
+    # gtk handles file pickers (lighter, themeable); gnome is kept only for
+    # ScreenCast/RemoteDesktop, since niri implements the GNOME Shell DBus
+    # interface those portals expect.
+    config.common = {
+      default = [ "gtk" ];
+      "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+      "org.freedesktop.impl.portal.RemoteDesktop" = [ "gnome" ];
+    };
   };
 
+  ## Bluetooth
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
   ## Desktop system settings
+  # fstrim/flatpak are opt-in per host (see hosts/<host>/configuration.nix)
   services = {
-    flatpak.enable = true;
-    fstrim.enable = true; # To trim SSD blocks
-
     pipewire = {
       enable = true;
       alsa.enable = true;

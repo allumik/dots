@@ -60,6 +60,11 @@ in
         if [ -x /usr/bin/dircolors ]; then
             test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
         fi
+
+        update_nixos() {
+          local target_dir=''${1:-~/Projects/dots/nixos}
+          nix flake update --flake "$target_dir" && sudo nixos-rebuild switch --flake "$target_dir"
+        }
       '';
       sessionVariables = sessvars;
       shellAliases = aliases;
@@ -72,7 +77,14 @@ in
       autosuggestion.enable = true;
       history.extended = true;
 
-      profileExtra = xdgDataDirs;
+      envExtra = ''
+        ${xdgDataDirs}
+
+        update_nixos() {
+          local target_dir=''${1:-~/Projects/dots/nixos}
+          nix flake update --flake "$target_dir" && sudo nixos-rebuild switch --flake "$target_dir"
+        }
+      '';
       sessionVariables = sessvars;
       shellAliases = aliases;
 
@@ -100,12 +112,8 @@ in
         plugins = [
           "fzf"
           "extract"
-	  "gitfast"
-	  "gh"
-	  "rsync"
-	  "rclone"
-	  "python"
-	  "uv"
+          "gitfast"
+          "gh"
         ];
       };
     };
@@ -121,10 +129,8 @@ in
 
     bat = {
       enable = true;
-      # This should pick up the correct colors for the generated theme. Otherwise
-      # it is possible to generate a custom bat theme to ~/.config/bat/config
+      # theme is set by Stylix (base16-stylix) to match the rest of the desktop
       config = {
-        theme = "base16";
         color = "always";
         style = "numbers";
         line-range = ":500";

@@ -12,13 +12,20 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Unified theming across GTK/Qt/fuzzel/waybar
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { 
-    self, 
-    nixpkgs, 
-    home-manager, 
-    ... 
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    stylix,
+    ...
   }@inputs: {
     nixosConfigurations = {
 
@@ -32,6 +39,9 @@
 
           # Host-specific configurations
           ./hosts/deskmeat/configuration.nix
+
+          # Unified GTK/Qt/fuzzel/waybar theming
+          stylix.nixosModules.stylix
 
           # Import Home-Manager configurations for users
           home-manager.nixosModules.home-manager

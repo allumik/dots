@@ -14,13 +14,13 @@
   boot.loader.grub.useOSProber = true;
 
   # Kernel modules and initrd
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.linuxPackages; # _zen; # normal might be more stable for network
   services.scx.enable = true; # default scx_rustland, build issue on 250914
   services.scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
 
-  boot.kernelModules = [ 
+  boot.kernelModules = [
     # AMD GPU and CPU related, keep dm-crypt for encrypted drives
-    "amdgpu" "kvm-amd" "dm-crypt" "iwlwifi"
+    "amdgpu" "kvm-amd" "dm-crypt"
   ];
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "uas" "usbhid" "sd_mod" ]; 
 
@@ -48,11 +48,14 @@
   # Enable zramSwap only in RAM compression for large memory loads, defaults are: 50% RAM; zstd
   boot.kernelParams = [
     "zswap.enabled=1" # enables zswap
-    "zswap.max_pool_percent=50" # maximum percentage of RAM that zswap is allowed to use
+    "zswap.max_pool_percent=75" # maximum percentage of RAM that zswap is allowed to use
     "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
     "zswap.zpool=zsmalloc"
-    "iwlwifi.disable_11ax=0"
-    "iwlwifi.uapsd_disable=1"  # Disable U-APSD to improve stability on some APs
+    "iwlwifi.disable_11ax=1"
+    "iwlwifi.uapsd_disable=1" # Disable U-APSD to improve stability on some APs
+    "iwlwifi.optout_pm=1"
+    "iwlmvm.power_scheme=1"
+    "pcie_aspm=off"
   ];
 
 
@@ -68,7 +71,7 @@
     };
     amdgpu.overdrive.enable = true;
     enableAllFirmware = true;
-    keyboard.qmk.enable = true;
+    keyboard.qmk.enable = true; # for the planck keyboard with vial
     bluetooth = {
       enable = true;
       settings = { General = { Enable = "Source, Sink, Media, Socket"; Experimental = true; }; Policy = { AutoEnable = true; }; };
