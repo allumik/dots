@@ -7,57 +7,11 @@
     description = "Alvin Meltsov";
     extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "podman" ];
   };
+  # brave/foot/syncthing/etc. are all configured in users/allu/confs/desktop.nix
+  # and theme.nix - this used to also carry Plasma-specific power/lock config
+  # (programs.plasma.powerdevil/kscreenlocker) from when this host ran Plasma,
+  # which doesn't apply to niri and doesn't exist without plasma-manager imported.
   home-manager.users.allu = {
     imports = [ ../../users/allu/home.nix ];
-    programs = {
-      brave = {
-        enable = true;
-        commandLineArgs = [ "--ozone-platform=wayland" ];
-        nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
-      };
-
-      foot = {
-        enable = true;
-	settings = {
-          main = {
-            font = "Aporetic Serif Mono:size=10";
-            font-bold = "Aporetic Serif Mono:size=10";
-            font-italic = "Aporetic Serif Mono:size=10";
-            font-bold-italic = "Aporetic Serif Mono:size=10";
-          };
-	};
-      };
-
-      # set it to run constatntly on this host
-      plasma = {
-        powerdevil = {
-	  general.pausePlayersOnSuspend = false;
-	  AC = {
-            autoSuspend.action = null;
-            dimDisplay.enable = true;
-            dimDisplay.idleTimeout = 720;
-            turnOffDisplay.idleTimeout = 900;
-	    inhibitLidActionWhenExternalMonitorConnected = true;
-	    powerProfile = "performance";
-	    powerButtonAction = "lockScreen";
-          };
-          battery = {
-            autoSuspend.action = null;
-            dimDisplay.enable = true;
-            dimDisplay.idleTimeout = 720;
-            turnOffDisplay.idleTimeout = 900;
-	    powerProfile = "powerSaving";
-	    powerButtonAction = "lockScreen";
-          };
-        };
-  
-        # Independent configuration for session security
-        kscreenlocker = {
-          autoLock = true;
-          timeout = 5;
-          lockOnResume = true;
-        };
-      };
-    };
   };
 }

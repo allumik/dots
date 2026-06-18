@@ -3,13 +3,13 @@
 
   inputs = {
     ## the stable channel
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
-    ## the unstable channel
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    ## the (usual) unstable channel
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Add home-manager input
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -48,7 +48,6 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
           }
         ];
       };
@@ -65,12 +64,14 @@
           # Host-specific configurations
           ./hosts/oldlenno/configuration.nix
 
+          # Unified GTK/Qt/fuzzel/waybar theming
+          stylix.nixosModules.stylix
+
           # Import Home-Manager configurations for users
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
           }
         ];
       };
@@ -80,6 +81,6 @@
     };
 
     # The overlay containing custom packages
-    overlays.default = import ./overlays/default.nix { inherit inputs; };
+    overlays.default = import ./overlays/default.nix { };
   };
 }

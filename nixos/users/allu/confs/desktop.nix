@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # fuzzel is configured by hand in confs/theme.nix instead of
@@ -14,16 +14,15 @@
           layer = "top";
           position = "top";
           exclusive = false;
-          # Without this, the bar's surface spans the full output width
-          # (even though only modules-right is visible) and swallows
-          # pointer events meant for windows underneath - this is exactly
-          # the scenario the option's own docs describe ("top layer
-          # without exclusive zone").
-          passthrough = true;
+          # NOTE: "passthrough" looked like the documented fix for the bar's
+          # full-width invisible strip blocking clicks underneath it, but in
+          # practice it makes the WHOLE bar non-interactive, not just the
+          # empty areas - reverted, the buttons matter more than the strip.
+          # See the width/anchor discussion before re-attempting this.
 
           modules-left = [];
           modules-center = [];
-          modules-right = [ "group/drawer" "custom/floating" "custom/close" "custom/settings" "custom/power-menu" "pulseaudio" "custom/fuzzel" "clock" ];
+          modules-right = [ "group/drawer" "custom/floating" "custom/close" "pulseaudio" "custom/fuzzel" "clock" ];
           
           clock = {
             format = "{:%H:%M}";
@@ -66,16 +65,6 @@
             on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
             tooltip-format = "{desc} - {volume}%";
           };
-
-          "custom/settings" = {
-            format = "settings";
-            on-click = "settings-menu";
-          };
-
-          "custom/power-menu" = {
-            format = "power";
-            on-click = "power-menu";
-          };
           
           "group/drawer" = {
             orientation = "horizontal";
@@ -97,7 +86,7 @@
           };
           
           "custom/expand" = {
-            format = "~";
+            format = " ~ ";
           };
           
           tray = {
@@ -136,6 +125,9 @@
       style = ''@import url("file://${config.home.homeDirectory}/.config/waybar/style-current.css");'';
     };
 
+    # Colors are left to Stylix's foot target, which bakes in Modus Vivendi
+    # (hosts/stylix.nix) for both colors-light/colors-dark - foot isn't part
+    # of the day/night swap in confs/theme.nix, so it stays Vivendi always.
     foot = {
       enable = true;
       settings = {
@@ -144,31 +136,6 @@
           font-bold = "Aporetic Serif Mono:size=10";
           font-italic = "Aporetic Serif Mono:size=10";
           font-bold-italic = "Aporetic Serif Mono:size=10";
-        };
-        # Classic Windows PowerShell console palette: signature dark blue
-        # background, standard 16-color ANSI set. Overrides Stylix's
-        # default foot theming (see hosts/stylix.nix).
-        colors = {
-          background = "012456";
-          foreground = "eeedf0";
-
-          regular0 = "000000"; # black
-          regular1 = "800000"; # red
-          regular2 = "008000"; # green
-          regular3 = "808000"; # yellow
-          regular4 = "000080"; # blue
-          regular5 = "800080"; # magenta
-          regular6 = "008080"; # cyan
-          regular7 = "c0c0c0"; # white
-
-          bright0 = "808080"; # bright black
-          bright1 = "ff0000"; # bright red
-          bright2 = "00ff00"; # bright green
-          bright3 = "ffff00"; # bright yellow
-          bright4 = "0000ff"; # bright blue
-          bright5 = "ff00ff"; # bright magenta
-          bright6 = "00ffff"; # bright cyan
-          bright7 = "ffffff"; # bright white
         };
       };
     };
@@ -261,37 +228,6 @@
         esac
       '';
     };
-
-    ".local/bin/power-menu" = {
-      executable = true;
-      text = ''
-        #!/usr/bin/env bash
-        choice=$(printf "Lock\nSleep\nReboot\nPower Off\nLog Out\n" | fuzzel --dmenu --prompt="Power: ")
-        case "$choice" in
-          "Lock") swaylock ;;
-          "Sleep") systemctl suspend ;;
-          "Reboot") systemctl reboot ;;
-          "Power Off") systemctl poweroff ;;
-          "Log Out") niri msg action quit ;;
-        esac
-      '';
-    };
-
-    ".local/bin/settings-menu" = {
-      executable = true;
-      text = ''
-        #!/usr/bin/env bash
-        choice=$(printf "Wi-Fi Settings\nBluetooth Settings\nVPN Connections\n" | fuzzel --dmenu --prompt="Settings: ")
-        case "$choice" in
-          "Wi-Fi Settings") nm-connection-editor ;;
-          "Bluetooth Settings") blueman-manager ;;
-          "VPN Connections")
-            vpn=$(nmcli -t -f NAME,TYPE connection show | awk -F: '$2=="vpn"||$2=="wireguard"{print $1}' | fuzzel --dmenu --prompt="VPN: ")
-            [ -n "$vpn" ] && nmcli connection up "$vpn"
-            ;;
-        esac
-      '';
-    };
   };
 
   xdg.dataFile = {
@@ -325,28 +261,6 @@
       Exec=emoji-picker
       Icon=face-smile
       Categories=Utility;
-      Terminal=false
-    '';
-
-    "applications/power-menu.desktop".text = ''
-      [Desktop Entry]
-      Type=Application
-      Name=Power Menu
-      Comment=Lock, sleep, reboot, power off, or log out
-      Exec=power-menu
-      Icon=system-shutdown
-      Categories=System;
-      Terminal=false
-    '';
-
-    "applications/settings-menu.desktop".text = ''
-      [Desktop Entry]
-      Type=Application
-      Name=Settings Menu
-      Comment=Wi-Fi, Bluetooth, and VPN connections
-      Exec=settings-menu
-      Icon=preferences-system
-      Categories=Settings;
       Terminal=false
     '';
 

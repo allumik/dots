@@ -52,7 +52,24 @@
       enable = true; # smard card reader support
       plugins = [ pkgs.ccid ];
     };
+    # login manager
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd ${config.programs.niri.package}/bin/niri-session";
+          user = "greeter";
+        };
+      };
+    };
+    gnome.gnome-keyring.enable = true; # secret service
   };
+
+  # NixOS otherwise injects a stripped PATH via Environment= on the niri.service
+  # unit which shadows the imported user-manager PATH. Disabling the default
+  # lets niri inherit the full PATH set up by niri-session.
+  systemd.user.services.niri.enableDefaultPath = false;
+
   virtualisation = {
     containers.enable = true;
     oci-containers.backend = "podman";

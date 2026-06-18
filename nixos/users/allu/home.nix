@@ -18,6 +18,8 @@
       "nvim/init.lua".source = ../../../conf_stash/nvim/init.lua;
       "lf/lfrc".source = ../../../conf_stash/lf/lfrc;
       "euporie/config.json".source = ../../../conf_stash/euporie/euporie.json;
+      "niri/config.kdl".source = ./confs/niri.kdl;
+      "waycorner/config.toml".source = ./confs/waycorner.toml;
     };
   };
 

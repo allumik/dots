@@ -1,6 +1,6 @@
 set preview true
 set previewer ~/.local/bin/lf-previewer
-set ratios 1
+set ratios 4:3
 set info perm:user:group:size:time
 set drawbox
 

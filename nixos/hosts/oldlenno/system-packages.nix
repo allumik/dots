@@ -22,11 +22,6 @@ let
     # GUI Apps
     veracrypt gparted qdigidoc
 
-    # KDE stuff
-    kdePackages.kcmutils kdePackages.kaccounts-providers kdePackages.kaccounts-integration
-    kdePackages.flatpak-kcm kdePackages.phonon kdePackages.phonon-vlc kdePackages.kamera 
-    kdePackages.kio-gdrive kdePackages.kio-fuse kdePackages.kio-extras kdePackages.kcolorchooser
-
     # Containers
     fuse3 fuse-overlayfs qemu quickemu podman-tui podman-compose
     omnissa-horizon-client 

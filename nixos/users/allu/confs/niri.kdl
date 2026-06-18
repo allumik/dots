@@ -15,8 +15,8 @@ layout {
   gaps 24
   
   struts {
-    top -24
-    bottom -24
+    top -16
+    bottom -16
   }
 
   center-focused-column "on-overflow"
@@ -29,13 +29,15 @@ layout {
   
   default-column-width { proportion 0.45; }
 
-  focus-ring {
-    width 4
+  focus-ring { off; }
+  border {
+    // always there
     // Modus Vivendi red - chosen because it reads acceptably against both
     // the light (Operandi) and dark (Vivendi) wallpaper fill, since the
     // ring itself isn't part of the day/night swap (see confs/theme.nix).
+    width 4
     active-color "#ff5f59"
-    inactive-color "#808080"
+    inactive-color "#9f9f9f"
   }
 }
 
@@ -83,6 +85,7 @@ window-rule {
   match app-id="pcmanfm"
   match app-id="org.kde.dolphin"
   match app-id="nemo"
+  match app-id="Volume Control"
   open-floating true
   default-column-width { fixed 1100; }
   default-window-height { fixed 700; }

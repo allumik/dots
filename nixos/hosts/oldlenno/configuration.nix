@@ -6,6 +6,7 @@
   imports = [
     ../base.nix # Minimal conf
     ../common.nix # Common configuration options for all hosts
+    ../stylix.nix # Unified GTK/Qt/fuzzel/waybar theming
     ./hardware-configuration.nix # Hardware-specific configuration
     ./system-packages.nix
     ./users.nix
@@ -25,6 +26,10 @@
 
 
   ## Program Settings and Services
+  programs = {
+    niri.enable = true;
+  };
+
   security.rtkit.enable = true;
   services = {
     xserver.videoDrivers = [ "vmware"]; # Xorg video drivers for this host
@@ -39,7 +44,7 @@
       enable = true;
       extraUpFlags = [ "--ssh" ];
     };
-    pcscd = { 
+    pcscd = {
       enable = true; # smard card reader support
       plugins = [ pkgs.ccid ];
     };
@@ -48,7 +53,23 @@
       IdleAction=ignore
       HandleLidSwitch=ignore
     '';
+    # login manager
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd ${config.programs.niri.package}/bin/niri-session";
+          user = "greeter";
+        };
+      };
+    };
+    gnome.gnome-keyring.enable = true; # secret service
   };
+
+  # NixOS otherwise injects a stripped PATH via Environment= on the niri.service
+  # unit which shadows the imported user-manager PATH. Disabling the default
+  # lets niri inherit the full PATH set up by niri-session.
+  systemd.user.services.niri.enableDefaultPath = false;
   virtualisation = {
     containers.enable = true;
     oci-containers.backend = "podman";
