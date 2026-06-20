@@ -1,10 +1,29 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
-  # fuzzel is configured by hand in confs/theme.nix instead of
-  # programs.fuzzel, so its colors can be swapped at runtime between
-  # Modus Operandi and Modus Vivendi.
   programs = {
+    fuzzel = {
+      enable = true;
+      settings = {
+        main = {
+          anchor = "right";
+          x-margin = 6;
+          vertical-pad = 6;
+          horizontal-pad = 6;
+          inner-pad = 4;
+          lines = 32;
+          use-bold = true;
+          show-actions = true;
+          icons-enabled = true;
+        };
+        border = {
+          width = 2;
+          radius = 0;
+          "selection-radius" = 2;
+        };
+      };
+    };
+
     swaylock.enable = true; # Super+Alt+L in the default setting (screen locker)
     waybar = {
       enable = true;
@@ -12,13 +31,8 @@
         mainBar = {
           ipc = true;
           layer = "top";
-          position = "top";
+          position = "bottom";
           exclusive = false;
-          # NOTE: "passthrough" looked like the documented fix for the bar's
-          # full-width invisible strip blocking clicks underneath it, but in
-          # practice it makes the WHOLE bar non-interactive, not just the
-          # empty areas - reverted, the buttons matter more than the strip.
-          # See the width/anchor discussion before re-attempting this.
 
           modules-left = [];
           modules-center = [];
@@ -32,9 +46,7 @@
               mode-mon-col = 3;
               weeks-pos = "right";
               on-scroll = 1;
-              # No inline colors here: they'd be hardcoded regardless of
-              # light/dark mode. Plain text inherits "tooltip label"'s
-              # color from the swappable waybar CSS (see confs/theme.nix);
+              # Plain text inherits "tooltip label"'s Stylix-injected color;
               # bold/underline alone distinguish months/weekdays/today.
               format = {
                 months = "<b>{}</b>";
@@ -120,14 +132,52 @@
 	  };
         };
       };
-      # The actual styling (incl. colors) lives in confs/theme.nix as two
-      # generated variants, swapped at runtime by ~/.local/bin/theme-switch.
-      style = ''@import url("file://${config.home.homeDirectory}/.config/waybar/style-current.css");'';
+      # window#waybar is left transparent/borderless so only .modules-right
+      # renders as a compact floating box, instead of a full-width bar.
+      style = ''
+        * {
+          font-family: IBM Plex Mono;
+          font-size: 12;
+        }
+
+        window#waybar {
+          background: transparent;
+          border: none;
+        }
+
+        .modules-right {
+          background: #e8f0ea;
+          border: 2px solid #364c40;
+          margin: 0;
+          padding: 2px 4px;
+        }
+
+        tooltip {
+          background: #e8f0ea;
+          border: 2px solid #364c40;
+          border-radius: 0;
+        }
+
+        tooltip label {
+          color: #364c40;
+        }
+
+        #clock, #custom-expand, #tray, #custom-close, #custom-floating, #custom-settings, #custom-power-menu, #pulseaudio, #custom-sleep, #custom-logout, #custom-reboot, #custom-power {
+          color: #364c40;
+          padding: 0 6px;
+        }
+
+        #custom-expand {
+          font-size: 9px;
+          padding: 0 4px;
+        }
+
+        #custom-close:hover, #custom-floating:hover, #custom-settings:hover, #custom-power-menu:hover, #pulseaudio:hover, #custom-sleep:hover, #custom-logout:hover, #custom-reboot:hover, #custom-power:hover {
+          text-decoration: underline;
+        }
+      '';
     };
 
-    # Colors are left to Stylix's foot target, which bakes in Modus Vivendi
-    # (hosts/stylix.nix) for both colors-light/colors-dark - foot isn't part
-    # of the day/night swap in confs/theme.nix, so it stays Vivendi always.
     foot = {
       enable = true;
       settings = {
@@ -147,6 +197,11 @@
   };
 
   services = {
+    wlsunset = {
+      enable = true; # night light: warm gamma after dark
+      latitude = 50.9577971;
+      longitude = 6.8021576;
+    };
     mako.enable = true; # notification daemon
     swayidle.enable = true; # idle management daemon
     polkit-gnome.enable = true; # polkit
@@ -160,7 +215,6 @@
   };
 
   home.packages = with pkgs; [
-    fuzzel # configured by hand in confs/theme.nix instead of programs.fuzzel
     imv # lightweight Wayland-native photo viewer
     wtype # used by emoji-picker to type the selected character
     chafa file # used by lf-previewer to render image previews
@@ -228,6 +282,37 @@
         esac
       '';
     };
+
+    ".local/bin/power-menu" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        choice=$(printf "Lock\nSleep\nReboot\nPower Off\nLog Out\n" | fuzzel --dmenu --prompt="Power: ")
+        case "$choice" in
+          "Lock") swaylock ;;
+          "Sleep") systemctl suspend ;;
+          "Reboot") systemctl reboot ;;
+          "Power Off") systemctl poweroff ;;
+          "Log Out") niri msg action quit ;;
+        esac
+      '';
+    };
+
+    ".local/bin/settings-menu" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        choice=$(printf "Wi-Fi Settings\nBluetooth Settings\nVPN Connections\n" | fuzzel --dmenu --prompt="Settings: ")
+        case "$choice" in
+          "Wi-Fi Settings") nm-connection-editor ;;
+          "Bluetooth Settings") blueman-manager ;;
+          "VPN Connections")
+            vpn=$(nmcli -t -f NAME,TYPE connection show | awk -F: '$2=="vpn"||$2=="wireguard"{print $1}' | fuzzel --dmenu --prompt="VPN: ")
+            [ -n "$vpn" ] && nmcli connection up "$vpn"
+            ;;
+        esac
+      '';
+    };
   };
 
   xdg.dataFile = {
@@ -250,6 +335,29 @@
       Exec=clipboard-picker
       Icon=edit-paste
       Categories=Utility;
+      Terminal=false
+    '';
+
+    # keep these around still so that I could select them from fuzzel
+    "applications/power-menu.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Power Menu
+      Comment=Lock, sleep, reboot, power off, or log out
+      Exec=power-menu
+      Icon=system-shutdown
+      Categories=System;
+      Terminal=false
+    '';
+
+    "applications/settings-menu.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Settings Menu
+      Comment=Wi-Fi, Bluetooth, and VPN connections
+      Exec=settings-menu
+      Icon=preferences-system
+      Categories=Settings;
       Terminal=false
     '';
 

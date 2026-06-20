@@ -67,7 +67,7 @@ in
             eval "$(dircolors -b)"
         fi
 
-        update_nixos() {
+        update-nixos() {
           local target_dir=''${1:-~/Projects/dots/nixos}
           nix flake update --flake "$target_dir" && sudo nixos-rebuild switch --flake "$target_dir"
         }
@@ -85,7 +85,7 @@ in
       envExtra = ''
         ${xdgDataDirs}
 
-        update_nixos() {
+        update-nixos() {
           local target_dir=''${1:-~/Projects/dots/nixos}
           nix flake update --flake "$target_dir" && sudo nixos-rebuild switch --flake "$target_dir"
         }

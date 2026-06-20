@@ -15,8 +15,8 @@ layout {
   gaps 24
   
   struts {
-    top -16
-    bottom -16
+    top -20
+    bottom -20
   }
 
   center-focused-column "on-overflow"
@@ -31,22 +31,16 @@ layout {
 
   focus-ring { off; }
   border {
-    // always there
-    // Modus Vivendi red - chosen because it reads acceptably against both
-    // the light (Operandi) and dark (Vivendi) wallpaper fill, since the
-    // ring itself isn't part of the day/night swap (see confs/theme.nix).
     width 4
-    active-color "#ff5f59"
-    inactive-color "#9f9f9f"
+    active-color "#9f9f9f"
+    inactive-color "#3c3c3c"
   }
 }
 
 // Animations are pretty nice, actually
 // animations { off; }
 
-// Replaces a plain "swaybg -c <color>" spawn: picks the right wallpaper
-// fill for the current time of day and (re)starts swaybg with it.
-spawn-at-startup "theme-switch"
+spawn-at-startup "swaybg" "-c" "#2c5150"
 spawn-at-startup "chameleos"
 spawn-at-startup "waybar"
 spawn-at-startup "waycorner"
@@ -104,8 +98,8 @@ binds {
   Mod+Shift+Slash { show-hotkey-overlay; }
 
   // Move the focused window between the floating and the tiling layout.
-  Mod+V       { toggle-window-floating; }
-  Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+  Mod+Shift+Space { toggle-window-floating; }
+  Mod+Shift+V     { switch-focus-between-floating-and-tiling; }
   // Toggle tabbed column display mode.
   Mod+W { toggle-column-tabbed-display; }
 
@@ -113,7 +107,7 @@ binds {
 
   // Desktop utilities (also reachable via fuzzel, Alt+Space)
   Mod+P       { spawn "pick-color"; }
-  Mod+Shift+C { spawn "clipboard-picker"; }
+  Mod+V       { spawn "clipboard-picker"; }
   Mod+E       { spawn "emoji-picker"; }
   Mod+F       { spawn "thunar"; }
   Mod+S       { spawn "settings-menu"; }

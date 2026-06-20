@@ -8,7 +8,6 @@
     ./confs/shell.nix
     ./confs/zellij.nix
     ./confs/desktop.nix
-    ./confs/theme.nix
   ];
 
   xdg = {

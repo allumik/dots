@@ -1,6 +1,5 @@
 {
   "editor.fontFamily": "'Aporetic Serif', 'Aporetic Serif Mono', 'Iosevka Term', 'Iosevka', 'Droid Sans Mono', 'monospace'",
-  "editor.fontSize": 13,
   "editor.fontWeight": 400,
   "editor.lineNumbers": "off",
   "editor.wordWrap": "on",
@@ -40,6 +39,7 @@
   "workbench.editor.navigationScope": "editorGroup",
   "workbench.editor.splitSizing": "split",
   "workbench.editor.tabSizing": "shrink",
+  "workbench.editor.showTabs": "none",
   "workbench.panel.showLabels": false,
   "workbench.browser.showInTitleBar": false,
   "workbench.layoutControl.enabled": false,
@@ -86,7 +86,6 @@
   "chat.editing.confirmEditRequestRetry": false,
   "extensions.ignoreRecommendations": true,
   "remote.autoForwardPortsSource": "hybrid",
-  "remote.SSH.configFile": "C:/Users/alvin/.ssh/config",
   "remote.SSH.enableRemoteCommand": true,
   "remote.SSH.useLocalServer": true,
   "security.workspace.trust.untrustedFiles": "open",
@@ -95,4 +94,5 @@
     "remote.SSH.configFile"
   ],
   "workbench.statusBar.visible": false,
+  "claudeCode.preferredLocation": "panel",
 }

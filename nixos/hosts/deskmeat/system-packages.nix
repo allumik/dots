@@ -6,19 +6,17 @@ let
   # https://github.com/NixOS/nixpkgs/issues/475732 for python314
   py-env = python313.withPackages(ps: with ps; [
     pip setuptools
-    numpy numba pandas scipy scikit-learn # use containers for gpu torch
-    matplotlib seaborn altair ipykernel euporie torchWithRocm
+    numpy numba pandas scipy scikit-learn
+    matplotlib ipykernel euporie torchWithRocm
     west # for zmk
   ]);
 
+  # minimal R tidyverse env, use pixi for other stuff
   r-env = rWrapper.override{ packages = with rPackages; [
-    # some deps for other packages
-    devtools rlang renv png curl openssl ssh jsonlite httpgd
+    # basic dev env with parallel support
+    languageserver tidyverse foreach doParallel BiocParallel openssl 
     # support for common files and libs
-    languageserver tinytex pandoc rmdformats quarto feather readxl dotenv
-    # basic dev env
-    tidyverse patchwork foreach doParallel iterators BiocParallel
-    # other stuff... use containers, or pixi
+    quarto readxl jsonlite dotenv
   ]; };
 
   pkgs_list = [
@@ -53,7 +51,7 @@ let
     rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.rocm-device-libs nvtopPackages.amd
 
     # DEV ENV from above
-    # py-env r-env
+    py-env r-env
   ];
 in {
   ## System-wide packages and variables for this host
