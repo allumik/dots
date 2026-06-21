@@ -69,6 +69,8 @@ else
   now_setups = {
     function() 
       vim.cmd('colorscheme default')
+      -- set Visual mode to have a distinct background
+      vim.api.nvim_set_hl(0, "Visual", { bg = "none", fg = "none", underline = true })
       local highlights = { "Normal", "NormalFloat", "SignColumn", "StatusLine" }
       for _, group in ipairs(highlights) do
         vim.api.nvim_set_hl(0, group, { bg = "none", ctermbg = "none" })
@@ -84,7 +86,6 @@ else
   later_setups = {
     function() require('mini.completion').setup() end,
     function() require('mini.hipatterns').setup() end,
-    function() require('mini.cursorword').setup() end,
     function() require('mini.indentscope').setup() end,
     function() require('mini.bufremove').setup() end,
     function() require('mini.diff').setup() end,

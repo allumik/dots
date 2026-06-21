@@ -38,14 +38,13 @@ let
     fuse3 fuse-overlayfs qemu quickemu podman-tui podman-compose
 
     # Other Tools
-    tesseract openconnect puddletag poppler poppler-utils wl-clipboard gdrive3
-    pandoc quarto texlive.combined.scheme-small wakeonlan
+    openconnect wl-clipboard gdrive3 pandoc quarto texlive.combined.scheme-small wakeonlan nextflow
     nixfmt nil nixd html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
-    noisetorch # noise reduction for mic
     beets # music library manager
-    nextflow
-    dfu-util
+    dfu-util # for the keyboard gods
+    claude-code # yes...
+    
 
     # AMD ROCm thingies - use docker containers for more up to date support
     rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.rocm-device-libs nvtopPackages.amd

@@ -1,5 +1,6 @@
 [fuzzel_launcher]
 enter_command = ["fuzzel"]
-locations = ["bottom_right"]
+locations = ["right"]
+margin = 600
 timeout_ms = 150
 size = 10
