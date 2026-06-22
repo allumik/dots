@@ -14,9 +14,9 @@
     enable = true;
     mime.enable = true;
     configFile = {
-      "nvim/init.lua".source = ../../../conf_stash/nvim/init.lua;
-      "lf/lfrc".source = ../../../conf_stash/lf/lfrc;
-      "euporie/config.json".source = ../../../conf_stash/euporie/euporie.json;
+      "nvim/init.lua".source = ./confs/init.lua;
+      "lf/lfrc".source = ./confs/lfrc;
+      "euporie/config.json".source = ./confs/euporie.json;
       "niri/config.kdl".source = ./confs/niri.kdl;
       "waycorner/config.toml".source = ./confs/waycorner.toml;
     };
