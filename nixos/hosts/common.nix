@@ -17,7 +17,7 @@
     # Default terminal
     foot
     # CLI Tools
-    lnav parallel retry pigz unrar plocate nix-search-cli gitFull gh miller
+    xan parallel retry pigz unrar plocate nix-search-cli gitFull gh miller
     # Monitoring
     s-tui stress htop
     # Media & Files
@@ -73,10 +73,12 @@
       pulse.enable = true;
       jack.enable = true;
     };
+    udisks2.enable = true; # mount backend thunar-volman automounts through
   };
 
   programs = {
     nix-ld.enable = true; # might make your life easier with linked library adapter
+    xfconf.enable = true; # backs home-manager's xfconf.settings (Thunar view prefs)
   };
 
 

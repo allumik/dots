@@ -27,6 +27,9 @@
     wifi.powersave = false; # set it to false just to be sure that it works
     plugins = with pkgs; [ networkmanager-openvpn networkmanager-openconnect ];
   };
+  # Prevent network interfaces from restarting during nixos-rebuild switch
+  systemd.services.NetworkManager.restartIfChanged = false;
+  systemd.services.tailscaled.restartIfChanged = false;
 
 
   ## Program Settings and Services

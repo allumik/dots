@@ -16,7 +16,7 @@
           show-actions = true;
           icons-enabled = true;
 	  exit-on-keyboard-focus-loss = true;
-          layer-shell-focus = "on-demand";
+          keyboard-focus = "on-demand";
         };
         border = {
           width = 2;
@@ -91,9 +91,7 @@
 	    rotate = 270;
             orientation = "vertical";
             drawer = {
-              # Slow close animation so it doesn't snap shut the instant the
-              # mouse leaves - waybar has no separate "stay open" delay knob,
-              # so a long transition is the only way to make it linger.
+              click-to-reveal = true;
               transition-duration = 1200;
               transition-left-to-right = false;
             };
@@ -418,17 +416,13 @@
     };
   };
 
+  xfconf.settings.thunar = {
+    "last-view" = "ThunarDetailsView"; # list mode
+    "last-show-hidden" = true;
+  };
+
   xdg = {
-    mimeApps = {
-      enable = true;
-      defaultApplications = {
-        "image/png" = "imv.desktop";
-        "image/jpeg" = "imv.desktop";
-        "image/gif" = "imv.desktop";
-        "image/webp" = "imv.desktop";
-        "image/bmp" = "imv.desktop";
-      };
-    };
+    # No xdg.mimeApps here on purpose: it makes mimeapps.list a read-only
     dataFile = {
       "applications/pick-color.desktop".text = ''
         [Desktop Entry]

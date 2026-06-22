@@ -90,7 +90,11 @@ else
     function() require('mini.bufremove').setup() end,
     function() require('mini.diff').setup() end,
     function() require('mini.files').setup() end,
-    function() require('mini.git').setup() end,
+    function()
+      if vim.fn.executable('git') == 1 then
+        require('mini.git').setup()
+      end
+    end,
     function() require('mini.sessions').setup() end,
     function() require('mini.visits').setup() end,
     function() require('mini.align').setup() end,
