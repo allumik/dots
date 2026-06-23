@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   programs = {
@@ -23,8 +23,8 @@
           width = 2;
           radius = 0;
           "selection-radius" = 2;
-          color = "364c40ff"; # match waybar's border
         };
+        colors.border = lib.mkForce "364c40ff"; # match waybar's border
       };
     };
 
@@ -35,16 +35,16 @@
         mainBar = {
           ipc = true;
           position = "right";
-	  mode = "dock";
-	  layer = "top";
-	  # mode = "hide";
-	  # start-hidden = false;
+	        mode = "dock";
+	        layer = "top";
+	        # mode = "hide";
+	        # start-hidden = false;
 
           modules-left = [ "custom/fuzzel" ];
           modules-center = [];
           modules-right = [ "group/drawer" "custom/floating" "custom/close" "pulseaudio" "clock" ];
           
-	      # dont forget to rotate everything
+	        # dont forget to rotate everything
           clock = {
 	          rotate = 270;
             format = "| {:%H:%M}";
@@ -68,19 +68,19 @@
           };
           
           "custom/close" = {
-	    rotate = 270;
+	          rotate = 270;
             format = "close";
             on-click = "niri msg action close-window";
           };
           
           "custom/floating" = {
-	    rotate = 270;
+	          rotate = 270;
             format = "float";
             on-click = "niri msg action toggle-window-floating";
           };
 
           pulseaudio = {
-	    rotate = 270;
+	          rotate = 270;
             format = "vol {volume}%";
             format-muted = "muted";
             scroll-step = 5;
@@ -90,7 +90,7 @@
           };
           
           "group/drawer" = {
-	    rotate = 270;
+	          rotate = 270;
             orientation = "vertical";
             drawer = {
               click-to-reveal = true;
@@ -109,24 +109,24 @@
           };
           
           "custom/expand" = {
-	    rotate = 270;
+	          rotate = 270;
             format = " ~ ";
           };
           
           tray = {
-	    rotate = 270;
+	          rotate = 270;
             icon-size = 20;
             spacing = 8;
           };
           
           "custom/sleep" = {
-	    rotate =  270;
+	          rotate =  270;
             format = "sleep";
             on-click = "systemctl suspend";
           };
 
           "custom/awake" = {
-	    rotate = 270;
+	          rotate = 270;
             exec = "awake-status";
             return-type = "json";
             interval = 5;
@@ -134,25 +134,25 @@
           };
           
           "custom/logout" = {
-	    rotate = 270;
+	          rotate = 270;
             format = "logout";
             on-click = "niri msg action quit";
           };
           
           "custom/reboot" = {
-	    rotate = 270;
+	          rotate = 270;
             format = "reboot";
             on-click = "systemctl reboot";
           };
           
           "custom/power" = {
-	    rotate = 270;
+	          rotate = 270;
             format = "poweroff";
             on-click = "systemctl poweroff";
           };
 	  
 	  "custom/fuzzel" = {
-	    rotate = 270;
+	          rotate = 270;
             format = "applications";
 	    on-click = "fuzzel";
 	  };
@@ -243,11 +243,13 @@
       timeouts = [
         {
           timeout = 600; # 10 min: turn off the screen
-          command = "$HOME/.local/bin/idle-action 'niri msg action power-off-monitors'";
+          # swayidle's command lands directly in systemd's ExecStart=, which
+          # doesn't expand $HOME (it's not a shell) - use the real path.
+          command = "${config.home.homeDirectory}/.local/bin/idle-action 'niri msg action power-off-monitors'";
         }
         {
           timeout = 1800; # 30 min: suspend
-          command = "$HOME/.local/bin/idle-action 'systemctl suspend'";
+          command = "${config.home.homeDirectory}/.local/bin/idle-action 'systemctl suspend'";
         }
       ];
     };
