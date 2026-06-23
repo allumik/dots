@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   programs = {
@@ -8,20 +8,22 @@
         main = {
           anchor = "right";
           # x-margin = 6;
-          vertical-pad = 6;
-          horizontal-pad = 6;
-          inner-pad = 4;
-          lines = 32;
+          font = lib.mkForce "IBM Plex Sans:size=11"; # same family stylix uses, just bigger
+          vertical-pad = 10;
+          horizontal-pad = 10;
+          inner-pad = 14;
+          lines = 24;
           use-bold = true;
           show-actions = true;
           icons-enabled = true;
-	  exit-on-keyboard-focus-loss = true;
+	        exit-on-keyboard-focus-loss = true;
           keyboard-focus = "on-demand";
         };
         border = {
           width = 2;
           radius = 0;
           "selection-radius" = 2;
+          color = "364c40ff"; # match waybar's border
         };
       };
     };
@@ -42,11 +44,11 @@
           modules-center = [];
           modules-right = [ "group/drawer" "custom/floating" "custom/close" "pulseaudio" "clock" ];
           
-	  # dont forget to rotate everything
+	      # dont forget to rotate everything
           clock = {
-	    rotate = 270;
+	          rotate = 270;
             format = "| {:%H:%M}";
-	    tooltip-format = "<tt>{calendar}</tt>";
+	          tooltip-format = "<tt>{calendar}</tt>";
             calendar = {
               mode = "month";
               mode-mon-col = 3;
