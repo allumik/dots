@@ -14,8 +14,8 @@
   boot.loader.grub.useOSProber = true;
 
   # Kernel modules and initrd
-  boot.kernelPackages = pkgs.linuxPackages; # _zen; # normal might be more stable for network
-  services.scx.enable = true; # default scx_rustland, build issue on 250914
+  boot.kernelPackages = pkgs.linuxPackages_zen; # zen's current bzImage output is broken upstream; normal might be more stable for network anyway
+  services.scx.enable = true;
   services.scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
 
   boot.kernelModules = [

@@ -85,7 +85,7 @@
             format-muted = "muted";
             scroll-step = 5;
             on-click = "pavucontrol";
-            on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && canberra-gtk-play -i audio-volume-change";
             tooltip-format = "{desc} - {volume}%";
           };
           
@@ -270,6 +270,7 @@
       chafa file # used by lf-previewer to render image previews
       thunar thunar-volman tumbler # GUI file manager + automount + thumbnails
       pavucontrol # GUI audio/volume mixer, opened from the waybar pulseaudio module
+      libcanberra-gtk3 sound-theme-freedesktop # volume-change chime (canberra-gtk-play)
     ];
 
     pointerCursor = {
