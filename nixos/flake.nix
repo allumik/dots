@@ -18,6 +18,18 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Sandboxing helper for running packages with bubblewrap
+    nix-bubblewrap = {
+      url = "github:fgaz/nix-bubblewrap";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Terminal multiplexer for AI coding agents
+    herdr = {
+      url = "github:ogulcancelik/herdr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -81,6 +93,6 @@
     };
 
     # The overlay containing custom packages
-    overlays.default = import ./overlays/default.nix { };
+    overlays.default = import ./overlays/default.nix { inherit inputs; };
   };
 }

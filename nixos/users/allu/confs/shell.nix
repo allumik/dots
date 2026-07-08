@@ -20,7 +20,7 @@ let
     la      = "ls -A";
     ll      = "${pkgs.eza}/bin/eza -alF";
 
-    zl     = "${pkgs.zellij}/bin/zellij";
+    tux     = "${pkgs.tmux}/bin/tmux new-session -A -s main";
     of      = "xdg-open '$(fzf --preview '${pkgs.bat} {}')'";
     es      = "$EDITOR '$(fzf --preview '${pkgs.bat} {}')'";
 
@@ -117,6 +117,7 @@ in
           "extract"
           "gitfast"
           "gh"
+          "tmux"
         ];
       };
     };
@@ -125,8 +126,8 @@ in
       enable = true;
       enableZshIntegration = true;
       defaultOptions = [ "--height 40%" ];
-      fileWidgetOptions = [ "--preview 'bat {}'" ];
-      changeDirWidgetOptions = [ "--preview 'bat {}'" ];
+      fileWidget.options = [ "--preview 'bat {}'" ];
+      changeDirWidget.options = [ "--preview 'bat {}'" ];
     };
 
     bat = {

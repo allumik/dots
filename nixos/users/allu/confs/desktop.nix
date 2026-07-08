@@ -1,6 +1,14 @@
 { config, pkgs, lib, ... }:
 
 {
+  # Empty decoration-layout strips close/minimize/maximize from GTK
+  # client-side title bars (niri's prefer-no-csd already asks for SSD, but
+  # not every app honors it - this catches the GTK ones that don't).
+  gtk = {
+    gtk3.extraConfig."gtk-decoration-layout" = ":";
+    gtk4.extraConfig."gtk-decoration-layout" = ":";
+  };
+
   programs = {
     fuzzel = {
       enable = true;
@@ -230,8 +238,8 @@
   services = {
     wlsunset = {
       enable = true; # night light: warm gamma after dark
-      latitude = 50.9577971;
-      longitude = 6.8021576;
+      latitude = "50.9577971";
+      longitude = "6.8021576";
       temperature.night = 5200;
     };
     mako = {
@@ -274,6 +282,7 @@
     ];
 
     pointerCursor = {
+      enable = true;
       gtk.enable = true;
       x11.enable = true;
       package = pkgs.bibata-cursors;
