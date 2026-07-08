@@ -25,6 +25,11 @@
   # Claude Code personal skill so agents know how to drive herdr (HERDR_ENV=1)
   home.file.".claude/skills/herdr/SKILL.md".source = ./confs/herdr-skill.md;
 
+  # Claude Code global settings (TUI/statusline prefs, ponytail plugin, herdr hook).
+  # Nix-managed means read-only: /config and other in-app writes to this file
+  # will fail. Edit ./confs/claude-settings.json and rebuild instead.
+  home.file.".claude/settings.json".source = ./confs/claude-settings.json;
+
   # herdr: sandbox new panes' default shell via bubblewrap
   home.file.".config/herdr/config.toml".source = ./confs/herdr-config.toml;
   home.file.".local/bin/herdr-sandboxed-shell" = {

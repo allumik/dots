@@ -17,6 +17,31 @@
     # niri and doesn't exist without plasma-manager imported.
     allu = {
       imports = [ ../../users/allu/home.nix ];
+
+      # Two-way sync of ~/Drive with a "Drive" folder on Google Drive.
+      # One-time manual setup after switching (not declarable - OAuth):
+      #   rclone config          # create a remote named "gdrive", type drive
+      #   rclone bisync ~/Drive gdrive:Drive --resync   # establish baseline
+      # After that the timer below keeps them in sync unattended.
+      home.packages = [ pkgs.rclone ];
+      home.file."Drive/.keep".text = "";
+
+      systemd.user.services.rclone-drive-bisync = {
+        Unit.Description = "Bisync ~/Drive with Google Drive";
+        Service = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.rclone}/bin/rclone bisync %h/Drive gdrive:Drive --resilient";
+        };
+      };
+
+      systemd.user.timers.rclone-drive-bisync = {
+        Unit.Description = "Periodic Google Drive bisync";
+        Timer = {
+          OnBootSec = "5m";
+          OnUnitActiveSec = "10m";
+        };
+        Install.WantedBy = [ "timers.target" ];
+      };
     };
   };
 }

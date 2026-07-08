@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/home/allu/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "ponytail@ponytail": true
+  },
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    }
+  },
+  "effortLevel": "high",
+  "promptSuggestionEnabled": false,
+  "theme": "auto",
+  "spinnerTipsEnabled": false,
+  "terminalProgressBarEnabled": false,
+  "showTurnDuration": false,
+  "prefersReducedMotion": true,
+  "statusLine": {
+    "type": "command",
+    "command": "jq -r '\" [\\(.model.display_name)] \\(.context_window.used_percentage // 0)% context\"'"
+  }
+}

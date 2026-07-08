@@ -273,6 +273,7 @@
 
   home = {
     packages = with pkgs; [
+      obsidian # notetaking
       imv # lightweight Wayland-native photo viewer
       wtype # used by emoji-picker to type the selected character
       chafa file # used by lf-previewer to render image previews

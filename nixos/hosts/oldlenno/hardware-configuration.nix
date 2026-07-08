@@ -20,7 +20,9 @@
 
   # Intel GPU and CPU related
   boot.kernelModules = [ "kvm-intel"  ];
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ]; 
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ];
+  boot.initrd.verbose = false; # quiet initrd-stage messages so they don't clobber the tuigreet greeter
+  boot.consoleLogLevel = 3; # suppress kernel INFO spam on the console tuigreet draws on
 
 
   # Filesystems and Swap
@@ -43,6 +45,7 @@
     "zswap.zpool=zsmalloc" # recommended to set
     "zswap.max_pool_percent=25" # maximum percentage of RAM that zswap is allowed to use
     "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
+    "quiet" # also tells systemd to suppress its own unit status lines, not just the kernel
   ];
 
   # The additional WD green disk

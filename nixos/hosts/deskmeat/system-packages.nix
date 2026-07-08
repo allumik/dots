@@ -38,7 +38,7 @@ let
     fuse3 fuse-overlayfs qemu quickemu podman-tui podman-compose
 
     # Other Tools
-    openconnect wl-clipboard gdrive3 pandoc quarto texlive.combined.scheme-small wakeonlan nextflow
+    openconnect wl-clipboard pandoc quarto texlive.combined.scheme-small wakeonlan nextflow
     nixfmt nil nixd html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
     beets # music library manager
