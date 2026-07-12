@@ -70,10 +70,16 @@ else
     function() 
       vim.cmd('colorscheme default')
       -- set Visual mode to have a distinct background
-      vim.api.nvim_set_hl(0, "Visual", { bg = "none", fg = "none", underline = true })
+      vim.api.nvim_set_hl(0, "Visual", { bg = "none", fg = "none", strikethrough = true })
+      -- remove highlights from indentation, statusline etc
       local highlights = { "Normal", "NormalFloat", "SignColumn", "StatusLine" }
       for _, group in ipairs(highlights) do
         vim.api.nvim_set_hl(0, group, { bg = "none", ctermbg = "none" })
+      end
+      -- add underlines to menu selection highlights, works with all colors
+      local selection_groups = { "PmenuSel", "WildMenu", "TelescopeSelection", "FzfLuaSelection", "MiniPickMatchCurrent" }
+      for _, group in ipairs(selection_groups) do
+        vim.api.nvim_set_hl(0, group, { underline = true })
       end
     end,
     function() require('mini.basics').setup() end,
@@ -192,13 +198,26 @@ else
   vim.g.slime_dont_ask_default = 1
   vim.g.slime_default_config = { socket_name = "default", target_pane = "{last}" }
 
+  -- netrw as a simple file tree sidebar (used by tmux's golden-ratio layout)
+  vim.g.netrw_banner = 0
+  vim.g.netrw_liststyle = 3
+  vim.g.netrw_winsize = 25
+
+  -- blank out the netrw window's statusline (window-local, so the nvim
+  -- buffer split next to it keeps mini.statusline's normal content)
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'netrw',
+    callback = function() vim.wo.statusline = ' ' end,
+  })
+
   -- Native picker shortcuts
   map('n', '<leader>ff', ':Pick files<cr>', { silent = true })
   map('n', '<leader>fo', ':lua MiniFiles.open()<cr>', { silent = true })
-  map('n', '<leader> ',  ':Pick commands<cr>', { silent = true })
+  map('n', '<leader>fe', ':Lexplore<cr>', { silent = true })
   map('n', '<leader>fr', ':Pick oldfiles<cr>', { silent = true })
-  map('n', '<leader>s',  ':Pick buf_lines<cr>', { silent = true })
   map('n', '<leader>fs', ':Pick grep_live<cr>', { silent = true })
+  map('n', '<leader> ',  ':Pick commands<cr>', { silent = true })
+  map('n', '<leader>s',  ':Pick buf_lines<cr>', { silent = true })
   map('n', '<leader>b',  ':Pick buffers<cr>', { silent = true })
   map('n', '<leader>"',  ':Pick registers<cr>', { silent = true })
 

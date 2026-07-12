@@ -30,12 +30,10 @@
   "effortLevel": "high",
   "promptSuggestionEnabled": false,
   "theme": "auto",
+  "sessionRecap": false,
   "spinnerTipsEnabled": false,
   "terminalProgressBarEnabled": false,
   "showTurnDuration": false,
-  "prefersReducedMotion": true,
-  "statusLine": {
-    "type": "command",
-    "command": "jq -r '\" [\\(.model.display_name)] \\(.context_window.used_percentage // 0)% context\"'"
-  }
+  "autoCompactEnabled"; false,
+  "prefersReducedMotion": true
 }

@@ -5,9 +5,9 @@
 
   # Import and source other configuration files
   imports = [
-    ./confs/shell.nix
-    ./confs/tmux.nix
-    ./confs/desktop.nix
+    ./shell.nix
+    ./tmux.nix
+    ./desktop.nix
   ];
 
   xdg = {
@@ -19,6 +19,13 @@
       "euporie/config.json".source = ./confs/euporie.json;
       "niri/config.kdl".source = ./confs/niri.kdl;
       "waycorner/config.toml".source = ./confs/waycorner.toml;
+      "matplotlib/matplotlibrc".text = ''
+        # Plots served over HTTP instead of a GUI window, so they're viewable
+        # from any browser on the tailnet (tailscale0 is already firewall-trusted).
+        backend: webagg
+        webagg.address: 0.0.0.0
+        webagg.open_in_browser: False
+      '';
     };
   };
 

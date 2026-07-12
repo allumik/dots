@@ -50,7 +50,7 @@
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ self.overlays.default ]; })
 
           # Host-specific configurations
-          ./hosts/deskmeat/configuration.nix
+          ./hosts/deskmeat.nix
 
           # Unified GTK/Qt/fuzzel/waybar theming
           stylix.nixosModules.stylix
@@ -74,7 +74,7 @@
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ self.overlays.default ]; })
 
           # Host-specific configurations
-          ./hosts/oldlenno/configuration.nix
+          ./hosts/oldlenno.nix
 
           # Unified GTK/Qt/fuzzel/waybar theming
           stylix.nixosModules.stylix
