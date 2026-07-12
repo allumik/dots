@@ -206,9 +206,12 @@ in
         {
           name = "libpipewire-module-filter-chain";
           args = {
-            node.description = "Noise Canceling Source";
-            media.name = "Noise Canceling Source";
-            filter.graph = {
+            "node.description" = "Noise Canceling Source";
+            "media.name" = "Noise Canceling Source";
+            # pipewire's SPA-JSON treats dotted keys as literal flat strings, not
+            # nested paths - Nix's `filter.graph = {...}` auto-nests instead, which
+            # the filter-chain module can't find ("missing filter.graph property").
+            "filter.graph" = {
               nodes = [
                 {
                   type = "ladspa";
@@ -219,14 +222,14 @@ in
                 }
               ];
             };
-            capture.props = {
-              node.name = "capture.webcam_denoise";
-              node.passive = true;
-              target.object = "alsa_input.usb-046d_C270_HD_WEBCAM_200901010001-02.mono-fallback";
+            "capture.props" = {
+              "node.name" = "capture.webcam_denoise";
+              "node.passive" = true;
+              "target.object" = "alsa_input.usb-046d_C270_HD_WEBCAM_200901010001-02.mono-fallback";
             };
-            playback.props = {
-              node.name = "rnnoise_source";
-              media.class = "Audio/Source";
+            "playback.props" = {
+              "node.name" = "rnnoise_source";
+              "media.class" = "Audio/Source";
             };
           };
         }

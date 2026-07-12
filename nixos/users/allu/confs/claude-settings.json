@@ -34,6 +34,6 @@
   "spinnerTipsEnabled": false,
   "terminalProgressBarEnabled": false,
   "showTurnDuration": false,
-  "autoCompactEnabled"; false,
+  "autoCompactEnabled": false,
   "prefersReducedMotion": true
 }
