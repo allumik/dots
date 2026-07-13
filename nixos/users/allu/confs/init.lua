@@ -69,14 +69,14 @@ else
   now_setups = {
     function() 
       vim.cmd('colorscheme default')
-      -- set Visual mode to have a distinct background
-      vim.api.nvim_set_hl(0, "Visual", { bg = "none", fg = "none", strikethrough = true })
+      -- set Visual mode to have a distinct identifier
+      vim.api.nvim_set_hl(0, "Visual", { bg = "none", fg = "none", underline = true })
       -- remove highlights from indentation, statusline etc
       local highlights = { "Normal", "NormalFloat", "SignColumn", "StatusLine" }
       for _, group in ipairs(highlights) do
         vim.api.nvim_set_hl(0, group, { bg = "none", ctermbg = "none" })
       end
-      -- add underlines to menu selection highlights, works with all colors
+      -- add underlines to menu selection highlights
       local selection_groups = { "PmenuSel", "WildMenu", "TelescopeSelection", "FzfLuaSelection", "MiniPickMatchCurrent" }
       for _, group in ipairs(selection_groups) do
         vim.api.nvim_set_hl(0, group, { underline = true })

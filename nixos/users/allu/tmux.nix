@@ -9,6 +9,7 @@
     shortcut = "b";
     baseIndex = 1;
     keyMode = "vi";
+    escapeTime = 50;
     sensibleOnTop = true;
     aggressiveResize = true;
 
