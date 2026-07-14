@@ -49,7 +49,12 @@ in
             PS1=' ''${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
         fi
         unset color_prompt force_color_prompt
-        [ -n "$TMUX" ] && PS1="[tmux]$PS1"
+        # tmux session position, e.g. 1/2 (see the zsh helper below for how)
+        _tmux_sess_pos() {
+          tmux list-sessions -F "#{session_id}" 2>/dev/null \
+            | awk -v c="''${TMUX##*,}" 'substr($0,2)==c{i=NR} END{print i"/"NR}'
+        }
+        [ -n "$TMUX" ] && PS1="[tmux \$(_tmux_sess_pos)]$PS1"
 
         # If this is an xterm set the title to user@host:dir
         case "$TERM" in
@@ -93,7 +98,15 @@ in
       '';
       # runs after oh-my-zsh sets $PROMPT, so this prefix survives the theme
       initContent = ''
-        [[ -n "$TMUX" ]] && PROMPT="%F{cyan}[tmux]%f $PROMPT"
+        # position of the current tmux session among all sessions, e.g. 1/2.
+        # $TMUX's third comma-field is our session-id number (no tmux call needed);
+        # list-sessions is name-sorted so NR is a stable ordinal.
+        _tmux_sess_pos() {
+          tmux list-sessions -F "#{session_id}" 2>/dev/null \
+            | awk -v c="''${TMUX##*,}" 'substr($0,2)==c{i=NR} END{print i"/"NR}'
+        }
+        setopt prompt_subst  # so the $(...) below re-runs each render
+        [[ -n "$TMUX" ]] && PROMPT="%F{cyan}[tmux \$(_tmux_sess_pos)]%f $PROMPT"
       '';
       sessionVariables = sessvars;
       shellAliases = aliases;

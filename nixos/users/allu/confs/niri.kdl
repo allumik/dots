@@ -29,7 +29,7 @@ layout {
     bottom -16
   }
 
-  center-focused-column "on-overflow"
+  center-focused-column "never"
 
   preset-column-widths {
     proportion 0.33333
@@ -59,6 +59,7 @@ layout {
 spawn-at-startup "swaybg" "--color=#2c5150"
 spawn-at-startup "chameleos"
 spawn-at-startup "waybar"
+spawn-at-startup "swayosd-server"
 spawn-at-startup "waycorner"
 spawn-at-startup "fuzzel"
 
@@ -77,6 +78,39 @@ window-rule {
   default-column-width { fixed 700; }
   default-window-height { fixed 500; }
   default-floating-position x=20 y=20 relative-to="bottom-right"
+}
+
+// Default app layout: workspace 1 gets browser + terminal, workspace 2 gets
+// utilities. Floating (global default), placed side by side so they don't overlap.
+window-rule {
+  match app-id="^brave-browser$"
+  open-on-workspace "1"
+  default-floating-position x=0 y=0 relative-to="top-left"
+}
+window-rule {
+  match app-id="^foot$"
+  open-on-workspace "1"
+  default-floating-position x=1920 y=0 relative-to="top-left"
+}
+window-rule {
+  match app-id="^org.keepassxc.KeePassXC$"
+  open-on-workspace "2"
+  default-floating-position x=0 y=0 relative-to="top-left"
+}
+window-rule {
+  match app-id="^thunar$"
+  open-on-workspace "2"
+  default-floating-position x=1280 y=0 relative-to="top-left"
+}
+window-rule {
+  match app-id="^vlc$"
+  open-on-workspace "2"
+  default-floating-position x=2560 y=0 relative-to="top-left"
+}
+window-rule {
+  match app-id="^obsidian$"
+  open-on-workspace "2"
+  default-floating-position x=0 y=1080 relative-to="top-left"
 }
 
 binds {
@@ -157,13 +191,13 @@ binds {
   Mod+Shift+Equal { set-window-height "+10%"; }
 
 
-  // Example volume keys mappings for PipeWire & WirePlumber.
-  // canberra-gtk-play -i audio-volume-change plays a chime on each step;
-  // "-i" picks the themed sound by name instead of a file path.
-  XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02+ -l 1.0 && canberra-gtk-play -i audio-volume-change"; }
-  XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02- && canberra-gtk-play -i audio-volume-change"; }
-  XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && canberra-gtk-play -i audio-volume-change"; }
-  XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+  // Volume keys via swayosd-client: it changes the volume AND shows an on-screen
+  // bar. Visual feedback works on any output; an audio chime got swallowed while
+  // a Bluetooth sink woke from idle-suspend. swayosd-server is spawned at startup.
+  XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "swayosd-client --output-volume 2"; }
+  XF86AudioLowerVolume allow-when-locked=true { spawn-sh "swayosd-client --output-volume=-2"; }
+  XF86AudioMute        allow-when-locked=true { spawn-sh "swayosd-client --output-volume mute-toggle"; }
+  XF86AudioMicMute     allow-when-locked=true { spawn-sh "swayosd-client --input-volume mute-toggle"; }
 
   // Example media keys mapping using playerctl.
   XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }

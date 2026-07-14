@@ -16,7 +16,6 @@
     configFile = {
       "nvim/init.lua".source = ./confs/init.lua;
       "lf/lfrc".source = ./confs/lfrc;
-      "euporie/config.json".source = ./confs/euporie.json;
       "niri/config.kdl".source = ./confs/niri.kdl;
       "waycorner/config.toml".source = ./confs/waycorner.toml;
       "matplotlib/matplotlibrc".text = ''

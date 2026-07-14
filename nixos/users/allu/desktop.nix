@@ -93,7 +93,7 @@
             format-muted = "muted";
             scroll-step = 5;
             on-click = "pavucontrol";
-            on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && canberra-gtk-play -i audio-volume-change";
+            on-click-right = "swayosd-client --output-volume mute-toggle";
             tooltip-format = "{desc} - {volume}%";
           };
           
@@ -277,11 +277,12 @@
     packages = with pkgs; [
       obsidian # notetaking
       imv # lightweight Wayland-native photo viewer
+      zathura # lightweight vim-keys PDF viewer (bundles mupdf backend)
+      swayosd # on-screen volume/mute OSD; server spawned by niri, driven via swayosd-client
       wtype # used by emoji-picker to type the selected character
       chafa file # used by lf-previewer to render image previews
       thunar thunar-volman tumbler # GUI file manager + automount + thumbnails
       pavucontrol # GUI audio/volume mixer, opened from the waybar pulseaudio module
-      libcanberra-gtk3 sound-theme-freedesktop # volume-change chime (canberra-gtk-play)
     ];
 
     pointerCursor = {

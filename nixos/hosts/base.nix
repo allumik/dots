@@ -38,6 +38,7 @@ in
       jq pixi uv dos2unix parted usbutils
       # Development & Build
       gnumake cmake gcc cargo rustc tlp auto-cpufreq
+      nodejs-slim # runtime-only Node (no npm/corepack) for nvim tooling; use `nodejs` if a tool needs npm
       # Default terminal
       foot
       # CLI Tools

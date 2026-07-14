@@ -9,7 +9,7 @@ let
   py-env = pkgs.python313.withPackages (ps: with ps; [
     pip setuptools
     numpy numba pandas scipy scikit-learn
-    matplotlib ipykernel euporie torchWithRocm
+    matplotlib ipykernel torchWithRocm
     west # for zmk
   ]);
 
@@ -171,6 +171,14 @@ in
     scx.enable = true;
     scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
 
+    # Remote desktop: Moonlight clients stream from here.
+    # capSysAdmin required for KMS capture under niri (Wayland, non-wlroots).
+    sunshine = {
+      enable = true;
+      capSysAdmin = true;
+      openFirewall = true;
+    };
+
     xserver.videoDrivers = [ "amdgpu" "vmware" ]; # Xorg video drivers for this host
     fstrim.enable = true; # To trim SSD blocks
     flatpak.enable = true;
@@ -198,9 +206,8 @@ in
     };
     gnome.gnome-keyring.enable = true; # secret service
 
-    # Always-on RNNoise denoiser wrapping just the C270 webcam mic (desk
-    # fan/case noise bleeds into it). Creates a "Noise Canceling Source"
-    # virtual mic; pick that as the input instead of the raw webcam.
+    # Always-on RNNoise denoiser wrapping just the C270 webcam mic. 
+    # Creates a "Noise Canceling Source" as the input instead of the raw webcam.
     pipewire.extraConfig.pipewire."99-webcam-denoise" = {
       "context.modules" = [
         {
@@ -273,7 +280,7 @@ in
   users.users.allu = {
     isNormalUser = true; # dunno man
     description = "Alvin Meltsov";
-    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "podman" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "podman" "input" "uinput" ]; # input/uinput: Sunshine input injection
   };
   home-manager.users = {
     # Add other users here
@@ -298,7 +305,7 @@ in
         Unit.Description = "Bisync ~/Drive with Google Drive";
         Service = {
           Type = "oneshot";
-          ExecStart = "${pkgs.rclone}/bin/rclone bisync %h/Drive gdrive:Drive/Documents --resilient";
+          ExecStart = "${pkgs.rclone}/bin/rclone bisync %h/Drive gdrive3:Documents --resilient";
         };
       };
 

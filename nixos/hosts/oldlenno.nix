@@ -9,7 +9,7 @@ let
   py-env = pkgs.python313.withPackages (ps: with ps; [
     pip setuptools
     numpy numba pandas scipy scikit-learn # use containers for gpu torch
-    matplotlib seaborn altair ipykernel euporie
+    matplotlib seaborn altair ipykernel
   ]);
   r-env = pkgs.rWrapper.override { packages = with pkgs.rPackages; [
     # some deps for other packages
