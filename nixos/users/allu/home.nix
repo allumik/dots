@@ -61,6 +61,11 @@
   };
 
 
+  # SSH client config is hand-rolled at ~/.ssh/config (NOT managed here), so
+  # internal hostnames/usernames/topology stay out of this public repo.
+  # It holds the `abacus` alias: plikgr0003 reached by ProxyJump through the
+  # gl-ar300m router (a tailnet peer), identityFile ~/.ssh/deskmeat.
+
   # General home-manager settings
   home = {
     # Home Manager needs a bit of information about you and the

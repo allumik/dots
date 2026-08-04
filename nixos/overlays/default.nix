@@ -2,9 +2,6 @@
 
 { inputs ? { } }: final: prev:
 
-let
-  pyOverlay = import ./py { pkgs = final; lib = final.lib; replaceVars = final.replaceVars; };
-in
 {
   # Upstream still refers to pkgs.tcllib/pkgs.tclx, which nixpkgs renamed to
   # pkgs.tclPackages.{tcllib,tclx} in 2025-10-27; shim them back in for the build.
@@ -18,12 +15,13 @@ in
     doCheck = !prev.stdenv.hostPlatform.isi686;
   };
 
-  # Feeds gamma-launcher/etc. (overlays/py) into python313.pkgs, so
-  # both `pkgs.python313.withPackages` (used by py-env) and the top-level
-  # alias below see them.
-  python313 = prev.python313.override (old: {
-    packageOverrides = final.lib.composeExtensions (old.packageOverrides or (_: _: { })) pyOverlay;
-  });
-
-  gamma-launcher = final.python313.pkgs.gamma-launcher;
+  # nixpkgs' python-unrar has pname "python-unrar" but ships a PyPI dist
+  # named "unrar" - pythonMetadataCheckPhase can't find "python-unrar" and
+  # fails. Pulled in transitively by gamma-launcher. That check is gated by
+  # dontCheckPythonMetadata, not doCheck (which only guards the pytest phase).
+  pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+    (pySelf: pySuper: {
+      python-unrar = pySuper.python-unrar.overrideAttrs { dontCheckPythonMetadata = true; };
+    })
+  ];
 }

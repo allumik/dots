@@ -49,12 +49,16 @@ in
             PS1=' ''${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
         fi
         unset color_prompt force_color_prompt
-        # tmux session position, e.g. 1/2 (see the zsh helper below for how)
-        _tmux_sess_pos() {
-          tmux list-sessions -F "#{session_id}" 2>/dev/null \
-            | awk -v c="''${TMUX##*,}" 'substr($0,2)==c{i=NR} END{print i"/"NR}'
+        # tmux position: window/windows|session/sessions, e.g. 1/3|1/2
+        # (see the zsh helper below for how)
+        _tmux_pos() {
+          local w=$(tmux list-windows -F "#{window_active}" 2>/dev/null \
+            | awk '$0==1{i=NR} END{print i"/"NR}')
+          local s=$(tmux list-sessions -F "#{session_id}" 2>/dev/null \
+            | awk -v c="''${TMUX##*,}" 'substr($0,2)==c{i=NR} END{print i"/"NR}')
+          printf '%s|%s' "$w" "$s"
         }
-        [ -n "$TMUX" ] && PS1="[tmux \$(_tmux_sess_pos)]$PS1"
+        [ -n "$TMUX" ] && PS1="[tmux \$(_tmux_pos)]$PS1"
 
         # If this is an xterm set the title to user@host:dir
         case "$TERM" in
@@ -77,6 +81,17 @@ in
           local target_dir=''${1:-~/Projects/dots/nixos}
           nix flake update --flake "$target_dir" && sudo nixos-rebuild switch --flake "$target_dir"
         }
+
+        # claude, sandboxed via nix-bwrap: same trust boundary as
+        # herdr-sandboxed-shell (cwd, .claude, git identity, network), just
+        # run directly from any terminal instead of only inside herdr panes.
+        claudy() {
+          local binds=(--bind "$PWD" "$PWD") p
+          for p in "$HOME/.claude" "$HOME/.config/git" "$HOME/.gitconfig" "$HOME/.local/share"; do
+            [ -e "$p" ] && binds+=(--bind "$p" "$p")
+          done
+          nix-bwrap -net -bwrap-options "''${binds[*]}" -- claude "$@"
+        }
       '';
       sessionVariables = sessvars;
       shellAliases = aliases;
@@ -95,18 +110,35 @@ in
           local target_dir=''${1:-~/Projects/dots/nixos}
           nix flake update --flake "$target_dir" && sudo nixos-rebuild switch --flake "$target_dir"
         }
+
+        # claude, sandboxed via nix-bwrap: same trust boundary as
+        # herdr-sandboxed-shell (cwd, .claude, git identity, network), just
+        # run directly from any terminal instead of only inside herdr panes.
+        # NB: loop var is `p`, not `path` -- in zsh `path` is tied to $PATH,
+        # so looping over it would wipe PATH and lose nix-bwrap.
+        claudy() {
+          local binds=(--bind "$PWD" "$PWD") p
+          for p in "$HOME/.claude" "$HOME/.config/git" "$HOME/.gitconfig" "$HOME/.local/share"; do
+            [ -e "$p" ] && binds+=(--bind "$p" "$p")
+          done
+          nix-bwrap -net -bwrap-options "''${binds[*]}" -- claude "$@"
+        }
       '';
       # runs after oh-my-zsh sets $PROMPT, so this prefix survives the theme
       initContent = ''
-        # position of the current tmux session among all sessions, e.g. 1/2.
-        # $TMUX's third comma-field is our session-id number (no tmux call needed);
+        # tmux position: window/windows|session/sessions, e.g. 1/3|1/2.
+        # window: active window's ordinal among this session's windows.
+        # session: $TMUX's third comma-field is our session-id number;
         # list-sessions is name-sorted so NR is a stable ordinal.
-        _tmux_sess_pos() {
-          tmux list-sessions -F "#{session_id}" 2>/dev/null \
-            | awk -v c="''${TMUX##*,}" 'substr($0,2)==c{i=NR} END{print i"/"NR}'
+        _tmux_pos() {
+          local w=$(tmux list-windows -F "#{window_active}" 2>/dev/null \
+            | awk '$0==1{i=NR} END{print i"/"NR}')
+          local s=$(tmux list-sessions -F "#{session_id}" 2>/dev/null \
+            | awk -v c="''${TMUX##*,}" 'substr($0,2)==c{i=NR} END{print i"/"NR}')
+          printf '%s|%s' "$w" "$s"
         }
         setopt prompt_subst  # so the $(...) below re-runs each render
-        [[ -n "$TMUX" ]] && PROMPT="%F{cyan}[tmux \$(_tmux_sess_pos)]%f $PROMPT"
+        [[ -n "$TMUX" ]] && PROMPT="%F{cyan}[tmux \$(_tmux_pos)]%f $PROMPT"
       '';
       sessionVariables = sessvars;
       shellAliases = aliases;

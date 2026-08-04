@@ -6,7 +6,7 @@
 
 let
   # https://github.com/NixOS/nixpkgs/issues/475732 for python314
-  py-env = pkgs.python313.withPackages (ps: with ps; [
+  py-env = pkgs.python314.withPackages (ps: with ps; [
     pip setuptools
     numpy numba pandas scipy scikit-learn
     matplotlib ipykernel torchWithRocm
