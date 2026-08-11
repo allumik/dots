@@ -42,6 +42,7 @@ let
     openconnect wl-clipboard gdrive3 pandoc quarto texliveSmall
     nixfmt html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
+    abcde # CD ripper for the DVD drive: cdparanoia + CDDB tagging + encode, one command
 
     # DEV ENV
     py-env r-env
