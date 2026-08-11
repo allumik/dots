@@ -172,7 +172,10 @@ in
       enable = true;
       openFirewall = true; # UDP 41641 in, for direct (non-relayed) peer paths
       useRoutingFeatures = "server"; # IPv4/IPv6 forwarding sysctls an exit node needs
-      extraSetFlags = [ "--ssh" "--advertise-exit-node" ];
+      # --ssh=false is asserted, not just omitted: set-flags persist in
+      # tailscaled.state and an earlier rebuild turned it on. Plain sshd over
+      # the trusted tailscale0 interface covers remote access already.
+      extraSetFlags = [ "--ssh=false" "--advertise-exit-node" ];
     };
     pcscd = {
       enable = true; # smard card reader support
