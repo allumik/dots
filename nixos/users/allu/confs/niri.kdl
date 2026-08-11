@@ -1,5 +1,8 @@
 input {
   keyboard {
+    xkb {
+      options "ctrl:swapcaps"
+    }
     repeat-delay 200
     repeat-rate 36
   }

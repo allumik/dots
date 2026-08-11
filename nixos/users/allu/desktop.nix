@@ -264,10 +264,6 @@
       ];
     };
     polkit-gnome.enable = true; # polkit
-    syncthing = {
-      enable = true;
-      tray.enable = true;
-    };
     cliphist.enable = true; # clipboard history daemon, paired with the clipboard-picker script below
     network-manager-applet.enable = true; # nm-applet tray icon + nm-connection-editor
     tailscale-systray.enable = true; # tray icon for tailscale status (ported from master)

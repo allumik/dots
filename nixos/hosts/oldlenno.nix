@@ -52,6 +52,7 @@ in
     (modulesPath + "/installer/scan/not-detected.nix") # hardware detection helper
     ./base.nix # Shared minimal + desktop config
     ./stylix.nix # Unified GTK/Qt/fuzzel/waybar theming
+    ../users/guest.nix # Guest account with ephemeral credentials
   ];
 
   ## Nixpkgs platform
@@ -95,6 +96,13 @@ in
     "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
     "quiet" # also tells systemd to suppress its own unit status lines, not just the kernel
   ];
+
+  # The small data disk (sdb1, labeled data_small)
+  fileSystems."/mnt/data_small" = {
+    device = "/dev/disk/by-uuid/e349bc67-fc67-47b4-9565-2a51cc9fe645";
+    fsType = "ext4";
+    options = [ "users" "nofail" "relatime" "x-gvfs-show" "exec" ];
+  };
 
   # Hardware Support
   hardware = {
@@ -231,7 +239,7 @@ in
     description = "Alvin Meltsov";
     extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "podman" ];
   };
-  # brave/foot/syncthing/etc. are all configured in users/allu/confs/desktop.nix
+  # brave/foot/etc. are all configured in users/allu/confs/desktop.nix
   # and theme.nix - this used to also carry Plasma-specific power/lock config
   # (programs.plasma.powerdevil/kscreenlocker) from when this host ran Plasma,
   # which doesn't apply to niri and doesn't exist without plasma-manager imported.

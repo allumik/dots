@@ -59,6 +59,7 @@ in
     (modulesPath + "/installer/scan/not-detected.nix") # hardware detection helper
     ./base.nix # Shared minimal + desktop config
     ./stylix.nix # Unified GTK/Qt/fuzzel/waybar theming
+    ../users/guest.nix # Guest account with ephemeral credentials
   ];
 
   ## Nixpkgs platform / config
@@ -285,7 +286,7 @@ in
   home-manager.users = {
     # Add other users here
 
-    # brave/foot/syncthing/tailscale-systray etc. are all configured in
+    # brave/foot/tailscale-systray etc. are all configured in
     # users/allu/confs/desktop.nix and theme.nix - this used to also carry
     # Plasma-specific power/lock config (programs.plasma.powerdevil/
     # kscreenlocker) from when this host ran Plasma, which doesn't apply to
