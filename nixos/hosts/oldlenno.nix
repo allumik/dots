@@ -1,5 +1,7 @@
 # hosts/oldlenno.nix
-# The old laptop workhorse who is still kicking. Monolithic: hardware,
+# The old laptop workhorse who is still kicking: a Lenovo ThinkPad T440p
+# (Haswell, HD 4600) running the same niri desktop as deskmeat, plus
+# always-on duty as the tailnet's exit node. Monolithic: hardware,
 # networking, services, packages, and user wiring all live here; shared
 # config is in base.nix (imported) and stylix.nix (imported, theming).
 { config, lib, pkgs, modulesPath, ... }:
@@ -25,15 +27,21 @@ let
     # GUI Apps
     veracrypt gparted qdigidoc
 
+    # desktop stuff - same set as deskmeat: the shared niri/home config
+    # spawns swaybg/chameleos/waycorner and binds brightnessctl/playerctl/
+    # hyprpicker/wdisplays/fontpreview, so they must exist here too
+    nirius chameleos waycorner udiskie xwayland-satellite swaybg wdisplays hyprpicker fontpreview
+    playerctl brightnessctl
+    xdg-desktop-portal-termfilechooser
+
     # Containers
     fuse3 fuse-overlayfs qemu quickemu podman-tui podman-compose
     omnissa-horizon-client
 
     # Other Tools
-    openconnect wl-clipboard gdrive3 pandoc quarto texliveSmall tail-tray
+    openconnect wl-clipboard gdrive3 pandoc quarto texliveSmall
     nixfmt html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
-    gemini-cli
 
     # DEV ENV
     py-env r-env
@@ -57,8 +65,10 @@ in
   # specify the kernel package - use the default for the old intel cpu
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
-  # Intel GPU and CPU related
-  boot.kernelModules = [ "kvm-intel" ];
+  # Intel CPU/GPU; acpi_call lets TLP set battery charge thresholds on this
+  # ThinkPad generation (no native EC threshold support before ~2016 models)
+  boot.kernelModules = [ "kvm-intel" "acpi_call" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.acpi_call ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.verbose = false; # quiet initrd-stage messages so they don't clobber the tuigreet greeter
   boot.consoleLogLevel = 3; # suppress kernel INFO spam on the console tuigreet draws on
@@ -86,27 +96,25 @@ in
     "quiet" # also tells systemd to suppress its own unit status lines, not just the kernel
   ];
 
-  # The additional WD green disk
-  fileSystems."/mnt/data_main" = {
-    device = "/dev/disk/by-uuid/e84099b2-20d2-4b41-9d8b-c3faf311c719";
-    fsType = "ext4";
-  };
-
   # Hardware Support
   hardware = {
     enableAllFirmware = true;
     graphics = {
       enable = true;
       package = pkgs.mesa;
+      # HD 4600 (Haswell) hardware video decode wants the legacy i965 VA-API
+      # driver; intel-media-driver is Broadwell+ only
+      extraPackages = [ pkgs.intel-vaapi-driver ];
     };
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     keyboard.qmk.enable = true;
     bluetooth = {
       enable = true;
-      powerOnBoot = true;
+      settings = { General = { Enable = "Source, Sink, Media, Socket"; Experimental = true; }; Policy = { AutoEnable = true; }; };
     };
   };
 
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.systemPackages = pkgs_list;
 
   ## Networking
@@ -126,6 +134,7 @@ in
     mtr.enable = true;
     java.enable = true; # why not
     virt-manager.enable = true;
+    kdeconnect.enable = true;
     singularity = {
       enable = true; # turn off before ChatGPT 6 is released #2024jokes
       enableFakeroot = true;
@@ -139,23 +148,37 @@ in
     scx.enable = true; # default scx_rustland, build issue on 250914
     scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
 
-    xserver.videoDrivers = [ "vmware" ]; # Xorg video drivers for this host
     fstrim.enable = true; # To trim SSD blocks
     flatpak.enable = true;
     lvm.boot.thin.enable = true;
-    qemuGuest.enable = true; # Enable QEMU
-    spice-vdagentd.enable = true; # Necessary for the QEMU spice
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
-    openssh.enable = true;
+
+    # Laptop thermals + power. TLP is hands-off on AC; the charge thresholds
+    # keep the battery from cooking at 100% while the machine lives on the
+    # charger doing exit-node duty.
+    thermald.enable = true;
+    tlp = {
+      enable = true;
+      settings = {
+        START_CHARGE_THRESH_BAT0 = 75;
+        STOP_CHARGE_THRESH_BAT0 = 80; # ponytail: raise to 95 before unplugged travel
+      };
+    };
+
+    # Tailscale exit node. set-flags reapply on every boot (extraUpFlags would
+    # be a no-op here - the module only runs `up` when authKeyFile is set).
+    # The exit node still needs one-time approval in the admin console.
     tailscale = {
       enable = true;
-      extraUpFlags = [ "--ssh" ];
+      openFirewall = true; # UDP 41641 in, for direct (non-relayed) peer paths
+      useRoutingFeatures = "server"; # IPv4/IPv6 forwarding sysctls an exit node needs
+      extraSetFlags = [ "--ssh" "--advertise-exit-node" ];
     };
     pcscd = {
       enable = true; # smard card reader support
       plugins = [ pkgs.ccid ];
     };
-    # keep running unless shut down manually
+    # keep running unless shut down manually - load-bearing for exit-node duty
     logind.settings.Login.extraConfig = ''
       IdleAction=ignore
       HandleLidSwitch=ignore
@@ -174,7 +197,7 @@ in
   };
 
   systemd = {
-    # no sleep for you
+    # no sleep for you - the exit node must stay reachable
     targets.sleep.enable = false;
     targets.suspend.enable = false;
     targets.hibernate.enable = false;
@@ -197,7 +220,6 @@ in
     };
     libvirtd.enable = true;
     spiceUSBRedirection.enable = true; # Enable USB devices connecting to QEMU spice
-    vmware.guest.enable = true;
   };
 
   ## User accounts
