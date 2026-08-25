@@ -4,11 +4,16 @@
 {
   stylix.enable = true;
   stylix.polarity = "light";
+  # Chicago95: the Win95 icon set, closest packaged stand-in for the Memphis98
+  # theme the old Plasma config used. Single variant, so light == dark.
+  # ponytail: its index.theme has no Inherits=, so icon names it lacks fall
+  # through to hicolor only and show up blank. If that bites, wrap it in an
+  # overlay that appends `Inherits=Papirus-Light` to index.theme.
   stylix.icons = {
     enable = true;
-    package = pkgs.papirus-icon-theme;
-    light = "Papirus-Light";
-    dark = "Papirus-Dark";
+    package = pkgs.chicago95;
+    light = "Chicago95";
+    dark = "Chicago95";
   };
 
   # https://tinted-theming.github.io/tinted-gallery

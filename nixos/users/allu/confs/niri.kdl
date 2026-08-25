@@ -1,8 +1,5 @@
 input {
   keyboard {
-    xkb {
-      options "ctrl:swapcaps"
-    }
     repeat-delay 200
     repeat-rate 36
   }
@@ -101,8 +98,11 @@ window-rule {
   default-floating-position x=0 y=0 relative-to="top-left"
 }
 window-rule {
-  match app-id="^thunar$"
+  match app-id="^org.kde.dolphin$"
   open-on-workspace "2"
+  // two thirds of the global default-column-width (0.45) in each dimension
+  default-column-width { proportion 0.3; }
+  default-window-height { proportion 0.6; }
   default-floating-position x=1280 y=0 relative-to="top-left"
 }
 window-rule {
@@ -133,7 +133,7 @@ binds {
   Mod+P       { spawn "pick-color"; }
   Mod+V       { spawn "clipboard-picker"; }
   Mod+E       { spawn "emoji-picker"; }
-  Mod+F       { spawn "thunar"; }
+  Mod+F       { spawn "dolphin"; }
   Mod+S       { spawn "settings-menu"; }
   Mod+Shift+P { spawn "power-menu"; }
 

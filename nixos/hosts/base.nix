@@ -100,7 +100,6 @@ in
       enableSSHSupport = true;
     };
     nix-ld.enable = true; # might make your life easier with linked library adapter
-    xfconf.enable = true; # backs home-manager's xfconf.settings (Thunar view prefs)
   };
 
   services = {
@@ -127,7 +126,11 @@ in
       pulse.enable = true;
       jack.enable = true;
     };
-    udisks2.enable = true; # mount backend thunar-volman automounts through
+    udisks2.enable = true; # removable-media mount backend Dolphin drives via solid
+    # gvfs: kept for the libmtp udev rules it installs (phones over USB, which
+    # Dolphin reaches as mtp:/ through kio-extras) and for trash/network in
+    # GTK apps' file dialogs. Also flips programs.fuse on.
+    gvfs.enable = true;
   };
 
   ## Extras

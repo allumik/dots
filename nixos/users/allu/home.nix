@@ -28,38 +28,10 @@
     };
   };
 
-  # Claude Code personal skill so agents know how to drive herdr (HERDR_ENV=1)
-  home.file.".claude/skills/herdr/SKILL.md".source = ./confs/herdr-skill.md;
-
-  # Claude Code global settings (TUI/statusline prefs, ponytail plugin, herdr hook).
+  # Claude Code global settings (TUI/statusline prefs, ponytail plugin).
   # Nix-managed means read-only: /config and other in-app writes to this file
   # will fail. Edit ./confs/claude-settings.json and rebuild instead.
   home.file.".claude/settings.json".source = ./confs/claude-settings.json;
-
-  # herdr: sandbox new panes' default shell via bubblewrap
-  home.file.".config/herdr/config.toml".source = ./confs/herdr-config.toml;
-  home.file.".local/bin/herdr-sandboxed-shell" = {
-    executable = true;
-    text = ''
-      #!/usr/bin/env bash
-      # Default shell herdr launches new panes with, sandboxed via nix-bwrap.
-      # Exposes: cwd, the Nix store closure of the shell (via nix-bwrap),
-      # network (for claude-code/API access), and a handful of config dirs
-      # agents need (Claude Code state, git identity, herdr's own config,
-      # local data dir). Everything else on the host is hidden.
-      set -euo pipefail
-
-      cwd="$PWD"
-      binds=(--bind "$cwd" "$cwd")
-
-      for path in "$HOME/.claude" "$HOME/.config/git" "$HOME/.gitconfig" "$HOME/.config/herdr" "$HOME/.local/share"; do
-        [ -e "$path" ] && binds+=(--bind "$path" "$path")
-      done
-
-      exec nix-bwrap -net -bwrap-options "''${binds[*]}" -- "${pkgs.zsh}/bin/zsh" -l
-    '';
-  };
-
 
   # SSH client config is hand-rolled at ~/.ssh/config (NOT managed here), so
   # internal hostnames/usernames/topology stay out of this public repo.

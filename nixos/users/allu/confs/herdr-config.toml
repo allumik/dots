@@ -1,4 +1,0 @@
-onboarding = false
-
-[terminal]
-default_shell = "herdr-sandboxed-shell"

@@ -2,20 +2,6 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/home/allu/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10
-          }
-        ]
-      }
-    ]
-  },
   "enabledPlugins": {
     "ponytail@ponytail": true,
     "caveman@caveman": true

@@ -277,7 +277,13 @@
       swayosd # on-screen volume/mute OSD; server spawned by niri, driven via swayosd-client
       wtype # used by emoji-picker to type the selected character
       chafa file # used by lf-previewer to render image previews
-      thunar thunar-volman tumbler # GUI file manager + automount + thumbnails
+      kdePackages.dolphin # GUI file manager
+      kdePackages.ark # archive handling; registers Dolphin's extract/compress menu
+      kdePackages.kio-extras # kio backends: mtp:/ (phones), network shares, trash
+      kdePackages.kdegraphics-thumbnailers kdePackages.ffmpegthumbs # thumbnails
+      kdePackages.plasma-integration # KDE Qt platform theme; makes kdeglobals authoritative
+      papirus-icon-theme # fallback target for Chicago95's Inherits= chain
+      p7zip # 7z format backend for ark
       pavucontrol # GUI audio/volume mixer, opened from the waybar pulseaudio module
     ];
 
@@ -430,9 +436,45 @@
     };
   };
 
-  xfconf.settings.thunar = {
-    "last-view" = "ThunarDetailsView"; # list mode
-    "last-show-hidden" = true;
+  # KDE apps take their icon theme from kdeglobals, which stylix's KDE target
+  # does not write; it only covers fonts and colours. KConfig cascades, so this
+  # minimal file overrides just [Icons] and leaves the rest coming from the
+  # stylix-kde-config dir on XDG_CONFIG_DIRS. Nix-managed means read-only -
+  # fine here since nothing running writes kdeglobals without a Plasma session.
+  # Font sizes come from stylix so a family change there still propagates here;
+  # only the point size is overridden, since Qt renders these a shade larger
+  # than the GTK side at the same nominal size.
+  xdg.configFile."kdeglobals".text =
+    let
+      f = config.stylix.fonts;
+      kdeFont = name: size: "${name},${toString size},-1,5,50,0,0,0,0,0";
+      ui = f.sizes.applications - 1;
+    in ''
+      [Icons]
+      Theme=Chicago95
+
+      [General]
+      font[$i]=${kdeFont f.sansSerif.name ui}
+      menuFont[$i]=${kdeFont f.sansSerif.name ui}
+      toolBarFont[$i]=${kdeFont f.sansSerif.name ui}
+      smallestReadableFont[$i]=${kdeFont f.sansSerif.name (ui - 1)}
+      fixed[$i]=${kdeFont f.monospace.name ui}
+    '';
+
+  # Qt widget style. Stylix's qt target pins style.name = "kvantum"; the Win9x
+  # look wants Qt's own built-in Windows style (shipped in qtbase, no package),
+  # so that target is off here and qt is configured directly. Costs stylix's
+  # Qt colour theming - the Windows style brings its own grey palette anyway.
+  stylix.targets.qt.enable = false;
+  # platformTheme "kde" loads KDEPlasmaPlatformTheme6.so from
+  # plasma-integration, which is what actually reads kdeglobals for fonts,
+  # icons and colours. The previous "qtct" resolved to QT_QPA_PLATFORMTHEME=
+  # qt5ct, a plugin no Qt6 app can load, so Dolphin silently fell back to
+  # Qt's built-in defaults and ignored kdeglobals entirely.
+  qt = {
+    enable = true;
+    platformTheme.name = "kde";
+    style.name = "Windows";
   };
 
   xdg = {

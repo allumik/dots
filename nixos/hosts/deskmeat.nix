@@ -45,7 +45,7 @@ let
     typst typstyle # latex reborn
     beets # music library manager
     dfu-util # for the keyboard gods
-    claude-code pi-coding-agent bubblewrap nix-bubblewrap herdr # yes...
+    claude-code pi-coding-agent bubblewrap nix-bubblewrap # yes...
 
     # AMD ROCm thingies - use docker containers for more up to date support
     rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.rocm-device-libs nvtopPackages.amd

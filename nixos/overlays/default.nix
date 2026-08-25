@@ -9,7 +9,16 @@
     pkgs = final // { inherit (final.tclPackages) tcllib tclx; };
   };
 
-  herdr = inputs.herdr.packages.${final.stdenv.hostPlatform.system}.default;
+  # Chicago95's index.theme has no Inherits= line, so every icon name it lacks
+  # (VS Code and most third-party apps) renders blank instead of falling back.
+  # Append a fallback chain; papirus-icon-theme is installed alongside it.
+  chicago95 = prev.chicago95.overrideAttrs (old: {
+    postInstall = (old.postInstall or "") + ''
+      sed -i '/^Name=Chicago95$/a Inherits=Papirus-Light,Papirus,hicolor' \
+        $out/share/icons/Chicago95/index.theme
+    '';
+  });
+
   # https://github.com/NixOS/nixpkgs/issues/513245
   openldap = prev.openldap.overrideAttrs {
     doCheck = !prev.stdenv.hostPlatform.isi686;

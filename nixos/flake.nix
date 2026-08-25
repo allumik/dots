@@ -24,12 +24,6 @@
       url = "github:fgaz/nix-bubblewrap";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Terminal multiplexer for AI coding agents
-    herdr = {
-      url = "github:ogulcancelik/herdr";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -60,6 +54,10 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            # Move a pre-existing dotfile aside instead of failing activation
+            # when home-manager wants to own it (e.g. the Plasma-era
+            # ~/.config/kdeglobals). Without this the whole switch aborts.
+            home-manager.backupFileExtension = "hm-bak";
           }
         ];
       };
@@ -84,6 +82,10 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            # Move a pre-existing dotfile aside instead of failing activation
+            # when home-manager wants to own it (e.g. the Plasma-era
+            # ~/.config/kdeglobals). Without this the whole switch aborts.
+            home-manager.backupFileExtension = "hm-bak";
           }
         ];
       };
