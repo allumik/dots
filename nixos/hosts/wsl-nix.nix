@@ -19,8 +19,11 @@ in
     ./base.nix # Shared headless config: nix/locale/CLI tools/ssh/gc
   ];
 
-  ## Nixpkgs platform
-  nixpkgs.hostPlatform = "x86_64-linux";
+  ## Nixpkgs platform. aarch64, not x86_64: the Windows host is a Surface Pro
+  # 11 (Snapdragon X Elite). WSL on ARM runs an ARM64 kernel, so an x86_64
+  # rootfs dies at launch with "Wsl/Service/E_UNEXPECTED". Same reason the
+  # install needs the nixos.aarch64.wsl release asset, not nixos.wsl.
+  nixpkgs.hostPlatform = "aarch64-linux";
 
   # Without this the system builds as plain "nixos"; wsl.wslConf.network.hostname
   # defaults to this value, so it propagates into /etc/wsl.conf too.
@@ -36,7 +39,23 @@ in
     # wsl.interop.includePath stays at its default (true) - the `wv`
     # (wslview) and `cdwin` aliases in users/allu/shell.nix need the Windows
     # PATH to be visible from inside the distro.
+
+    # Mandatory companion to boot.binfmt below. NixOS-WSL leaves the .exe
+    # handler that WSL registers at boot alone by default, but systemd-binfmt
+    # rewrites the whole table once NixOS owns any registration - which would
+    # silently kill running Windows executables from inside the distro.
+    interop.register = true;
   };
+
+  # Run x86_64 Linux binaries on this ARM machine through qemu-user, which
+  # also lets nix build and run x86_64-linux derivations here: the module puts
+  # x86_64-linux into nix.settings.extra-platforms for us.
+  # ponytail: qemu-user is correct but slow (rough interpretation, no JIT
+  # caching across runs). If some x86_64 workload turns out to be too painful,
+  # the upgrade path is a boot.binfmt.registrations entry pointing at FEX-Emu
+  # (pkgs.fex) instead - or, for builds rather than runs, deskmeat as a remote
+  # builder over the tailnet, which skips emulation entirely.
+  boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
 
   # Windows already listens on :22 for its own OpenSSH; a second sshd in the
   # distro is reachable only over the WSL NAT and just fights for the port.
