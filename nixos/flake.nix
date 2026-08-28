@@ -24,6 +24,12 @@
       url = "github:fgaz/nix-bubblewrap";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Lets a host boot as a WSL2 distribution on Windows
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -85,6 +91,31 @@
             # Move a pre-existing dotfile aside instead of failing activation
             # when home-manager wants to own it (e.g. the Plasma-era
             # ~/.config/kdeglobals). Without this the whole switch aborts.
+            home-manager.backupFileExtension = "hm-bak";
+          }
+        ];
+      };
+
+      # NixOS as a WSL2 distribution on the Windows box. Headless, so no
+      # stylix module here - there is nothing graphical to theme.
+      wsl-nix = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          # Apply the custom overlay(s)
+          ({ config, pkgs, ... }: { nixpkgs.overlays = [ self.overlays.default ]; })
+
+          # WSL entrypoint, /init shim, wsl.conf generation
+          inputs.nixos-wsl.nixosModules.default
+
+          # Host-specific configurations
+          ./hosts/wsl-nix.nix
+
+          # Import Home-Manager configurations for users
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "hm-bak";
           }
         ];

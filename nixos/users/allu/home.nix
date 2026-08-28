@@ -3,11 +3,13 @@
 {
   targets.genericLinux.enable = true;
 
-  # Import and source other configuration files
+  # Import and source other configuration files. desktop.nix is NOT imported
+  # here: the graphical hosts add it themselves (see hosts/deskmeat.nix and
+  # hosts/oldlenno.nix) so headless hosts like wsl-nix can take this file
+  # without dragging in waybar/fuzzel/brave.
   imports = [
     ./shell.nix
     ./tmux.nix
-    ./desktop.nix
   ];
 
   xdg = {
@@ -16,8 +18,6 @@
     configFile = {
       "nvim/init.lua".source = ./confs/init.lua;
       "lf/lfrc".source = ./confs/lfrc;
-      "niri/config.kdl".source = ./confs/niri.kdl;
-      "waycorner/config.toml".source = ./confs/waycorner.toml;
       "matplotlib/matplotlibrc".text = ''
         # Plots served over HTTP instead of a GUI window, so they're viewable
         # from any browser on the tailnet (tailscale0 is already firewall-trusted).
@@ -57,8 +57,6 @@
     libssh libxml2 libpng libxslt libtiff cairo  # R needs this
     # terminal bling
     zsh zsh-nix-shell zsh-fast-syntax-highlighting zsh-fzf-tab
-    # for the cursor theme
-    hackneyed
   ];
 
     # You should not change this value, even if you update Home Manager.
