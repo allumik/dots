@@ -19,8 +19,11 @@ in
     ./base.nix # Shared headless config: nix/locale/CLI tools/ssh/gc
   ];
 
-  ## Nixpkgs platform
-  nixpkgs.hostPlatform = "x86_64-linux";
+  ## Nixpkgs platform. aarch64, not x86_64: the Windows host is a Surface Pro
+  # 11 (Snapdragon X Elite). WSL on ARM runs an ARM64 kernel, so an x86_64
+  # rootfs dies at launch with "Wsl/Service/E_UNEXPECTED". Same reason the
+  # install needs the nixos.aarch64.wsl release asset, not nixos.wsl.
+  nixpkgs.hostPlatform = "aarch64-linux";
 
   # Without this the system builds as plain "nixos"; wsl.wslConf.network.hostname
   # defaults to this value, so it propagates into /etc/wsl.conf too.
