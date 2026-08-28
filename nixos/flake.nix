@@ -96,10 +96,11 @@
         ];
       };
 
-      # NixOS as a WSL2 distribution on the Windows box. Headless, so no
-      # stylix module here - there is nothing graphical to theme.
+      # NixOS as a WSL2 distribution on the Windows box (pinnapro, a Surface
+      # Pro 11), hence aarch64 - Snapdragon X Elite. Headless, so no stylix
+      # module here: there is nothing graphical to theme.
       wsl-nix = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        system = "aarch64-linux";
         specialArgs = { inherit inputs; };
         modules = [
           # Apply the custom overlay(s)
