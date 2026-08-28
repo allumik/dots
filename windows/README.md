@@ -2,75 +2,10 @@
 
 ## Pre-setup
 
-To enable **WSL** (Canonical Ubuntu), run:
-
-```pwsh
-wsl --install -d Ubuntu
-```
-
-### NixOS under WSL
-
-The `wsl-nix` host in `nixos/` is a headless NixOS that runs as a WSL2
-distribution. It is built for **aarch64**, since the Windows box it targets
-(pinnapro) is a Surface Pro 11 on a Snapdragon X Elite.
-
-**Grab the right tarball.** NixOS-WSL releases ship two assets and the
-plain-named one is x86_64. On ARM it installs happily and then dies the
-moment you launch it:
-
-```
-Catastrophic failure
-Error code: Wsl/Service/E_UNEXPECTED
-```
-
-So download **`nixos.aarch64.wsl`** from
-https://github.com/nix-community/NixOS-WSL/releases/latest — `nixos.wsl` is
-the x86_64 one. (ARM assets exist from release 2605.7.2 onward; before that
-the tarball had to be built by hand inside an Ubuntu-on-ARM distro.)
-
-One-time install, from PowerShell:
-
-```pwsh
-wsl --install --no-distribution   # only if WSL is not enabled yet
-wsl --update                      # need >= 2.4.4 for the .wsl installer
-wsl --install --from-file nixos.aarch64.wsl
-wsl -d NixOS
-```
-
-You are now the tarball's stock `nixos` user, and the first switch is about to
-change the home directory under you — so build straight from GitHub rather
-than cloning yet:
-
-```bash
-sudo nixos-rebuild switch \
-  --flake github:allumik/dots?dir=nixos#wsl-nix \
-  --option experimental-features "nix-command flakes"
-```
-
-The `?dir=nixos` is needed because the flake lives in a subdirectory. Then
-restart the distro so `defaultUser`, the hostname, and `/etc/wsl.conf` take
-effect — this step is not optional:
-
-```pwsh
-wsl -t NixOS
-wsl -d NixOS
-```
-
-You land as `allu` in `/home/allu`. Clone for ongoing work; the second switch
-is near-instant since everything is already in the store:
-
-```bash
-git clone https://github.com/allumik/dots.git ~/Projects/dots
-sudo nixos-rebuild switch --flake ~/Projects/dots/nixos#wsl-nix
-```
-
-After that the usual `update-nixos` cycle applies.
-
-Three things to know: never drop `wsl.enable = true` from `hosts/wsl-nix.nix`
-(the distro stops booting and `wsl --unregister` becomes the only way out);
-`~/.ssh` is deliberately unmanaged, so keys are set up by hand; and the ext4
-VHDX backing the nix store grows but never shrinks on its own — run
-`wsl --manage NixOS --set-sparse true` if it gets out of hand.
+WSL on this machine runs **NixOS**, configured by the `wsl-nix` host in
+`nixos/`. The full walkthrough — which release asset to grab (the ARM one),
+install, first switch, x86_64 emulation, maintenance — lives in
+[`wsl/README.md`](wsl/README.md).
 
 ## WinGet
 
