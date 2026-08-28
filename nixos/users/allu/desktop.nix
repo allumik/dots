@@ -284,6 +284,7 @@
       papirus-icon-theme # fallback target for Chicago95's Inherits= chain
       p7zip # 7z format backend for ark
       pavucontrol # GUI audio/volume mixer, opened from the waybar pulseaudio module
+      hackneyed # cursor theme
     ];
 
     pointerCursor = {
@@ -443,6 +444,11 @@
   # Font sizes come from stylix so a family change there still propagates here;
   # only the point size is overridden, since Qt renders these a shade larger
   # than the GTK side at the same nominal size.
+  # Compositor and edge-gesture configs: moved here from home.nix so headless
+  # hosts don't link dead niri/waycorner files.
+  xdg.configFile."niri/config.kdl".source = ./confs/niri.kdl;
+  xdg.configFile."waycorner/config.toml".source = ./confs/waycorner.toml;
+
   xdg.configFile."kdeglobals".text =
     let
       f = config.stylix.fonts;

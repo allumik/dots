@@ -51,7 +51,8 @@ in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix") # hardware detection helper
-    ./base.nix # Shared minimal + desktop config
+    ./base.nix # Shared headless config: nix/locale/CLI tools/ssh/gc
+    ./desktop.nix # The graphical layer: fonts, portals, pipewire, bluetooth, GUI apps
     ./stylix.nix # Unified GTK/Qt/fuzzel/waybar theming
     ../users/guest.nix # Guest account with ephemeral credentials
   ];
@@ -245,6 +246,6 @@ in
   # (programs.plasma.powerdevil/kscreenlocker) from when this host ran Plasma,
   # which doesn't apply to niri and doesn't exist without plasma-manager imported.
   home-manager.users.allu = {
-    imports = [ ../users/allu/home.nix ];
+    imports = [ ../users/allu/home.nix ../users/allu/desktop.nix ];
   };
 }

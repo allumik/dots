@@ -8,7 +8,34 @@ To enable **WSL** (Canonical Ubuntu), run:
 wsl --install -d Ubuntu
 ```
 
-`TODO: investigate NixOS WSL setup`
+### NixOS under WSL
+
+The `wsl-nix` host in `nixos/` is a headless NixOS that runs as a WSL2
+distribution. One-time install, from PowerShell:
+
+```pwsh
+wsl --install --no-distribution   # only if WSL is not enabled yet
+wsl --update                      # need >= 2.4.4 for the .wsl installer
+# download nixos.wsl from https://github.com/nix-community/NixOS-WSL/releases/latest
+wsl --install --from-file nixos.wsl
+wsl -d NixOS
+```
+
+Then, inside the fresh distro:
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' \
+  run nixpkgs#git -- clone https://github.com/allumik/dots.git ~/Projects/dots
+sudo nixos-rebuild switch --flake ~/Projects/dots/nixos#wsl-nix
+```
+
+The first switch replaces the stock `/etc/nixos/configuration.nix` the tarball
+ships with. After that the usual `update-nixos` cycle applies.
+
+Two things to know: never drop `wsl.enable = true` from `hosts/wsl-nix.nix`
+(the distro stops booting and `wsl --unregister` becomes the only way out),
+and the ext4 VHDX backing the nix store grows but never shrinks on its own —
+run `wsl --manage NixOS --set-sparse true` if it gets out of hand.
 
 ## WinGet
 
