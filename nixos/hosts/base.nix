@@ -70,7 +70,7 @@ in
     font-awesome material-icons powerline-symbols
     # Some fonts
     aporetic ibm-plex vt323 fixedsys-excelsior
-    hack-font source-code-pro nerd-fonts.iosevka-term
+    hack-font source-code-pro
     merriweather merriweather-sans
   ];
 
@@ -153,9 +153,9 @@ in
     options = "--delete-older-than 7d";
   };
 
-  # Automatic system upgrades
-  system.autoUpgrade.enable = true;
-  system.autoUpgrade.allowReboot = true; # reboot when new kernel
+  # Hardlink identical files across store paths. Worth a lot here: several
+  # nixpkgs revisions are retained at once and they share most of their files.
+  nix.optimise.automatic = true;
 
   # Set the state version
   system.stateVersion = "26.05";

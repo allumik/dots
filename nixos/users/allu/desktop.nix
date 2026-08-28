@@ -271,7 +271,6 @@
 
   home = {
     packages = with pkgs; [
-      obsidian # notetaking
       imv # lightweight Wayland-native photo viewer
       zathura # lightweight vim-keys PDF viewer (bundles mupdf backend)
       swayosd # on-screen volume/mute OSD; server spawned by niri, driven via swayosd-client

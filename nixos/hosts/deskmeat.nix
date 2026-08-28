@@ -9,7 +9,10 @@ let
   py-env = pkgs.python314.withPackages (ps: with ps; [
     pip setuptools
     numpy numba pandas scipy scikit-learn
-    matplotlib ipykernel torchWithRocm
+    matplotlib ipykernel
+    # torch: not here. torchWithRocm drags in ~12GB of ROCm (rocfft,
+    # miopen, composable_kernel, hipblaslt) that is re-fetched on every
+    # nixpkgs bump. Use a container or pixi for GPU torch, as below.
     west # for zmk
   ]);
 

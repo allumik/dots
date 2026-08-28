@@ -110,11 +110,6 @@ window-rule {
   open-on-workspace "2"
   default-floating-position x=2560 y=0 relative-to="top-left"
 }
-window-rule {
-  match app-id="^obsidian$"
-  open-on-workspace "2"
-  default-floating-position x=0 y=1080 relative-to="top-left"
-}
 
 binds {
 
