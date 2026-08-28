@@ -21,6 +21,7 @@
     }
   },
   "effortLevel": "high",
+  "includeCoAuthoredBy": false,
   "promptSuggestionEnabled": false,
   "theme": "auto",
   "sessionRecap": false,
