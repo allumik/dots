@@ -7,7 +7,7 @@ input {
 
 cursor {
   hide-when-typing
-  hide-after-inactive-ms 10000
+  hide-after-inactive-ms 3000
 }
 
 output "eDP-1" {
