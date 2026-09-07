@@ -196,7 +196,7 @@
           color: #364c40;
         }
 
-        #clock, #custom-expand, #tray, #custom-close, #custom-floating, #custom-settings, #custom-power-menu, #pulseaudio, #custom-sleep, #custom-logout, #custom-reboot, #custom-power, #custom-awake, #custom-fuzzel {
+        #clock, #custom-expand, #tray, #custom-close, #custom-floating, #pulseaudio, #custom-sleep, #custom-logout, #custom-reboot, #custom-power, #custom-awake, #custom-fuzzel {
           color: #364c40;
           padding: 6px 0;
         }
@@ -211,7 +211,7 @@
           font-weight: bold;
         }
 
-        #custom-close:hover, #custom-floating:hover, #custom-settings:hover, #custom-power-menu:hover, #pulseaudio:hover, #custom-sleep:hover, #custom-logout:hover, #custom-reboot:hover, #custom-power:hover, #custom-awake:hover, #custom-fuzzel:hover {
+        #custom-close:hover, #custom-floating:hover, #pulseaudio:hover, #custom-sleep:hover, #custom-logout:hover, #custom-reboot:hover, #custom-power:hover, #custom-awake:hover, #custom-fuzzel:hover {
           text-decoration: underline;
         }
       '';
@@ -284,7 +284,6 @@
       papirus-icon-theme # fallback target for Chicago95's Inherits= chain
       p7zip # 7z format backend for ark
       pavucontrol # GUI audio/volume mixer, opened from the waybar pulseaudio module
-      hackneyed # cursor theme
     ];
 
     pointerCursor = {
@@ -340,6 +339,11 @@
       };
 
       ".local/share/emoji-picker/emojis.txt".text = builtins.readFile ./confs/emojis.txt;
+
+      # Chime played by the niri volume keys (see confs/niri.kdl); the
+      # static kdl can't reference a store path, so link it to a fixed one.
+      ".local/share/sounds/volume-change.oga".source =
+        "${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/audio-volume-change.oga";
 
       ".local/bin/lf-previewer" = {
         executable = true;

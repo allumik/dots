@@ -32,19 +32,18 @@ let
     # desktop stuff
     nirius chameleos waycorner udiskie xwayland-satellite swaybg wdisplays hyprpicker fontpreview
     playerctl brightnessctl
-    xdg-desktop-portal-termfilechooser
 
     # Gaming
-    winetricks wineWow64Packages.stable wineWow64Packages.waylandFull wineWow64Packages.fonts
+    winetricks wineWow64Packages.stable wineWow64Packages.fonts
     lutris protonup-qt
     discord gamma-launcher
 
     # Containers
-    fuse3 fuse-overlayfs qemu quickemu podman-tui podman-compose
+    fuse3 fuse-overlayfs quickemu podman-tui podman-compose
 
     # Other Tools
     openconnect wl-clipboard gdrive3 pandoc quarto texliveSmall wakeonlan nextflow
-    nixfmt nil nixd html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
+    nixfmt nixd html-tidy shellcheck-minimal isort ispell # some spell~swords~checker functionality
     typst typstyle # latex reborn
     beets # music library manager
     dfu-util # for the keyboard gods
@@ -68,26 +67,21 @@ in
 
   ## Nixpkgs platform / config
   nixpkgs.hostPlatform = "x86_64-linux";
-  nixpkgs.config.rocmSupport = true; # Add ROCm support for nixpkgs
 
   ## Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub.useOSProber = true;
 
   # Kernel modules and initrd
   boot.kernelPackages = pkgs.linuxPackages_zen; # zen's current bzImage output is broken upstream; normal might be more stable for network anyway
-  boot.kernelModules = [
-    # AMD GPU and CPU related, keep dm-crypt for encrypted drives
-    "amdgpu" "kvm-amd" "dm-crypt"
-  ];
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "uas" "usbhid" "sd_mod" ];
+  boot.kernelModules = [ "amdgpu" "kvm-amd" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usbhid" ];
   boot.initrd.verbose = false; # quiet initrd-stage messages so they don't clobber the tuigreet greeter
   boot.consoleLogLevel = 3; # suppress kernel INFO spam on the console tuigreet draws on
 
   # Filesystems and Swap
   fileSystems."/" = { device = "/dev/disk/by-uuid/fae35e59-edc7-41b1-9d8c-8cc5bead8d11"; fsType = "ext4"; };
-  fileSystems."/boot" = { device = "/dev/disk/by-uuid/D63B-498A"; fsType = "vfat"; options = [ "fmask=0022" "dmask=0022" ]; };
+  fileSystems."/boot" = { device = "/dev/disk/by-uuid/D63B-498A"; fsType = "vfat"; options = [ "fmask=0022" "dmask=0022" "nofail" ]; };
 
   # Primary SATA Storage (SD Ultra 3D)
   fileSystems."/mnt/data_main" = {
@@ -131,7 +125,7 @@ in
       ];
     };
     amdgpu.overdrive.enable = true;
-    enableAllFirmware = true;
+    enableRedistributableFirmware = true;
     keyboard.qmk.enable = true; # for the planck keyboard with vial
     bluetooth = {
       enable = true;
@@ -159,7 +153,6 @@ in
   programs = {
     niri.enable = true;
     mtr.enable = true;
-    java.enable = true; # why not
     virt-manager.enable = true;
     kdeconnect.enable = true;
     steam.enable = true;
@@ -184,12 +177,8 @@ in
       openFirewall = true;
     };
 
-    xserver.videoDrivers = [ "amdgpu" "vmware" ]; # Xorg video drivers for this host
     fstrim.enable = true; # To trim SSD blocks
     flatpak.enable = true;
-    lvm.boot.thin.enable = true;
-    qemuGuest.enable = true; # Enable QEMU
-    spice-vdagentd.enable = true; # Necessary for the QEMU spice
     lact.enable = true; # Manage your GPU from 25.11 onward
     tailscale = {
       enable = true;
@@ -268,8 +257,6 @@ in
   };
 
   virtualisation = {
-    containers.enable = true;
-    oci-containers.backend = "podman";
     podman = {
       enable = true;
       autoPrune.enable = true;
@@ -278,7 +265,6 @@ in
     };
     libvirtd.enable = true;
     spiceUSBRedirection.enable = true; # Enable USB devices connecting to QEMU spice
-    vmware.guest.enable = true;
   };
 
   ## User accounts

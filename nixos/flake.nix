@@ -32,30 +32,15 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    stylix,
-    ...
-  }@inputs: {
-    nixosConfigurations = {
-
-      # the main home workstation
-      deskmeat = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+  outputs = { self, nixpkgs, home-manager, stylix, ... }@inputs:
+    let
+      # Every host: the overlay, home-manager as a NixOS module, plus the
+      # host's own module list.
+      mkHost = system: modules: nixpkgs.lib.nixosSystem {
+        inherit system;
         specialArgs = { inherit inputs; };
         modules = [
-          # Apply the custom overlay(s)
-          ({ config, pkgs, ... }: { nixpkgs.overlays = [ self.overlays.default ]; })
-
-          # Host-specific configurations
-          ./hosts/deskmeat.nix
-
-          # Unified GTK/Qt/fuzzel/waybar theming
-          stylix.nixosModules.stylix
-
-          # Import Home-Manager configurations for users
+          { nixpkgs.overlays = [ self.overlays.default ]; }
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -65,68 +50,23 @@
             # ~/.config/kdeglobals). Without this the whole switch aborts.
             home-manager.backupFileExtension = "hm-bak";
           }
-        ];
+        ] ++ modules;
+      };
+    in {
+      nixosConfigurations = {
+        # the main home workstation
+        deskmeat = mkHost "x86_64-linux" [ ./hosts/deskmeat.nix stylix.nixosModules.stylix ];
+
+        # the old laptop workhorse who is still kicking
+        oldlenno = mkHost "x86_64-linux" [ ./hosts/oldlenno.nix stylix.nixosModules.stylix ];
+
+        # NixOS as a WSL2 distribution on the Windows box (pinnapro, a Surface
+        # Pro 11), hence aarch64 - Snapdragon X Elite. Headless, so no stylix
+        # module here: there is nothing graphical to theme.
+        wsl-nix = mkHost "aarch64-linux" [ inputs.nixos-wsl.nixosModules.default ./hosts/wsl-nix.nix ];
       };
 
-
-      # the old laptop workhorse who is still kicking
-      oldlenno = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          # Apply the custom overlay
-          ({ config, pkgs, ... }: { nixpkgs.overlays = [ self.overlays.default ]; })
-
-          # Host-specific configurations
-          ./hosts/oldlenno.nix
-
-          # Unified GTK/Qt/fuzzel/waybar theming
-          stylix.nixosModules.stylix
-
-          # Import Home-Manager configurations for users
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            # Move a pre-existing dotfile aside instead of failing activation
-            # when home-manager wants to own it (e.g. the Plasma-era
-            # ~/.config/kdeglobals). Without this the whole switch aborts.
-            home-manager.backupFileExtension = "hm-bak";
-          }
-        ];
-      };
-
-      # NixOS as a WSL2 distribution on the Windows box (pinnapro, a Surface
-      # Pro 11), hence aarch64 - Snapdragon X Elite. Headless, so no stylix
-      # module here: there is nothing graphical to theme.
-      wsl-nix = nixpkgs.lib.nixosSystem {
-        system = "aarch64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          # Apply the custom overlay(s)
-          ({ config, pkgs, ... }: { nixpkgs.overlays = [ self.overlays.default ]; })
-
-          # WSL entrypoint, /init shim, wsl.conf generation
-          inputs.nixos-wsl.nixosModules.default
-
-          # Host-specific configurations
-          ./hosts/wsl-nix.nix
-
-          # Import Home-Manager configurations for users
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "hm-bak";
-          }
-        ];
-      };
-
-      # Add other hosts here
-      # anotherhost = nixpkgs.lib.nixosSystem { ... };
+      # The overlay containing custom packages
+      overlays.default = import ./overlays/default.nix { inherit inputs; };
     };
-
-    # The overlay containing custom packages
-    overlays.default = import ./overlays/default.nix { inherit inputs; };
-  };
 }

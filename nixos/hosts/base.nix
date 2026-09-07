@@ -35,13 +35,11 @@ in
       # Core Tools
       neovim tre fzf fd lf ripgrep wget lz4 zip unzip p7zip difftastic moreutils
       # Utilities
-      coreutils-full dnsutils pciutils v4l-utils findutils libtool ethtool fwupd ntfsprogs-plus cachix libsixel
+      dnsutils pciutils v4l-utils ethtool fwupd ntfsprogs-plus cachix libsixel
       jq pixi uv dos2unix parted usbutils
-      # Development & Build
-      gnumake cmake gcc cargo rustc
       nodejs-slim # runtime-only Node (no npm/corepack) for nvim tooling; use `nodejs` if a tool needs npm
       # CLI Tools
-      xan parallel retry pigz unrar plocate nix-search-cli gitFull gh miller
+      xan parallel retry pigz unrar nix-search-cli gitFull gh miller
       # Monitoring
       s-tui stress htop
     ];

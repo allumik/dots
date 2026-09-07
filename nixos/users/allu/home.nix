@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  targets.genericLinux.enable = true;
-
   # Import and source other configuration files. desktop.nix is NOT imported
   # here: the graphical hosts add it themselves (see hosts/deskmeat.nix and
   # hosts/oldlenno.nix) so headless hosts like wsl-nix can take this file
@@ -45,19 +43,8 @@
     username = "allu";
     homeDirectory = "/home/allu";
 
-    # * The PATH for me *
-    sessionPath = [ 
-      "$HOME/.nix-profile/bin"
-      "$HOME/.local/bin" 
-    ];
-
-  packages = with pkgs; [
-    ## Tools & Shells
-    # some minuscle stuff for python/R environments
-    libssh libxml2 libpng libxslt libtiff cairo  # R needs this
-    # terminal bling
-    zsh zsh-nix-shell zsh-fast-syntax-highlighting zsh-fzf-tab
-  ];
+    # scripts from desktop.nix land here; .desktop entries call them bare
+    sessionPath = [ "$HOME/.local/bin" ];
 
     # You should not change this value, even if you update Home Manager.
     stateVersion = "26.05";

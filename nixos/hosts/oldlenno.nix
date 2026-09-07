@@ -32,10 +32,9 @@ let
     # hyprpicker/wdisplays/fontpreview, so they must exist here too
     nirius chameleos waycorner udiskie xwayland-satellite swaybg wdisplays hyprpicker fontpreview
     playerctl brightnessctl
-    xdg-desktop-portal-termfilechooser
 
     # Containers
-    fuse3 fuse-overlayfs qemu quickemu podman-tui podman-compose
+    fuse3 fuse-overlayfs quickemu podman-tui podman-compose
     omnissa-horizon-client
 
     # Other Tools
@@ -72,7 +71,7 @@ in
   # ThinkPad generation (no native EC threshold support before ~2016 models)
   boot.kernelModules = [ "kvm-intel" "acpi_call" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.acpi_call ];
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "sd_mod" ];
   boot.initrd.verbose = false; # quiet initrd-stage messages so they don't clobber the tuigreet greeter
   boot.consoleLogLevel = 3; # suppress kernel INFO spam on the console tuigreet draws on
 
@@ -108,7 +107,7 @@ in
 
   # Hardware Support
   hardware = {
-    enableAllFirmware = true;
+    enableRedistributableFirmware = true;
     graphics = {
       enable = true;
       package = pkgs.mesa;
@@ -142,7 +141,6 @@ in
   programs = {
     niri.enable = true;
     mtr.enable = true;
-    java.enable = true; # why not
     virt-manager.enable = true;
     kdeconnect.enable = true;
     singularity = {
@@ -160,7 +158,6 @@ in
 
     fstrim.enable = true; # To trim SSD blocks
     flatpak.enable = true;
-    lvm.boot.thin.enable = true;
     udev.packages = [ pkgs.via ]; # Set up VIA for QMK shenigans
 
     # Laptop thermals + power. TLP is hands-off on AC; the charge thresholds
@@ -223,8 +220,6 @@ in
   };
 
   virtualisation = {
-    containers.enable = true;
-    oci-containers.backend = "podman";
     podman = {
       enable = true;
       autoPrune.enable = true;

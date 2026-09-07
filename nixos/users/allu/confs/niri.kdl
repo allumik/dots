@@ -190,10 +190,11 @@ binds {
 
 
   // Volume keys via swayosd-client: it changes the volume AND shows an on-screen
-  // bar. Visual feedback works on any output; an audio chime got swallowed while
-  // a Bluetooth sink woke from idle-suspend. swayosd-server is spawned at startup.
-  XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "swayosd-client --output-volume 2"; }
-  XF86AudioLowerVolume allow-when-locked=true { spawn-sh "swayosd-client --output-volume=-2"; }
+  // bar, then pw-play chimes at the new level (file linked by desktop.nix).
+  // Known: the chime is swallowed while a Bluetooth sink wakes from idle-suspend.
+  // swayosd-server is spawned at startup.
+  XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "swayosd-client --output-volume 2; pw-play --volume 0.6 ~/.local/share/sounds/volume-change.oga"; }
+  XF86AudioLowerVolume allow-when-locked=true { spawn-sh "swayosd-client --output-volume=-2; pw-play --volume 0.6 ~/.local/share/sounds/volume-change.oga"; }
   XF86AudioMute        allow-when-locked=true { spawn-sh "swayosd-client --output-volume mute-toggle"; }
   XF86AudioMicMute     allow-when-locked=true { spawn-sh "swayosd-client --input-volume mute-toggle"; }
 

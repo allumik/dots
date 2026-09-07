@@ -9,12 +9,12 @@
 {
   environment = {
     systemPackages = with pkgs; [
-      # Power management / spinning disks
-      tlp auto-cpufreq hd-idle
+      # Spinning disks
+      hd-idle
       # Default terminal
       foot
       # Media & Files
-      vlc ffmpeg fdupes bluez-experimental pulseaudioFull exfatprogs
+      vlc ffmpeg fdupes exfatprogs
       # Other GUI
       transmission_4-qt keepassxc gimp3-with-plugins
       eduvpn-client openvpn libreoffice-qt zotero thunderbird
@@ -58,9 +58,9 @@
 
   services = {
     blueman.enable = true;
-    # X server and desktop environment
+    # Keyboard layout only. Xorg never runs under niri, but graphical-desktop
+    # still writes 00-keyboard.conf from these, which is where niri reads it.
     xserver = {
-      enable = true;
       xkb.layout = "ee";
       xkb.variant = "us";
     };
