@@ -30,6 +30,14 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Anthropic's official Claude Desktop Linux beta (.deb), repackaged.
+    # Not in nixpkgs. nmcbride tracks the upstream apt repo closely (poeck's
+    # flake sat on a 2-month-old build with a since-changed deb layout).
+    claude-desktop = {
+      url = "github:nmcbride/claude-desktop-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, stylix, ... }@inputs:

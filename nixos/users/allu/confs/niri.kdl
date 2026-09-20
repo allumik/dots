@@ -62,10 +62,11 @@ spawn-at-startup "waybar"
 spawn-at-startup "swayosd-server"
 spawn-at-startup "waycorner"
 spawn-at-startup "fuzzel"
+spawn-sh-at-startup "~/.local/bin/niri-autostack"
 
-// Float by default! (why use a tiling wm then... ?)
+// Tiled by default; ~/.local/bin/niri-autostack restores per-app heights and
+// stacks short windows into one column.
 window-rule {
-  open-floating true
   clip-to-geometry true
   geometry-corner-radius 4
 }
@@ -75,27 +76,23 @@ window-rule {
   match app-id="blueman-manager"
   match app-id="nm-connection-editor"
   match app-id="wdisplays"
+  open-floating true
   default-column-width { fixed 700; }
   default-window-height { fixed 500; }
   default-floating-position x=20 y=20 relative-to="bottom-right"
 }
 
 // Default app layout: workspace 1 gets browser + terminal, workspace 2 gets
-// utilities. Floating (global default), placed side by side so they don't overlap.
+// utilities.
 window-rule {
   match app-id="^brave-browser$"
-  open-on-workspace "1"
-  default-floating-position x=0 y=0 relative-to="top-left"
-}
-window-rule {
   match app-id="^foot$"
   open-on-workspace "1"
-  default-floating-position x=1920 y=0 relative-to="top-left"
 }
 window-rule {
   match app-id="^org.keepassxc.KeePassXC$"
+  match app-id="^vlc$"
   open-on-workspace "2"
-  default-floating-position x=0 y=0 relative-to="top-left"
 }
 window-rule {
   match app-id="^org.kde.dolphin$"
@@ -103,12 +100,6 @@ window-rule {
   // two thirds of the global default-column-width (0.45) in each dimension
   default-column-width { proportion 0.3; }
   default-window-height { proportion 0.6; }
-  default-floating-position x=1280 y=0 relative-to="top-left"
-}
-window-rule {
-  match app-id="^vlc$"
-  open-on-workspace "2"
-  default-floating-position x=2560 y=0 relative-to="top-left"
 }
 
 binds {
@@ -130,6 +121,7 @@ binds {
   Mod+E       { spawn "emoji-picker"; }
   Mod+F       { spawn "dolphin"; }
   Mod+S       { spawn "settings-menu"; }
+  Mod+W       { spawn "window-presets"; }
   Mod+Shift+P { spawn "power-menu"; }
 
   // Move Windows Around

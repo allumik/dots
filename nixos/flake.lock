@@ -68,6 +68,26 @@
         "type": "github"
       }
     },
+    "claude-desktop": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788949812,
+        "narHash": "sha256-71G9e5ZnAtT9/RfdsesBj0szpx4mUgsGx6CFHiAgpI4=",
+        "owner": "nmcbride",
+        "repo": "claude-desktop-nix",
+        "rev": "ca1018b6260316e9c226d2c0b6981347237b7404",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nmcbride",
+        "repo": "claude-desktop-nix",
+        "type": "github"
+      }
+    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
@@ -238,11 +258,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1787736819,
-        "narHash": "sha256-cV5xEJJK3BvhU8rEd4mC9UsmDi5qscv/kzGPhBRC5WA=",
+        "lastModified": 1789286504,
+        "narHash": "sha256-eiEK7cKZORNEvX0GeF3RtNEF/JXhgf2RqSp3230q13E=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "9fbb54b33e91ee4ca368e35a78e0613c720600b3",
+        "rev": "ef34387ddd751e1ab8857adf4676492d32eb24ec",
         "type": "github"
       },
       "original": {
@@ -279,6 +299,7 @@
     },
     "root": {
       "inputs": {
+        "claude-desktop": "claude-desktop",
         "home-manager": "home-manager",
         "nix-bubblewrap": "nix-bubblewrap",
         "nixos-wsl": "nixos-wsl",

@@ -2,7 +2,7 @@
 # The main home workstation. Monolithic: hardware, networking, services,
 # packages, and user wiring all live here; shared config is in base.nix
 # (imported) and stylix.nix (imported, theming).
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, inputs, modulesPath, ... }:
 
 let
   # https://github.com/NixOS/nixpkgs/issues/475732 for python314
@@ -47,7 +47,13 @@ let
     typst typstyle # latex reborn
     beets # music library manager
     dfu-util # for the keyboard gods
-    claude-code pi-coding-agent bubblewrap nix-bubblewrap # yes...
+    claude-code bubblewrap nix-bubblewrap # yes...
+    # Electron picks its credential store from XDG_CURRENT_DESKTOP; "niri" is
+    # unknown to it, so it falls back to plain-text "basic" and warns that the
+    # sign-in won't be saved. Force libsecret so it uses gnome-keyring.
+    (inputs.claude-desktop.packages.x86_64-linux.default.override {
+      commandLineArgs = "--password-store=gnome-libsecret";
+    })
 
     # AMD ROCm thingies - use docker containers for more up to date support
     rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.rocm-device-libs nvtopPackages.amd

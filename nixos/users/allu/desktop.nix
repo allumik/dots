@@ -48,9 +48,9 @@
 	        # mode = "hide";
 	        # start-hidden = false;
 
-          modules-left = [ "custom/fuzzel" ];
+          modules-left = [ "custom/fuzzel" "group/drawer" ];
           modules-center = [];
-          modules-right = [ "group/drawer" "custom/floating" "custom/close" "pulseaudio" "clock" ];
+          modules-right = [ "tray" "custom/sep" "custom/floating" "custom/close" "pulseaudio" "clock" ];
           
 	        # dont forget to rotate everything
           clock = {
@@ -103,7 +103,7 @@
             drawer = {
               click-to-reveal = true;
               transition-duration = 1200;
-              transition-left-to-right = false;
+              transition-left-to-right = true; # unfolds downwards, away from the top edge
             };
             modules = [
               "custom/expand"
@@ -112,10 +112,16 @@
               "custom/logout"
               "custom/sleep"
               "custom/awake"
-              "tray"
             ];
           };
           
+          # same "|" divider the clock carries in its format
+          "custom/sep" = {
+            rotate = 270;
+            format = "|";
+            tooltip = false;
+          };
+
           "custom/expand" = {
 	          rotate = 270;
             format = " ~ ";
@@ -196,7 +202,7 @@
           color: #364c40;
         }
 
-        #clock, #custom-expand, #tray, #custom-close, #custom-floating, #pulseaudio, #custom-sleep, #custom-logout, #custom-reboot, #custom-power, #custom-awake, #custom-fuzzel {
+        #clock, #custom-expand, #tray, #custom-close, #custom-floating, #pulseaudio, #custom-sleep, #custom-logout, #custom-reboot, #custom-power, #custom-awake, #custom-fuzzel, #custom-sep {
           color: #364c40;
           padding: 6px 0;
         }
@@ -308,6 +314,106 @@
           else
             niri msg action "move-window-''${direction}-or-to-workspace-''${direction}"
           fi
+        '';
+      };
+
+      # Window sequencer for niri: one remembered size (width height) per app-id,
+      # applied to every new window whether it tiles or floats, plus the last
+      # floating position. Windows opening on workspace 2 get floated; every
+      # other workspace tiles, stacking a new window under the column on its
+      # left when both heights fit the output.
+      # Started from niri.kdl (spawn-sh-at-startup).
+      ".local/bin/niri-autostack" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          # Keep in sync with niri.kdl layout: gaps between tiles, and whatever
+          # vertical space is left outside the column (0: struts cancel the gaps).
+          gaps=16
+          outer=0
+          float_ws=2 # windows opening on this workspace index get floated; all others tile
+          default_size="50% 60%" # width height for an app with no remembered size
+          # window-presets touches this while it places its own windows
+          pause="''${XDG_RUNTIME_DIR:-/tmp}/niri-autostack.pause"
+          state="''${XDG_STATE_HOME:-$HOME/.local/state}/niri-autostack-sizes"
+          mkdir -p "$(dirname "$state")"
+          # size: app-id -> "W H [X Y]" (W is - when only a tiled height is known,
+          # X Y is the last floating position)
+          # tracked: windows whose resizes get remembered (not dialogs)
+          declare -A app size tracked
+          [[ -r $state ]] && source "$state"
+
+          where() { # <window id> <wanted height> -> skip | float | stack | tile
+            jq -rn --argjson id "$1" --arg h "$2" --argjson idx "$float_ws" \
+              --argjson gaps "$gaps" --argjson outer "$outer" \
+              --argjson w "$(niri msg --json windows)" \
+              --argjson ws "$(niri msg --json workspaces)" \
+              --argjson outs "$(niri msg --json outputs)" '
+                ($w[] | select(.id == $id)) as $new
+                | $new.layout.pos_in_scrolling_layout as $pos
+                | if $new.is_floating or $pos == null then "skip" else
+                    ($ws[] | select(.id == $new.workspace_id)) as $wsp
+                    | if $wsp.idx == $idx then "float" else
+                        $outs[$wsp.output].logical.height as $H
+                        | (if $h | endswith("%")
+                           then ($h | rtrimstr("%") | tonumber) * $H / 100
+                           else $h | tonumber end) as $want
+                        | [$w[] | select(.workspace_id == $new.workspace_id
+                            and .layout.pos_in_scrolling_layout[0] == $pos[0] - 1)
+                            | .layout.tile_size[1]] as $left
+                        | ($new.layout.tile_size[1] - $new.layout.window_size[1]) as $deco
+                        | if ($left | length) > 0
+                            and ($left | add) + $want + $deco + $gaps * ($left | length) + $outer <= $H
+                          then "stack" else "tile" end
+                      end
+                  end'
+          }
+
+          niri msg --json event-stream | jq --unbuffered -r '
+            (.WindowsChanged.windows[]? | select(.app_id)
+              | "seen \(.id) \(.is_floating) \(.app_id)"),
+            (.WindowOpenedOrChanged.window | select(.app_id) | "open \(.id) \(.app_id)"),
+            (.WindowLayoutsChanged.changes[]?
+              | "size \(.[0]) \(.[1].pos_in_scrolling_layout != null) \(.[1].window_size[0]) \(.[1].window_size[1]) \(.[1].tile_pos_in_workspace_view // [] | join(" "))"),
+            (.WindowClosed | select(.) | "close \(.id)")' |
+          while read -r ev id arg; do
+            case $ev in
+              seen) # windows from before this script started; floating ones may be dialogs
+                read -r floating a <<< "$arg"
+                app[$id]=$a
+                [[ $floating == false ]] && tracked[$id]=1 ;;
+              close) unset "app[$id]" "tracked[$id]" ;;
+              size)
+                a=''${app[$id]}
+                [[ $a && ''${tracked[$id]} ]] || continue
+                read -r tiled w h x y <<< "$arg"
+                # a tiled window's width belongs to its column and it has no
+                # position, so keep the old ones
+                [[ $tiled == true ]] && { read -r w _ x y <<< "''${size[$a]}"; w=''${w:--}; }
+                new="$w $h''${x:+ $x $y}"
+                if [[ ''${size[$a]} != "$new" ]]; then
+                  size[$a]=$new
+                  declare -p size > "$state"
+                fi ;;
+              open) # also fires on title changes etc; only act on first sight
+                [[ ''${app[$id]} ]] && continue
+                app[$id]=$arg
+                # a pause file older than 60 s is a leftover, not a running load
+                if [[ -e $pause ]] && (( $(date +%s) - $(stat -c %Y "$pause") < 60 )); then
+                  continue
+                fi
+                read -r w h x y <<< "''${size[$arg]:-$default_size}"
+                mode=$(where "$id" "$h")
+                [[ $mode == skip || -z $mode ]] && continue
+                tracked[$id]=1
+                [[ $mode == float ]] && niri msg action move-window-to-floating --id "$id"
+                [[ $mode == stack ]] && niri msg action consume-or-expel-window-left --id "$id"
+                # a stacked window takes the width of its column
+                [[ $mode != stack && $w != - ]] && niri msg action set-window-width --id "$id" "$w"
+                niri msg action set-window-height --id "$id" "$h"
+                [[ $mode == float && $x ]] && niri msg action move-floating-window --id "$id" -x "$x" -y "$y" ;;
+            esac
+          done
         '';
       };
 
@@ -437,6 +543,110 @@
           esac
         '';
       };
+
+      # Presets live in ~/.local/state/niri-presets/<name>.json.
+      ".local/bin/window-presets" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          # Save the focused workspace's windows (app, tiled or floating, size,
+          # position) as a preset, or open a saved preset on the focused workspace.
+          dir="''${XDG_STATE_HOME:-$HOME/.local/state}/niri-presets"
+          # niri-autostack leaves new windows alone while this file is fresh
+          pause="''${XDG_RUNTIME_DIR:-/tmp}/niri-autostack.pause"
+          wait=12 # seconds to wait for a launched app's window
+          mkdir -p "$dir"
+
+          save() {
+            local ws data name
+            ws=$(niri msg --json workspaces | jq -c '.[] | select(.is_focused)')
+            # tiled windows first, in column/row order, so loading rebuilds the columns
+            data=$(niri msg --json windows | jq --argjson ws "$ws" '
+              [.[] | select(.workspace_id == $ws.id and .app_id)
+                | {app_id, floating: .is_floating, size: .layout.window_size,
+                   pos: .layout.tile_pos_in_workspace_view, cell: .layout.pos_in_scrolling_layout}]
+              | sort_by(.floating, .cell)')
+            if [[ $(jq length <<< "$data") == 0 ]]; then
+              notify-send "Window presets" "No windows on this workspace"
+              return
+            fi
+            # ponytail: "first syllable" = first 3 letters of the app-id's last dotted
+            # part (org.kde.dolphin -> dol); real syllable splitting if names collide
+            name=$(jq -r --argjson ws "$ws" '
+              [$ws.name // "ws\($ws.idx)"]
+              + [.[].app_id | split(".") | last | ascii_downcase | .[:3]] | join("-")' <<< "$data")
+            printf '%s\n' "$data" > "$dir/$name.json"
+            notify-send "Window presets" "Saved $name"
+          }
+
+          launch() { # <app-id>: run the Exec line of its desktop entry, else the app-id itself
+            local dirs p cmd
+            IFS=: read -ra dirs <<< "''${XDG_DATA_HOME:-$HOME/.local/share}:''${XDG_DATA_DIRS:-/run/current-system/sw/share}"
+            for p in "''${dirs[@]}"; do
+              [[ -r $p/applications/$1.desktop ]] || continue
+              cmd=$(sed -n 's/^Exec=//p' "$p/applications/$1.desktop" | head -1 | sed 's/ *%[a-zA-Z]//g')
+              break
+            done
+            niri msg action spawn-sh -- "''${cmd:-$1}"
+          }
+
+          apply() { # <window id> <preset entry>
+            local id=$1 floating w h x y row
+            read -r floating w h x y row < <(jq -r '[.floating, .size[0], .size[1],
+              (.pos // [0, 0])[0], (.pos // [0, 0])[1], (.cell // [0, 1])[1]] | @tsv' <<< "$2")
+            if [[ $floating == true ]]; then
+              niri msg action move-window-to-floating --id "$id"
+            else
+              niri msg action move-window-to-tiling --id "$id"
+              # a row below the first stacks into the column opened just before it
+              ((row > 1)) && niri msg action consume-or-expel-window-left --id "$id"
+            fi
+            # a stacked window takes the width of its column
+            ((row > 1)) || niri msg action set-window-width --id "$id" "$w"
+            niri msg action set-window-height --id "$id" "$h"
+            [[ $floating == true ]] && niri msg action move-floating-window --id "$id" -x "$x" -y "$y"
+          }
+
+          load() { # <preset file>
+            local n i t entry app before id
+            trap 'rm -f "$pause"' EXIT
+            n=$(jq length "$1")
+            for ((i = 0; i < n; i++)); do
+              touch "$pause"
+              entry=$(jq -c ".[$i]" "$1")
+              app=$(jq -r .app_id <<< "$entry")
+              before=$(niri msg --json windows | jq -c '[.[].id]')
+              launch "$app"
+              id=
+              for ((t = 0; t < wait * 4; t++)); do
+                sleep 0.25
+                id=$(niri msg --json windows | jq --argjson before "$before" --arg app "$app" '
+                  first(.[] | select(.app_id == $app and (.id | IN($before[]) | not)) | .id)')
+                [[ $id ]] && break
+              done
+              # single-instance apps that are already running open no new window
+              [[ $id ]] && apply "$id" "$entry"
+            done
+          }
+
+          presets() { for f in "$dir"/*.json; do [[ -e $f ]] && basename "$f" .json; done; }
+
+          choice=$({
+            echo "Save this workspace"
+            presets
+            echo "Delete a preset"
+          } | fuzzel --dmenu --prompt="Presets: ")
+          case $choice in
+            "") ;;
+            "Save this workspace") save ;;
+            "Delete a preset")
+              choice=$(presets | fuzzel --dmenu --prompt="Delete: ")
+              [[ $choice && -e $dir/$choice.json ]] && rm "$dir/$choice.json" \
+                && notify-send "Window presets" "Deleted $choice" ;;
+            *) [[ -r $dir/$choice.json ]] && load "$dir/$choice.json" ;;
+          esac
+        '';
+      };
     };
   };
 
@@ -523,6 +733,17 @@
         Terminal=false
       '';
 
+      "applications/window-presets.desktop".text = ''
+        [Desktop Entry]
+        Type=Application
+        Name=Window Presets
+        Comment=Save this workspace's windows as a preset, or open a saved one
+        Exec=window-presets
+        Icon=preferences-system-windows
+        Categories=Utility;
+        Terminal=false
+      '';
+
       "applications/settings-menu.desktop".text = ''
         [Desktop Entry]
         Type=Application
@@ -564,6 +785,19 @@
         Exec=foot -e fontpreview
         Icon=preferences-desktop-font
         Categories=Utility;
+        Terminal=false
+      '';
+
+      # plain foot; foot.desktop exists too but is named "Foot", this keeps the
+      # two terminal entries next to each other in fuzzel
+      "applications/foot-plain.desktop".text = ''
+        [Desktop Entry]
+        Type=Application
+        Name=Terminal
+        Comment=Open a foot terminal
+        Exec=foot
+        Icon=utilities-terminal
+        Categories=System;
         Terminal=false
       '';
 

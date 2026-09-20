@@ -39,6 +39,9 @@ let
     # NB: loop var is `p`, not `path` -- in zsh `path` is tied to $PATH,
     # so looping over it would wipe PATH and lose nix-bwrap.
     claudy() {
+      # No args: resume this directory's latest session, if it has one.
+      # claude keys sessions by cwd with non-alphanumerics mapped to `-`.
+      [ $# -eq 0 ] && [ -n "$(find "$HOME/.claude/projects/''${PWD//[^a-zA-Z0-9]/-}" -maxdepth 1 -name '*.jsonl' -print -quit 2>/dev/null)" ] && set -- --continue
       # --proc/--dev: nix-bwrap mounts neither; claude's bun runtime needs
       # /proc/self/exe to self-extract and /dev/null for stdio, else SIGABRT.
       # store+etc+current-system: nix-bwrap binds only claude's own closure,
