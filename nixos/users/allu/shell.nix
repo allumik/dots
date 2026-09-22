@@ -62,6 +62,17 @@ let
         --setenv PATH "/run/current-system/sw/bin:$HOME/.local/bin"
         --bind "$PWD" "$PWD"
       ) p
+      # GPU: /dev/dri is Vulkan/GL, /dev/kfd is ROCm compute. ROCm finds the
+      # card through /sys (kfd topology, pci), and the userspace drivers
+      # (OpenCL/Vulkan ICDs) live in /run/opengl-driver. nix-bwrap's own -gpu
+      # is no use: our --dev /dev lands after it and hides its /dev/dri, and
+      # it binds no /dev/kfd. These must stay after --dev /dev.
+      for p in /dev/dri /dev/kfd; do
+        [ -e "$p" ] && binds+=(--dev-bind "$p" "$p")
+      done
+      for p in /sys /run/opengl-driver; do
+        [ -e "$p" ] && binds+=(--ro-bind "$p" "$p")
+      done
       # Same problem as PATH. nix-bwrap forces TERM=dumb, which is what
       # kills claude's full-screen rendering, and blanks the locale vars,
       # which mangles its box-drawing characters. LOCALE_ARCHIVE is how
