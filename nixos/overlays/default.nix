@@ -19,6 +19,14 @@
     '';
   });
 
+  # nixos-unstable trails Claude Code releases by days, and new models need a
+  # new CLI ("Update to 2.1.280+ to use Opus 5.5"). The nixpkgs package takes
+  # its version and checksums from a manifest, so feed it the latest one:
+  #   curl -fsSL https://downloads.claude.ai/claude-code-releases/$(curl -fsSL https://downloads.claude.ai/claude-code-releases/latest)/manifest.zst.json -o overlays/claude-code-manifest.json
+  claude-code = prev.claude-code.override {
+    manifest = final.lib.importJSON ./claude-code-manifest.json;
+  };
+
   # https://github.com/NixOS/nixpkgs/issues/513245
   openldap = prev.openldap.overrideAttrs {
     doCheck = !prev.stdenv.hostPlatform.isi686;
