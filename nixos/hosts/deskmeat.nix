@@ -51,9 +51,20 @@ let
     # Electron picks its credential store from XDG_CURRENT_DESKTOP; "niri" is
     # unknown to it, so it falls back to plain-text "basic" and warns that the
     # sign-in won't be saved. Force libsecret so it uses gnome-keyring.
-    (inputs.claude-desktop.packages.x86_64-linux.default.override {
+    ((inputs.claude-desktop.packages.x86_64-linux.default.override {
       commandLineArgs = "--password-store=gnome-libsecret";
-    })
+    }).overrideAttrs (old: {
+      # The Code tab runs a CLI the app downloads itself, and its updater polls
+      # the `stable` release pointer, weeks behind `latest` (new models need a
+      # newer CLI: "Update to 2.1.280+ to use Opus 5.5"). Point it at `latest`.
+      # Same length, so the asar's file offsets stay valid; the grep fails the
+      # build if a new app version no longer has the string.
+      postInstall = (old.postInstall or "") + ''
+        asar=$out/lib/claude-desktop/resources/app.asar
+        grep -q -F '/stable`' "$asar"
+        sed -i 's|/stable`|/latest`|' "$asar"
+      '';
+    }))
 
     # AMD ROCm thingies - use docker containers for more up to date support
     rocmPackages.amdsmi rocmPackages.rocm-core rocmPackages.rocm-device-libs nvtopPackages.amd

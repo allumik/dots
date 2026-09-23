@@ -4,10 +4,13 @@
 # (deskmeat, oldlenno) alongside base.nix; headless hosts (wsl-nix) import
 # base.nix only. Theming for this layer is hosts/stylix.nix, kept separate
 # since it is toggled/tweaked independently.
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   environment = {
+    # GTK apps with a native file chooser (Firefox family, GTK3/4 apps) go
+    # through the portal, so they get the same KDE dialog as everything else.
+    sessionVariables.GTK_USE_PORTAL = "1";
     systemPackages = with pkgs; [
       # Spinning disks
       hd-idle
@@ -42,15 +45,14 @@
     extraPortals = with pkgs; [
       xdg-desktop-portal-gnome
       xdg-desktop-portal-gtk
+      kdePackages.xdg-desktop-portal-kde
     ];
-    # gtk handles file pickers (lighter, themeable); gnome is kept only for
-    # ScreenCast/RemoteDesktop, since niri implements the GNOME Shell DBus
-    # interface those portals expect.
-    config.common = {
-      default = [ "gtk" ];
-      "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
-      "org.freedesktop.impl.portal.RemoteDesktop" = [ "gnome" ];
-    };
+    # XDG_CURRENT_DESKTOP=niri, so niri-portals.conf (written by the niri
+    # module: gnome;gtk default, gnome for ScreenCast/RemoteDesktop) is what
+    # applies, never config.common. Only the file dialog is overridden: the
+    # KDE portal gives Dolphin's dialog, matching Qt apps under platformTheme
+    # kde. mkForce because the module pins FileChooser to gtk itself.
+    config.niri."org.freedesktop.impl.portal.FileChooser" = lib.mkForce [ "kde" ];
   };
 
   ## Bluetooth
