@@ -608,8 +608,10 @@
           }
 
           load() { # <preset file>
-            local n i t entry app before id
+            local n i t entry app before id ws
             trap 'rm -f "$pause"' EXIT
+            # everything lands on the workspace the preset was invoked from
+            ws=$(niri msg --json workspaces | jq -r '.[] | select(.is_focused) | .idx')
             n=$(jq length "$1")
             for ((i = 0; i < n; i++)); do
               touch "$pause"
@@ -625,7 +627,10 @@
                 [[ $id ]] && break
               done
               # single-instance apps that are already running open no new window
-              [[ $id ]] && apply "$id" "$entry"
+              [[ $id ]] || continue
+              # open-on-workspace rules may have put it elsewhere; the focused one wins
+              niri msg action move-window-to-workspace --window-id "$id" --focus false "$ws"
+              apply "$id" "$entry"
             done
           }
 

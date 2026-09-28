@@ -61,6 +61,13 @@ layout {
   }
 }
 
+// Named workspaces survive being empty (niri removes unnamed empty ones);
+// they sort first in this order, and the open-on-workspace rules below need
+// them to exist. A dynamic empty one still follows after "3".
+workspace "1"
+workspace "2"
+workspace "3"
+
 spawn-at-startup "swaybg" "--color=#2c5150"
 spawn-at-startup "chameleos"
 spawn-at-startup "waybar"

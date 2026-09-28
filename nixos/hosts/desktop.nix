@@ -18,6 +18,10 @@
       foot
       # Media & Files
       vlc ffmpeg fdupes exfatprogs
+      # gparted's launcher runs `xhost +SI:localuser:root` so the pkexec'd root
+      # process may open the (Xwayland) display; without xhost it dies with
+      # "Authorization required, but no authorization protocol specified".
+      xorg.xhost
       # Other GUI
       transmission_4-qt keepassxc gimp3-with-plugins
       eduvpn-client openvpn libreoffice-qt zotero thunderbird
@@ -54,6 +58,13 @@
     # kde. mkForce because the module pins FileChooser to gtk itself.
     config.niri."org.freedesktop.impl.portal.FileChooser" = lib.mkForce [ "kde" ];
   };
+
+  # Setuid pkexec wrapper in /run/wrappers/bin. polkitd itself already runs
+  # (udisks/blueman activate it), but without this pkexec on PATH is the
+  # plain store binary: "pkexec must be setuid root". gparted's launcher and
+  # anything else escalating through polkit need it; polkit-gnome (in
+  # users/allu/desktop.nix) supplies the password dialog.
+  security.polkit.enable = true;
 
   ## Bluetooth
   hardware.bluetooth.enable = true;
