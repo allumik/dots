@@ -38,11 +38,8 @@
 
   # General home-manager settings
   home = {
-    # Home Manager needs a bit of information about you and the
-    # paths it should manage.
-    username = "allu";
-    homeDirectory = "/home/allu";
-
+    # username/homeDirectory come from the NixOS user this is imported for
+    # (home-manager's NixOS module sets them), so any user can import this.
     # scripts from desktop.nix land here; .desktop entries call them bare
     sessionPath = [ "$HOME/.local/bin" ];
 

@@ -79,7 +79,7 @@ in
     ./base.nix # Shared headless config: nix/locale/CLI tools/ssh/gc
     ./desktop.nix # The graphical layer: fonts, portals, pipewire, bluetooth, GUI apps
     ./stylix.nix # Unified GTK/Qt/fuzzel/waybar theming
-    ../users/guest.nix # Guest account with ephemeral credentials
+    ../users/jane.nix # Jane's account, ephemeral credentials
   ];
 
   ## Nixpkgs platform / config
@@ -291,7 +291,7 @@ in
     extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "podman" "input" "uinput" ]; # input/uinput: Sunshine input injection
   };
   home-manager.users = {
-    # Add other users here
+    # jane: see ../users/jane.nix
 
     # brave/foot/tailscale-systray etc. are all configured in
     # users/allu/confs/desktop.nix and theme.nix - this used to also carry

@@ -15,6 +15,11 @@ output "eDP-1" {
   scale 1.25
 }
 
+// deskmeat: Dell S2421HSX, 1920x1080. Preferred mode is 60 Hz, panel does 75.
+output "DP-1" {
+  mode "1920x1080@74.973"
+}
+
 // Use client side decorations or not - might be useful for dragging
 // prefer-no-csd
 

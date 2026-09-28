@@ -53,7 +53,7 @@ in
     ./base.nix # Shared headless config: nix/locale/CLI tools/ssh/gc
     ./desktop.nix # The graphical layer: fonts, portals, pipewire, bluetooth, GUI apps
     ./stylix.nix # Unified GTK/Qt/fuzzel/waybar theming
-    ../users/guest.nix # Guest account with ephemeral credentials
+    ../users/jane.nix # Jane's account, ephemeral credentials
   ];
 
   ## Nixpkgs platform
