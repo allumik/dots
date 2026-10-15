@@ -1,0 +1,47 @@
+/* window#waybar is left transparent/borderless so only the module groups
+   render as compact floating boxes, instead of a full-width bar. */
+* {
+  font-family: IBM Plex Mono;
+  font-size: 12px;
+}
+
+window#waybar {
+  background: transparent;
+  border: none;
+}
+
+.modules-right, .modules-left {
+  background: #e8f0ea;
+  border: 2px solid #364c40;
+  margin: 0;
+  padding: 4px 2px;
+}
+
+tooltip {
+  background: #e8f0ea;
+  border: 2px solid #364c40;
+  border-radius: 0;
+}
+
+tooltip label {
+  color: #364c40;
+}
+
+#clock, #custom-expand, #tray, #custom-close, #custom-floating, #pulseaudio, #custom-sleep, #custom-logout, #custom-reboot, #custom-power, #custom-awake, #custom-fuzzel, #custom-sep {
+  color: #364c40;
+  padding: 6px 0;
+}
+
+#custom-expand {
+  font-size: 9px;
+  padding: 4px 0;
+}
+
+#custom-awake.active {
+  color: #c60c30;
+  font-weight: bold;
+}
+
+#custom-close:hover, #custom-floating:hover, #pulseaudio:hover, #custom-sleep:hover, #custom-logout:hover, #custom-reboot:hover, #custom-power:hover, #custom-awake:hover, #custom-fuzzel:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Terminal (tmux)
+Comment=Open a foot terminal attached to the main tmux session
+Exec=foot -e tmux new-session -A -s main
+Icon=utilities-terminal
+Categories=System;
+Terminal=false

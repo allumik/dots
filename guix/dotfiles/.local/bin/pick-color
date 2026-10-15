@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# hyprpicker -a copies the picked hex straight to the clipboard
+color=$(hyprpicker -a)
+[ -n "$color" ] && notify-send "Color picked" "$color"

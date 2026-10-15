@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Color Picker
+Comment=Pick a color from the screen and copy its hex code
+Exec=pick-color
+Icon=gtk-color-picker
+Categories=Utility;
+Terminal=false

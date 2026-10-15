@@ -1,0 +1,7 @@
+# 3 min: auto-dismiss notifications
+default-timeout=180000
+font=DejaVu Sans 10
+background-color=#f8f8f2
+text-color=#232629
+border-color=#0082c9
+progress-color=over #deded8

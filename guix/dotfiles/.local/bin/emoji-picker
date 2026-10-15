@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+selected=$(fuzzel --dmenu < "$HOME/.local/share/emoji-picker/emojis.txt" | cut -d' ' -f1)
+[ -n "$selected" ] && wtype "$selected"

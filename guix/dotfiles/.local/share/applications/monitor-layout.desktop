@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Monitor Layout
+Comment=Arrange and configure connected displays
+Exec=wdisplays
+Icon=video-display
+Categories=Settings;
+Terminal=false

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+choice=$(printf "Wi-Fi Settings\nBluetooth Settings\nVPN Connections\n" | fuzzel --dmenu --prompt="Settings: ")
+case "$choice" in
+  "Wi-Fi Settings") nm-connection-editor ;;
+  "Bluetooth Settings") blueman-manager ;;
+  "VPN Connections")
+    vpn=$(nmcli -t -f NAME,TYPE connection show | awk -F: '$2=="vpn"||$2=="wireguard"{print $1}' | fuzzel --dmenu --prompt="VPN: ")
+    [ -n "$vpn" ] && nmcli connection up "$vpn"
+    ;;
+esac

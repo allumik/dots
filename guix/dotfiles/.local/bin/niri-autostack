@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# Keep in sync with niri.kdl layout: gaps between tiles, and whatever
+# vertical space is left outside the column (0: struts cancel the gaps).
+gaps=16
+outer=0
+float_ws=2 # windows opening on this workspace index get floated; all others tile
+default_size="50% 60%" # width height for an app with no remembered size
+# window-presets touches this while it places its own windows
+pause="${XDG_RUNTIME_DIR:-/tmp}/niri-autostack.pause"
+state="${XDG_STATE_HOME:-$HOME/.local/state}/niri-autostack-sizes"
+mkdir -p "$(dirname "$state")"
+# size: app-id -> "W H [X Y]" (W is - when only a tiled height is known,
+# X Y is the last floating position)
+# tracked: windows whose resizes get remembered (not dialogs)
+declare -A app size tracked
+[[ -r $state ]] && source "$state"
+
+where() { # <window id> <wanted height> -> skip | float | stack | tile
+  jq -rn --argjson id "$1" --arg h "$2" --argjson idx "$float_ws" \
+    --argjson gaps "$gaps" --argjson outer "$outer" \
+    --argjson w "$(niri msg --json windows)" \
+    --argjson ws "$(niri msg --json workspaces)" \
+    --argjson outs "$(niri msg --json outputs)" '
+      ($w[] | select(.id == $id)) as $new
+      | $new.layout.pos_in_scrolling_layout as $pos
+      | if $new.is_floating or $pos == null then "skip" else
+          ($ws[] | select(.id == $new.workspace_id)) as $wsp
+          | if $wsp.idx == $idx then "float" else
+              $outs[$wsp.output].logical.height as $H
+              | (if $h | endswith("%")
+                 then ($h | rtrimstr("%") | tonumber) * $H / 100
+                 else $h | tonumber end) as $want
+              | [$w[] | select(.workspace_id == $new.workspace_id
+                  and .layout.pos_in_scrolling_layout[0] == $pos[0] - 1)
+                  | .layout.tile_size[1]] as $left
+              | ($new.layout.tile_size[1] - $new.layout.window_size[1]) as $deco
+              | if ($left | length) > 0
+                  and ($left | add) + $want + $deco + $gaps * ($left | length) + $outer <= $H
+                then "stack" else "tile" end
+            end
+        end'
+}
+
+niri msg --json event-stream | jq --unbuffered -r '
+  (.WindowsChanged.windows[]? | select(.app_id)
+    | "seen \(.id) \(.is_floating) \(.app_id)"),
+  (.WindowOpenedOrChanged.window | select(.app_id) | "open \(.id) \(.app_id)"),
+  (.WindowLayoutsChanged.changes[]?
+    | "size \(.[0]) \(.[1].pos_in_scrolling_layout != null) \(.[1].window_size[0]) \(.[1].window_size[1]) \(.[1].tile_pos_in_workspace_view // [] | join(" "))"),
+  (.WindowClosed | select(.) | "close \(.id)")' |
+while read -r ev id arg; do
+  case $ev in
+    seen) # windows from before this script started; floating ones may be dialogs
+      read -r floating a <<< "$arg"
+      app[$id]=$a
+      [[ $floating == false ]] && tracked[$id]=1 ;;
+    close) unset "app[$id]" "tracked[$id]" ;;
+    size)
+      a=${app[$id]}
+      [[ $a && ${tracked[$id]} ]] || continue
+      read -r tiled w h x y <<< "$arg"
+      # a tiled window's width belongs to its column and it has no
+      # position, so keep the old ones
+      [[ $tiled == true ]] && { read -r w _ x y <<< "${size[$a]}"; w=${w:--}; }
+      new="$w $h${x:+ $x $y}"
+      if [[ ${size[$a]} != "$new" ]]; then
+        size[$a]=$new
+        declare -p size > "$state"
+      fi ;;
+    open) # also fires on title changes etc; only act on first sight
+      [[ ${app[$id]} ]] && continue
+      app[$id]=$arg
+      # a pause file older than 60 s is a leftover, not a running load
+      if [[ -e $pause ]] && (( $(date +%s) - $(stat -c %Y "$pause") < 60 )); then
+        continue
+      fi
+      read -r w h x y <<< "${size[$arg]:-$default_size}"
+      mode=$(where "$id" "$h")
+      [[ $mode == skip || -z $mode ]] && continue
+      tracked[$id]=1
+      [[ $mode == float ]] && niri msg action move-window-to-floating --id "$id"
+      [[ $mode == stack ]] && niri msg action consume-or-expel-window-left --id "$id"
+      # a stacked window takes the width of its column
+      [[ $mode != stack && $w != - ]] && niri msg action set-window-width --id "$id" "$w"
+      niri msg action set-window-height --id "$id" "$h"
+      [[ $mode == float && $x ]] && niri msg action move-floating-window --id "$id" -x "$x" -y "$y" ;;
+  esac
+done

@@ -1,0 +1,69 @@
+// Vertical bar on the right edge; every module is rotated to match.
+{
+  "ipc": true,
+  "position": "right",
+  "mode": "dock",
+  "layer": "top",
+
+  "modules-left": ["custom/fuzzel", "group/drawer"],
+  "modules-center": [],
+  "modules-right": ["tray", "custom/sep", "custom/floating", "custom/close", "pulseaudio", "clock"],
+
+  "clock": {
+    "rotate": 270,
+    "format": "| {:%H:%M}",
+    "tooltip-format": "<tt>{calendar}</tt>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "format": {
+        "months": "<b>{}</b>",
+        "days": "{}",
+        "weeks": "W{}",
+        "weekdays": "<b>{}</b>",
+        "today": "<b><u>{}</u></b>"
+      }
+    },
+    "on-click": "fuzzel"
+  },
+
+  "custom/close": { "rotate": 270, "format": "close", "on-click": "niri msg action close-window" },
+  "custom/floating": { "rotate": 270, "format": "float", "on-click": "niri msg action toggle-window-floating" },
+
+  "pulseaudio": {
+    "rotate": 270,
+    "format": "vol {volume}%",
+    "format-muted": "muted",
+    "scroll-step": 5,
+    "on-click": "pavucontrol",
+    "on-click-right": "swayosd-client --output-volume mute-toggle",
+    "tooltip-format": "{desc} - {volume}%"
+  },
+
+  "group/drawer": {
+    "rotate": 270,
+    "orientation": "vertical",
+    "drawer": {
+      "click-to-reveal": true,
+      "transition-duration": 1200,
+      // unfolds downwards, away from the top edge
+      "transition-left-to-right": true
+    },
+    "modules": ["custom/expand", "custom/power", "custom/reboot", "custom/logout", "custom/sleep", "custom/awake"]
+  },
+
+  // same "|" divider the clock carries in its format
+  "custom/sep": { "rotate": 270, "format": "|", "tooltip": false },
+  "custom/expand": { "rotate": 270, "format": " ~ " },
+  "tray": { "rotate": 270, "icon-size": 20, "spacing": 8 },
+
+  // elogind's loginctl stands in for systemctl on Guix System
+  "custom/sleep": { "rotate": 270, "format": "sleep", "on-click": "loginctl suspend" },
+  "custom/awake": { "rotate": 270, "exec": "awake-status", "return-type": "json", "interval": 5, "on-click": "awake-toggle" },
+  "custom/logout": { "rotate": 270, "format": "logout", "on-click": "niri msg action quit" },
+  "custom/reboot": { "rotate": 270, "format": "reboot", "on-click": "loginctl reboot" },
+  "custom/power": { "rotate": 270, "format": "poweroff", "on-click": "loginctl poweroff" },
+  "custom/fuzzel": { "rotate": 270, "format": "applications", "on-click": "fuzzel" }
+}

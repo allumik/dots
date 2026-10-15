@@ -1,0 +1,9 @@
+[Icons]
+Theme=Chicago95
+
+[General]
+font[$i]=DejaVu Sans,9,-1,5,50,0,0,0,0,0
+menuFont[$i]=DejaVu Sans,9,-1,5,50,0,0,0,0,0
+toolBarFont[$i]=DejaVu Sans,9,-1,5,50,0,0,0,0,0
+smallestReadableFont[$i]=DejaVu Sans,8,-1,5,50,0,0,0,0,0
+fixed[$i]=Aporetic Serif Mono,9,-1,5,50,0,0,0,0,0

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+choice=$(printf "Lock\nSleep\nReboot\nPower Off\nLog Out\n" | fuzzel --dmenu --prompt="Power: ")
+case "$choice" in
+  "Lock") swaylock ;;
+  "Sleep") loginctl suspend ;;
+  "Reboot") loginctl reboot ;;
+  "Power Off") loginctl poweroff ;;
+  "Log Out") niri msg action quit ;;
+esac

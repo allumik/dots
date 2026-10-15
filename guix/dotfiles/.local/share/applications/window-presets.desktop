@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Window Presets
+Comment=Save this workspace's windows as a preset, or open a saved one
+Exec=window-presets
+Icon=preferences-system-windows
+Categories=Utility;
+Terminal=false

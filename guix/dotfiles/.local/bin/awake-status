@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Emits waybar custom-module JSON reflecting awake-mode's sentinel file.
+if [ -e "$HOME/.cache/awake-mode" ]; then
+  printf '{"text":"awake","class":"active","tooltip":"Click to allow screen-off/sleep again"}\n'
+else
+  printf '{"text":"awake","class":"inactive","tooltip":"Click to block screen-off/sleep"}\n'
+fi

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Toggles "awake mode": blocks idle-action (screen-off/suspend) until toggled off.
+sentinel="$HOME/.cache/awake-mode"
+if [ -e "$sentinel" ]; then
+  rm -f "$sentinel"
+  notify-send "Awake mode off" "Screen-off and sleep timers are active again"
+else
+  touch "$sentinel"
+  notify-send "Awake mode on" "Screen-off and sleep are blocked until toggled off"
+fi

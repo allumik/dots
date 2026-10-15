@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Emoji Picker
+Comment=Pick an emoji and type it into the focused window
+Exec=emoji-picker
+Icon=face-smile
+Categories=Utility;
+Terminal=false

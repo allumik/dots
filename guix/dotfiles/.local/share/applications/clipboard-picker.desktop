@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Clipboard History
+Comment=Browse and re-copy clipboard history
+Exec=clipboard-picker
+Icon=edit-paste
+Categories=Utility;
+Terminal=false

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Font Viewer
+Comment=Preview installed fonts
+Exec=foot -e fontpreview
+Icon=preferences-desktop-font
+Categories=Utility;
+Terminal=false

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# swayosd is not packaged in Guix. This stand-in takes the calls the shared
+# niri.kdl and waybar make (--output-volume 2, --output-volume=-2,
+# --input-volume mute-toggle) and does them with wpctl, minus the OSD.
+arg=$1 val=$2
+[[ $arg == *=* ]] && { val=${arg#*=}; arg=${arg%%=*}; }
+case $arg in
+  --output-volume) dev=@DEFAULT_AUDIO_SINK@ ;;
+  --input-volume) dev=@DEFAULT_AUDIO_SOURCE@ ;;
+  *) exit 1 ;;
+esac
+case $val in
+  mute-toggle) exec wpctl set-mute "$dev" toggle ;;
+  -*) exec wpctl set-volume "$dev" "${val#-}%-" ;;
+  *) exec wpctl set-volume -l 1.0 "$dev" "${val#+}%+" ;;
+esac

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Power Menu
+Comment=Lock, sleep, reboot, power off, or log out
+Exec=power-menu
+Icon=system-shutdown
+Categories=System;
+Terminal=false

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Terminal
+Comment=Open a foot terminal
+Exec=foot
+Icon=utilities-terminal
+Categories=System;
+Terminal=false

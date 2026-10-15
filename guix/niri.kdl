@@ -1,0 +1,11 @@
+// Guix-only tail of ~/.config/niri/config.kdl: home.scm appends it to the
+// shared nixos/users/allu/confs/niri.kdl. On NixOS these daemons ran as
+// home-manager systemd user units; here niri starts them, so they inherit
+// WAYLAND_DISPLAY and die with the session.
+spawn-at-startup "mako"
+spawn-at-startup "swayidle"
+spawn-at-startup "wlsunset" "-l" "50.9577971" "-L" "6.8021576" "-t" "5200"
+spawn-at-startup "nm-applet" "--indicator"
+spawn-at-startup "tailscale" "systray"
+spawn-sh-at-startup "wl-paste --watch cliphist store"
+spawn-sh-at-startup "~/.guix-home/profile/libexec/polkit-gnome-authentication-agent-1"

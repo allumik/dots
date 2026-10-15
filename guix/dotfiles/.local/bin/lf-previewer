@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# lf calls this as: lf-previewer <path> <preview-width> <preview-height> <x> <y>
+file="$1"
+width="$2"
+height="$3"
+
+case "$(file --mime-type -Lb "$file")" in
+  image/*)
+    chafa --format=sixels --size="$width"x"$height" "$file"
+    ;;
+  *)
+    bat --color=always --style=numbers --line-range=:500 "$file" 2>/dev/null || cat "$file"
+    ;;
+esac

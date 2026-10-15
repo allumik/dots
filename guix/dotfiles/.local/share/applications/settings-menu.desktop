@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Settings Menu
+Comment=Wi-Fi, Bluetooth, and VPN connections
+Exec=settings-menu
+Icon=preferences-system
+Categories=Settings;
+Terminal=false

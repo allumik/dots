@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Runs the given idle command, unless awake-toggle has disarmed idling.
+# swayidle is spawned by niri here, so PATH is already the session's.
+[ -e "$HOME/.cache/awake-mode" ] && exit 0
+exec bash -c "$1"
