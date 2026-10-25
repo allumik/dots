@@ -95,7 +95,6 @@ in
   # X570M Pro4: ahci/sd_mod for the SATA drives (Ultra 3D, Exos), usb_storage for
   # a rescue stick. Compare against `nixos-generate-config --show-hardware-config`.
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
-  boot.initrd.verbose = false; # quiet initrd-stage messages so they don't clobber the tuigreet greeter
   boot.consoleLogLevel = 3; # suppress kernel INFO spam on the console tuigreet draws on
 
   # Filesystems and Swap
@@ -109,7 +108,12 @@ in
     options = [ "users" "nofail" "relatime" "x-gvfs-show" "exec" ];
   };
 
-  # (BX500 /mnt/data_extra removed 2026-10: drive sold.)
+  # Secondary SATA Storage (Crucial BX500)
+  fileSystems."/mnt/data_extra" = {
+    device = "/dev/disk/by-uuid/00c47e7d-748e-4cf8-b6f7-0a1dd14b9fdc";
+    fsType = "ext4";
+    options = [ "users" "nofail" "relatime" "x-gvfs-show" "exec" ];
+  };
 
   # Swap by UUID, not /dev/nvme0n1p3: with the U.2 Optane installed there are two
   # NVMe controllers and nvme0n1 may enumerate as the Optane; by path, swap and

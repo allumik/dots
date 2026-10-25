@@ -17,4 +17,6 @@ It's not pretty...
 
 `nixos/` - NixOS configuration, including integrated home-manager modules and custom development environments.
 
+`guix/` - Experimental `guix` configuration, currently purely vibecoded from NixOS config, so WIP.
+
 `windows/` - Collection of Windows configurations and some helpful programs.
