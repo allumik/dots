@@ -92,7 +92,9 @@ in
   # Kernel modules and initrd
   boot.kernelPackages = pkgs.linuxPackages_zen; # zen's current bzImage output is broken upstream; normal might be more stable for network anyway
   boot.kernelModules = [ "amdgpu" "kvm-amd" ];
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usbhid" ];
+  # X570M Pro4: ahci/sd_mod for the SATA drives (Ultra 3D, Exos), usb_storage for
+  # a rescue stick. Compare against `nixos-generate-config --show-hardware-config`.
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.verbose = false; # quiet initrd-stage messages so they don't clobber the tuigreet greeter
   boot.consoleLogLevel = 3; # suppress kernel INFO spam on the console tuigreet draws on
 
@@ -107,15 +109,13 @@ in
     options = [ "users" "nofail" "relatime" "x-gvfs-show" "exec" ];
   };
 
-  # Secondary SATA Storage (Crucial BX500)
-  fileSystems."/mnt/data_extra" = {
-    device = "/dev/disk/by-uuid/00c47e7d-748e-4cf8-b6f7-0a1dd14b9fdc";
-    fsType = "ext4";
-    options = [ "users" "nofail" "relatime" "x-gvfs-show" "exec" ];
-  };
+  # (BX500 /mnt/data_extra removed 2026-10: drive sold.)
 
-  swapDevices = [ { device = "/dev/nvme0n1p3"; } ];
-  boot.resumeDevice = "/dev/nvme0n1p3";
+  # Swap by UUID, not /dev/nvme0n1p3: with the U.2 Optane installed there are two
+  # NVMe controllers and nvme0n1 may enumerate as the Optane; by path, swap and
+  # hibernation would then hit the wrong disk. (MP510 p3, 2026-10-25.)
+  swapDevices = [ { device = "/dev/disk/by-uuid/c2285349-d4e0-4159-a35b-faaa05103325"; } ];
+  boot.resumeDevice = "/dev/disk/by-uuid/c2285349-d4e0-4159-a35b-faaa05103325";
   boot.kernel.sysctl = { "vm.swappiness" = 10; }; # lower it from 60 as we have loads of RAM
   # Enable zramSwap only in RAM compression for large memory loads, defaults are: 50% RAM; zstd
   boot.kernelParams = [
@@ -123,6 +123,8 @@ in
     "zswap.max_pool_percent=75" # maximum percentage of RAM that zswap is allowed to use
     "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
     "zswap.zpool=zsmalloc"
+    # iwl*: only act on Intel Wi-Fi. The X570M Pro4 has none on board; drop these
+    # four lines unless the new Wi-Fi adapter is an Intel AX200/AX210.
     "iwlwifi.disable_11ax=1"
     "iwlwifi.uapsd_disable=1" # Disable U-APSD to improve stability on some APs
     "iwlwifi.optout_pm=1"
@@ -143,6 +145,7 @@ in
     };
     amdgpu.overdrive.enable = true;
     enableRedistributableFirmware = true;
+    cpu.amd.updateMicrocode = true; # nixos-generate-config default; was missing from the inline hardware config
     keyboard.qmk.enable = true; # for the planck keyboard with vial
     bluetooth = {
       enable = true;
@@ -158,7 +161,9 @@ in
   # Trust the Tailscale interface in the firewall
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   # Wake-on-LAN Configuration
-  networking.interfaces.enp2s0.wakeOnLan.enable = true;
+  # enp5s0 = the X570M Pro4's onboard Intel I211, MAC a8:a1:59:12:db:92 (the
+  # router's WoL target). Was enp2s0 on the previous board.
+  networking.interfaces.enp5s0.wakeOnLan.enable = true;
   networking.firewall.allowedUDPPorts = [ 9 ];
   networking.networkmanager = {
     enable = true;
