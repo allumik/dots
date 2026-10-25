@@ -76,10 +76,14 @@
   (kernel-arguments
    (append '("zswap.enabled=1" "zswap.max_pool_percent=75"
              "zswap.shrinker_enabled=1" "zswap.zpool=zsmalloc"
+             ;; iwl*: only act on Intel Wi-Fi. The X570M Pro4 has none on
+             ;; board; drop these unless the new adapter is an AX200/AX210.
              "iwlwifi.disable_11ax=1" "iwlwifi.uapsd_disable=1"
              "iwlwifi.optout_pm=1" "iwlmvm.power_scheme=1" "pcie_aspm=off"
              "amdgpu.ppfeaturemask=0xffffffff" ;hardware.amdgpu.overdrive
-             "resume=/dev/nvme0n1p3"
+             ;; Swap/resume by UUID: with the U.2 Optane in, nvme0n1 may
+             ;; enumerate as the Optane (MP510 p3).
+             "resume=c2285349-d4e0-4159-a35b-faaa05103325"
              "loglevel=3")              ;quiet console under tuigreet ("quiet" is a default)
            %default-kernel-arguments))
 
@@ -113,15 +117,10 @@
             (type "ext4")
             (mount-may-fail? #t)
             (create-mount-point? #t))
-          ;; Secondary SATA storage (Crucial BX500)
-          (file-system
-            (device (uuid "00c47e7d-748e-4cf8-b6f7-0a1dd14b9fdc"))
-            (mount-point "/mnt/data_extra")
-            (type "ext4")
-            (mount-may-fail? #t)
-            (create-mount-point? #t))
           %base-file-systems))
-  (swap-devices (list (swap-space (target "/dev/nvme0n1p3"))))
+  (swap-devices
+   (list (swap-space
+          (target (uuid "c2285349-d4e0-4159-a35b-faaa05103325")))))
 
   ;; /dev/kfd and /dev/dri/renderD* belong to "render", which Guix does not
   ;; create by default; podman ROCm containers need it (R4).
@@ -164,7 +163,7 @@
        ;; desktop layer (hosts/desktop.nix)
        "hd-idle" "foot" "vlc" "ffmpeg" "fdupes" "exfatprogs" "xhost"
        "transmission:gui" "keepassxc" "gimp" "openvpn" "libreoffice"
-       "zotero" "icedove" "flatpak" "xdg-desktop-portal"
+       "icedove" "flatpak" "xdg-desktop-portal"
        "xdg-desktop-portal-gtk" "xdg-desktop-portal-gnome"
        "xdg-desktop-portal-kde"
        ;; fonts; corefonts come from nonguix, Vista fonts are gone
@@ -259,8 +258,10 @@
                "Keep Tailscale from overriding DNS.")
       (oneshot 'wake-on-lan '(networking)
                #~(#$(file-append ethtool "/sbin/ethtool")
-                  "-s" "enp2s0" "wol" "g")
-               "Arm wake-on-LAN on enp2s0.")
+                  "-s" "enp5s0" "wol" "g")
+               ;; onboard Intel I211, MAC a8:a1:59:12:db:92 (the router's
+               ;; WoL target); enp2s0 on the previous board.
+               "Arm wake-on-LAN on enp5s0.")
       (oneshot 'wipe-jane-secrets '(file-systems)
                #~(#$wipe-jane)
                "Boot-time wipe of jane's credential stores.")
