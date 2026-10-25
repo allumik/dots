@@ -24,7 +24,7 @@
       xorg.xhost
       # Other GUI
       transmission_4-qt keepassxc gimp3-with-plugins
-      eduvpn-client openvpn libreoffice-qt zotero thunderbird
+      eduvpn-client openvpn libreoffice-qt thunderbird
       vscode.fhs
     ];
     pathsToLink = [
