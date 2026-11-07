@@ -115,16 +115,16 @@ in
     options = [ "users" "nofail" "relatime" "x-gvfs-show" "exec" ];
   };
 
-  # Swap by UUID, not /dev/nvme0n1p3: with the U.2 Optane installed there are two
-  # NVMe controllers and nvme0n1 may enumerate as the Optane; by path, swap and
-  # hibernation would then hit the wrong disk. (MP510 p3, 2026-10-25.)
-  swapDevices = [ { device = "/dev/disk/by-uuid/c2285349-d4e0-4159-a35b-faaa05103325"; } ];
-  boot.resumeDevice = "/dev/disk/by-uuid/c2285349-d4e0-4159-a35b-faaa05103325";
+  # Swap + hibernation on the Optane 900P p1 (176 GiB > RAM). By UUID: the two
+  # NVMe controllers renumber. The UUID is fixed with `mkswap -U` at creation.
+  swapDevices = [ { device = "/dev/disk/by-uuid/f6f6db79-91a7-40b8-b250-adc01fdf90cc"; } ];
+  boot.resumeDevice = "/dev/disk/by-uuid/f6f6db79-91a7-40b8-b250-adc01fdf90cc";
   boot.kernel.sysctl = { "vm.swappiness" = 10; }; # lower it from 60 as we have loads of RAM
   # Enable zramSwap only in RAM compression for large memory loads, defaults are: 50% RAM; zstd
   boot.kernelParams = [
     "zswap.enabled=1" # enables zswap
-    "zswap.max_pool_percent=75" # maximum percentage of RAM that zswap is allowed to use
+    "zswap.max_pool_percent=25" # max share of RAM for zswap; small, since the Optane behind it is fast
+    "zswap.compressor=lz4"
     "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
     "zswap.zpool=zsmalloc"
     # iwl*: only act on Intel Wi-Fi. The X570M Pro4 has none on board; drop these
