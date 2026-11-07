@@ -134,6 +134,9 @@ in
     "iwlwifi.optout_pm=1"
     "iwlmvm.power_scheme=1"
     "pcie_aspm=off"
+    # SATA link power saving off (default is med_power_with_dipm): the SanDisk
+    # data_main stalled 52 s on writes with it on, aborting ext4's journal (2026-11-07).
+    "ahci.mobile_lpm_policy=1"
     "quiet" # also tells systemd to suppress its own unit status lines, not just the kernel
   ];
 
