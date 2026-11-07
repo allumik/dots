@@ -29,6 +29,9 @@ in
   };
 
   nixpkgs.config.allowUnfree = true;
+  # gtk2 is marked broken ahead of its removal (nixpkgs#410814), but
+  # omnissa-horizon-client still puts it in its FHS env. Drop once Horizon moves off it.
+  nixpkgs.config.problems.handlers."gtk+".broken = "warn";
 
   environment = {
     systemPackages = with pkgs; [

@@ -152,8 +152,10 @@ in
   security.rtkit.enable = true;
 
   services = {
-    scx.enable = true; # default scx_rustland, build issue on 250914
-    scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
+    scx-loader = {
+      enable = true;
+      config.default_sched = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
+    };
 
     fstrim.enable = true; # To trim SSD blocks
     flatpak.enable = true;
