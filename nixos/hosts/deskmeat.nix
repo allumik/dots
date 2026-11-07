@@ -192,8 +192,10 @@ in
   security.rtkit.enable = true; # realtime scheduling for pipewire
 
   services = {
-    scx.enable = true;
-    scx.scheduler = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
+    scx-loader = {
+      enable = true;
+      config.default_sched = "scx_bpfland"; # https://wiki.cachyos.org/configuration/sched-ext/
+    };
 
     # Remote desktop: Moonlight clients stream from here.
     # capSysAdmin required for KMS capture under niri (Wayland, non-wlroots).
