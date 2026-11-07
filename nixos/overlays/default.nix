@@ -19,6 +19,9 @@
     '';
   });
 
+  # Gone from nixpkgs; home-manager's programs.brave picks up pkgs.brave.
+  brave = inputs.brave.packages.${final.stdenv.hostPlatform.system}.brave;
+
   # nixos-unstable trails Claude Code releases by days, and new models need a
   # new CLI ("Update to 2.1.280+ to use Opus 5.5"). The nixpkgs package takes
   # its version and checksums from a manifest, so feed it the latest one:

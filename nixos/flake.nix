@@ -38,6 +38,12 @@
       url = "github:nmcbride/claude-desktop-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Brave was dropped from nixpkgs; this flake repackages the upstream builds.
+    brave = {
+      url = "git+https://codeberg.org/buckley310/brave-browser-nix?ref=main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, stylix, ... }@inputs:
