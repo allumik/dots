@@ -47,6 +47,7 @@ let
     typst typstyle # latex reborn
     beets # music library manager
     dfu-util # for the keyboard gods
+    vmtouch # `vmtouch -t <file>`: read a file once so it lands in RAM and the bcache
     claude-code bubblewrap nix-bubblewrap # yes...
     # Electron picks its credential store from XDG_CURRENT_DESKTOP; "niri" is
     # unknown to it, so it falls back to plain-text "basic" and warns that the
@@ -91,7 +92,7 @@ in
 
   # Kernel modules and initrd
   boot.kernelPackages = pkgs.linuxPackages_zen; # zen's current bzImage output is broken upstream; normal might be more stable for network anyway
-  boot.kernelModules = [ "amdgpu" "kvm-amd" ];
+  boot.kernelModules = [ "amdgpu" "kvm-amd" "drivetemp" ]; # drivetemp: SATA drive temps in hwmon, readable without root
   # X570M Pro4: ahci/sd_mod for the SATA drives (Ultra 3D, Exos), usb_storage for
   # a rescue stick. Compare against `nixos-generate-config --show-hardware-config`.
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
@@ -115,18 +116,44 @@ in
     options = [ "users" "nofail" "relatime" "x-gvfs-show" "exec" ];
   };
 
+  # Exos 12 TB HDD (was VeraCrypt until 2026-11): ext4 on /dev/bcache0, with the Exos as
+  # backing device and Optane p2 as a writethrough cache. UUID fixed with `mkfs.ext4 -U`.
+  fileSystems."/mnt/data_big" = {
+    device = "/dev/disk/by-uuid/a91f5142-5ce7-469d-a396-870aa7bf1497";
+    fsType = "ext4";
+    # noatime: reading a file never writes, so a movie served from cache leaves the HDD asleep
+    options = [ "users" "nofail" "noatime" "x-gvfs-show" "exec" ];
+  };
+
+  # Cache every read of data_big on the Optane, so a movie read once (vmtouch -t) plays
+  # from the cache while the Exos sleeps. By default bcache skips sequential reads (>4 MB)
+  # and bypasses the cache when it is slow; both off. sysfs forgets this, so set it every boot.
+  systemd.services.bcache-tune = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "local-fs.target" ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      for d in /sys/block/bcache*/bcache; do
+        [ -e "$d" ] || continue
+        echo 0 > "$d/sequential_cutoff"
+        [ -e "$d/cache" ] || continue
+        echo 0 > "$d/cache/congested_read_threshold_us"
+        echo 0 > "$d/cache/congested_write_threshold_us"
+      done
+    '';
+  };
+
   # Swap + hibernation on the Optane 900P p1 (176 GiB > RAM). By UUID: the two
   # NVMe controllers renumber. The UUID is fixed with `mkswap -U` at creation.
   swapDevices = [ { device = "/dev/disk/by-uuid/f6f6db79-91a7-40b8-b250-adc01fdf90cc"; } ];
   boot.resumeDevice = "/dev/disk/by-uuid/f6f6db79-91a7-40b8-b250-adc01fdf90cc";
-  boot.kernel.sysctl = { "vm.swappiness" = 10; }; # lower it from 60 as we have loads of RAM
-  # Enable zramSwap only in RAM compression for large memory loads, defaults are: 50% RAM; zstd
+  # High on purpose: swap on the Optane is faster than rereading file cache from any other drive.
+  boot.kernel.sysctl = { "vm.swappiness" = 100; };
   boot.kernelParams = [
     "zswap.enabled=1" # enables zswap
     "zswap.max_pool_percent=25" # max share of RAM for zswap; small, since the Optane behind it is fast
     "zswap.compressor=lz4"
     "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
-    "zswap.zpool=zsmalloc"
     # iwl*: only act on Intel Wi-Fi. The X570M Pro4 has none on board; drop these
     # four lines unless the new Wi-Fi adapter is an Intel AX200/AX210.
     "iwlwifi.disable_11ax=1"
