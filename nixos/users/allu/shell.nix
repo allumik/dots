@@ -86,7 +86,8 @@ let
       # other secrets. List the dirs the agent actually needs.
       for p in "$HOME/.claude" "$HOME/.claude.json" "$HOME/.gitconfig" "$HOME/.local/share" \
                "$HOME/.config/git" "$HOME/.config/zsh" "$HOME/.config/nvim" \
-               "$HOME/.config/tmux" "$HOME/.config/lf"; do
+               "$HOME/.config/tmux" "$HOME/.config/lf" \
+               /mnt /media; do # data drives, read-write for copies
         [ -e "$p" ] && binds+=(--bind "$p" "$p")
       done
       nix-bwrap -net -bwrap-options "''${binds[*]}" -- claude "$@"
