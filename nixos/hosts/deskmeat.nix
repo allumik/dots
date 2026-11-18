@@ -143,10 +143,9 @@ in
     '';
   };
 
-  # Swap + hibernation on the Optane 900P p1 (176 GiB > RAM). By UUID: the two
-  # NVMe controllers renumber. The UUID is fixed with `mkswap -U` at creation.
+  # Swap on the Optane 900P p1. By UUID: the two NVMe controllers renumber. The
+  # UUID is fixed with `mkswap -U` at creation. No hibernation (see nohibernate below).
   swapDevices = [ { device = "/dev/disk/by-uuid/f6f6db79-91a7-40b8-b250-adc01fdf90cc"; } ];
-  boot.resumeDevice = "/dev/disk/by-uuid/f6f6db79-91a7-40b8-b250-adc01fdf90cc";
   # High on purpose: swap on the Optane is faster than rereading file cache from any other drive.
   boot.kernel.sysctl = { "vm.swappiness" = 100; };
   boot.kernelParams = [
@@ -164,6 +163,9 @@ in
     # SATA link power saving off (default is med_power_with_dipm): the SanDisk
     # data_main stalled 52 s on writes with it on, aborting ext4's journal (2026-11-07).
     "ahci.mobile_lpm_policy=1"
+    # No hibernation and no resume at boot: sleep is suspend-to-RAM only, which keeps
+    # the NIC powered for wake-on-LAN. systemd then reports CanHibernate=na.
+    "nohibernate"
     "quiet" # also tells systemd to suppress its own unit status lines, not just the kernel
   ];
 
